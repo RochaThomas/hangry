@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry: Add Favorite</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">I NEED FOOD NOW!!!</button></a>
+            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
+            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
+            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+        </div>
+    </div>
+    <div class="content content_add">
+        <div class="add_div">
+            <h1>Add a Favorite</h1>
+            <form class="add_form" action="/restaurant/add_favorite/process" method="post">
+                {% with restaurant_entry_errors = get_flashed_messages(category_filter=['restaurant_entry_error']) %}
+                    {% if restaurant_entry_errors %}
+                        {% for restaurant_entry_error in restaurant_entry_errors %}
+                            <p class="restaurant_entry_error">{{restaurant_entry_error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <div class="input_div">
+                    <label for="name">Name: </label>
+                    <input type="text" name="name" id="name">
+                </div>
+                <div class="address">
+                    <label for="address">Address: </label>
+                    <div class="input_div">
+                        <label for="street">Street </label>
+                        <input type="text" name="street" id="street">
+                    </div>
+                    <div class="input_div">
+                        <label for="city">City </label>
+                        <input type="text" name="city" id="city">
+                    </div>
+                    <div class="input_div">
+                        <label for="zipcode">Zipcode </label>
+                        <input type="text" name="zipcode" id="zipcode">
+                    </div>
+                </div>
+                <div class="input_div">
+                    <label for="location_id">Location List:</label>
+                    <select name="location_id" id="location_id">
+                        <option value="" selected>Choose a Location</option>
+                        {% for location in locations %}
+                            <option value="{{location.id}}">{{location.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input_div">
+                    <label for="min_away">How Far Away It Is: </label>
+                    <div class="input_and_unit">
+                        <input type="number" name="min_away" id="min_away" min="1">
+                        <p>minutes</p>
+                    </div>
+                </div>
+                <input class="button box_button add_button" id="add_button" type="submit" value="Add" onmouseover="add_react(this)" onmouseout="add_unreact(this)">
+            </form>
+        </div>
+        <div class="your_favorites">
+            <h2>Your Favorites</h2>
+            <!-- fill in with jinja code -->
+            <ul>
+                {% for location in locations %}
+                    <li class="location_names">{{location.name}}</li>
+                    <li>
+                        <ul>
+                            {% for users_favorite in users_favorites %}
+                                {% if users_favorite.location_id == location.id %}
+                                    <li class="favorite_names">{{users_favorite.name}}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script src="../static/script.js"></script>
+</body>
+</html>

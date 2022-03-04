@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/login"><button class="button navbar_login" onmouseover="nav_login_react(this)" onmouseout="nav_login_unreact(this)">Login</button></a>
+            <a href="/register"><button class="button navbar_sign_up" onmouseover="nav_sign_up_react(this)" onmouseout="nav_sign_up_unreact(this)">Sign Up</button></a>
+        </div>
+    </div>
+    <div class="intro">
+        <h1>Welcome to Hangry!</h1>
+        <p id="questions">Are you hangry? Trying to figure out where to eat? Need food fast?</p>
+        <p id="we_will_help">Let us help you end your hanger!<br>We will help you choose where to grab some grub!</p>
+    </div>
+    <div class="content">
+        <div class="box" onmouseover="box_react(this)" onmouseout="box_unreact(this)">
+            <h3>Already have an account?</h3>
+            <a href="/login"><button class="button box_button" onmouseover="box_button_react(this)" onmouseout="box_button_unreact(this)">Login</button></a>
+        </div>
+        <div class="box" onmouseover="box_react(this)" onmouseout="box_unreact(this)">
+            <h3>Make an Account!</h3>
+            <a href="/register"><button class="button box_button" onmouseover="box_button_react(this)" onmouseout="box_button_unreact(this)">Sign Up</button></a>
+        </div>
+    </div>
+    <script src="../static/script.js"></script>
+</body>
+</html>

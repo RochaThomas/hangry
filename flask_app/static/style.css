@@ -1,0 +1,294 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* border: thin dotted red; */
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.navbar {
+    padding: 0px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    height: 50px;
+}
+#page_title {
+    font-size: 24pt;
+    color: #e00a05;
+}
+
+.button {
+    cursor: pointer;
+    text-decoration: none;
+}
+.button_div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.navbar_login, .navbar_sign_up, .navbar_link, .navbar_logout{
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+.navbar_login, .navbar_link{
+    background-color: white;
+    color: #e00a05;
+    font-size: 12pt;
+}
+.on_hover_navbar_login, .on_hover_navbar_link {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom: #e00a05 solid;
+}
+.navbar_sign_up, .navbar_logout {
+    background-color: white;
+    border: #e00a05 solid;
+    color: #e00a05;
+    font-size: 12pt;
+}
+.on_hover_navbar_sign_up, .on_hover_navbar_logout {
+    color: white;
+    background-color: #e00a05;
+}
+
+.intro {
+    background-color: #f5f5f5;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+}
+.intro h1{
+    font-size: 48pt;
+}
+#questions {
+    color: #e00a05;
+    font-size: 18pt;
+    font-weight: bold;
+}
+#we_will_help {
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.box {
+    border: #e00a05 thick solid;
+    border-radius: 5px;
+    width: 260px;
+    height: 400px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.box h3 {
+    font-size: 24pt;
+}
+.box_button {
+    background-color: white;
+    border: black thick solid;
+    border-radius: 5px;
+    font-size: 40pt;
+}
+.a_box {
+    text-decoration: none;
+    color: black;
+}
+.on_hover_boxes {
+    color: white;
+    background-color: #e00a05;
+}
+.on_hover_boxes_buttons {
+    color: white;
+    background-color: black;
+}
+
+.sign_up_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 25px;
+    background-color: #f5f5f5;
+}
+.register {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 300px;
+    /* height: 400px; */
+    gap: 10px;
+    padding: 10px 0px;
+    border: black thick solid;
+    border-radius: 5px;
+}
+.register label, .login_form label {
+    font-size: 16pt;
+}
+.register input, .login_form input {
+    width: 200px;
+}
+.reg_error, .login_error, .location_entry_error , .restaurant_entry_error, .selection_error{
+    text-align: center;
+    color: #e00a05;
+    font-size: 12pt;
+}
+.sign_up_button, .login_button, .add_button, .red_btn_white_wrd {
+    border-color: #e00a05;
+    color: #e00a05;
+    font-size: 36pt;
+}
+.on_hover_sign_up_button, .on_hover_login_button, .on_hover_add_button, .on_hover_red_btn_white_wrd {
+    background-color: #e00a05;
+    color: white;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 25px;
+    background-color: #f5f5f5;
+}
+.login_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 300px;
+    height: 300px;
+    border: black thick solid;
+    border-radius: 5px;
+}
+
+.content_add {
+    gap: 200px
+}
+.add_div {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+.add_form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    /* width: 300px; */
+}
+.add_form label {
+    font-size: 16pt;
+    float: left;
+}
+.add_form input {
+    width: 200px;
+}
+.input_div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+.address {
+    display: flex;
+    flex-direction: column;
+}
+#add_button {
+    align-self: flex-end;
+    font-size: 24pt;
+    width: 150px;
+}
+.input_and_unit {
+    display: flex;
+    gap: 5px;
+}
+#min_away {
+    width: 40px;
+}
+
+.choose_location, .select_favorites {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+.select_favorites h3 {
+    text-align: center;
+}
+.location_form {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.fav_options {
+    border: #e00a05 thick solid;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    padding: 5px;
+}
+.rand_favs_btns {
+    border-width: medium;
+    font-size: 14pt;
+}
+
+.result_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+.result_display {
+    display: flex;
+    gap: 100px;
+}
+
+.your_locations, .your_favorites {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.your_locations h2, .your_favorites h2 {
+    font-size: 22pt;
+}
+.your_locations ul, .your_favorites ul {
+    list-style-type: none;
+}
+.your_locations li {
+    font-size: 16pt;
+}
+.location_entry_error, .restaurant_entry_error {
+    width: 325px;
+}
+.location_names {
+    font-size: 16pt;
+    font-weight: 600;
+    margin-top: 10px;
+}
+.favorite_names {
+    font-size: 14pt;
+    text-indent: 10%;
+}
+
+.result_info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#map {
+    height: 500px;
+    width: 500px;
+}

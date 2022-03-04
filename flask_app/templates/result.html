@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry: Result</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body onload="initMap()">
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">I NEED FOOD NOW!!!</button></a>
+            <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
+            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
+            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
+            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+        </div>
+    </div>
+    <div class="content result_content">
+        <h2>GO GET YOUR GRUB AT {{restaurant.name|upper}}!!!</h2>
+        <div class="result_display">
+            <div class="result_info">
+                <h3>Address: </h3>
+                <div class="address">
+                    <h4 class="restaurant_info">Street     {{restaurant.street}}</h4>
+                    <h4 class="restaurant_info">City       {{restaurant.city}}</h4>
+                    <h4 class="restaurant_info">Zipcode    {{restaurant.zipcode}}</h4>
+                </div>
+                <h3 class="restaurant_info">How Far Away It Is:    {{restaurant.min_away}} minutes</h3>
+            </div>
+            <div class="map_div" id="map">
+                <p>this is where the map will go</p>
+            </div>
+        </div>
+        <p id="address" style="display: none;">{{restaurant.street}}, {{restaurant.city}} {{restaurant.zipcode}}</p>
+    </div>
+    <script src="/static/script.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW-1qxpXwfHCzj6mJlKr3TeZlCtMEqvE8&callback=initMap"></script>
+</body>
+</html>

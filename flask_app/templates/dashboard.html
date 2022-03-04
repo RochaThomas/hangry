@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry: Favorites or One Time List</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
+            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
+            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
+            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+        </div>
+    </div>
+    <div class="intro">
+        <h1>Let's Solve Some Hanger!</h1>
+        <p id="we_will_help">Click the left option if you want to randomize from some of your favorites<br>Click the right option if you wish to select the options you want to randomize from on a map</p>
+    </div>
+    <div class="content">
+        <a href="/favorites/randomize" class="box a_box" onmouseover="box_react(this)" onmouseout="box_unreact(this)">
+            <h3>Randomize From Favorites</h3>
+        </a>
+        <a href="" class="box a_box" onmouseover="box_react(this)" onmouseout="box_unreact(this)">
+            <h3>One Time Randomization</h3>
+        </a>
+    </div>
+    <script src="../static/script.js"></script>
+</body>
+</html>
