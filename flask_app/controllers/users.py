@@ -7,6 +7,10 @@ bcrypt = Bcrypt(app)
 
 @app.route('/')
 def disp_default():
+    # default should be for all users
+    # index.html should have an option for one-time uses
+    # index.html should have links for how it works and about us
+    # show login, sign up, and use 1 time
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('index.html')
