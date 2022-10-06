@@ -7,3 +7,5 @@ from flask_app.controllers.users_favorites import Users_favorite
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# TESTING SOMETHING
