@@ -4,9 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Allow Hangry to Use Your Location?</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Hangry</title>
 </head>
 <body>
-    <h1>Testing Testing</h1>
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/login"><button class="button navbar_login" onmouseover="nav_login_react(this)" onmouseout="nav_login_unreact(this)">Login</button></a>
+            <a href="/register"><button class="button navbar_sign_up" onmouseover="nav_sign_up_react(this)" onmouseout="nav_sign_up_unreact(this)">Sign Up</button></a>
+        </div>
+    </div>
+    <!-- add a back button -->
+    <!-- have a body type div with grey background and put the back button in the grey div 
+        and put allow-location-container in that div-->
+    <div class="allow-location-container">
+        <p>Hangry would like to use your location in order to provide suggested nearby restaurants. 
+            Allow Hangry to use your location?</p>
+            <h2 class="info-icon">i</h2>
+            <!-- for styling make the manual entry button a lighter almost pinkish rose red -->
+            <!-- make allow button plain red -->
+            <form id="user_location_form" action="/process_user_location" method="post">
+                <button><a href="/manual_location_entry">Manual Entry</a></button>
+                <input type="hidden" id="lat" name="lat">
+                <input type="hidden" id="lng" name="lng">
+                <input type="button" value="Allow" onclick="getUserLocation()">
+            </form>
+    </div>
 </body>
+<script src="../static/script.js"></script>
 </html>

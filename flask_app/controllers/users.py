@@ -1,4 +1,5 @@
 
+from crypt import methods
 from flask_app import app
 from flask import render_template, request, redirect, session, flash
 from flask_app.models.user import User
@@ -27,11 +28,24 @@ def disp_sign_up():
         return redirect('/dashboard')
     return render_template('sign_up.html')
 
-@app.route('/one-time_user_location')
+@app.route('/one-time-user/location')
 def disp_use_location_one_time_user():
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('use_location.html')
+
+@app.route('/one-time-user/map')
+def disp_one_time_user_map():
+    if 'user_id' in session:
+        return redirect('/dashboard')
+    if 'lat' in session and 'lng' in session:
+        lat = float(session['lat'])
+        lng = float(session['lng'])
+    else:
+        # change this location later
+        lat = 37.3387
+        lng = -121.8853
+    return render_template("one_use_map.html", lat=lat, lng=lng)
 
 @app.route('/dashboard')
 def disp_dashboard():
@@ -70,3 +84,9 @@ def login_user():
 def logout():
     session.clear()
     return redirect('/')
+
+@app.route('/one-time-user/process_user_location', methods=['POST'])
+def process_user_location():
+    session['lat'] = request.form['lat']
+    session['lng'] = request.form['lng']
+    return redirect("/one-time-user/map")
