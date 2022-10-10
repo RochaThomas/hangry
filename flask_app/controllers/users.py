@@ -27,6 +27,12 @@ def disp_sign_up():
         return redirect('/dashboard')
     return render_template('sign_up.html')
 
+@app.route('/one-time_user_location')
+def disp_use_location_one_time_user():
+    if 'user_id' in session:
+        return redirect('/dashboard')
+    return render_template('use_location.html')
+
 @app.route('/dashboard')
 def disp_dashboard():
     if 'user_id' not in session:
