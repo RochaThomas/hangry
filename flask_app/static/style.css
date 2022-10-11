@@ -303,3 +303,7 @@
     display: flex;
     flex-direction: column;
 }
+
+#info-icon-modal {
+    display: none;
+}

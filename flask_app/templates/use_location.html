@@ -21,7 +21,12 @@
     <div class="allow-location-container">
         <p>Hangry would like to use your location in order to provide suggested nearby restaurants. 
             Allow Hangry to use your location?</p>
-        <h2 class="info-icon">i</h2>
+        <div class="info-icon-container" onmouseover="openIconModal()" onmouseout="closeIconModal()">
+            <h2 id="info-icon">i</h2>
+            <div id="info-icon-modal">
+                <p>Modal text explaining why and what the options are</p>
+            </div>
+        </div>
         <!-- for styling make the manual entry button a lighter almost pinkish rose red -->
         <!-- make allow button plain red -->
         <form id="user_location_form" action="/one-time-user/process_user_location" method="post">

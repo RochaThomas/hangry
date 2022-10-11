@@ -69,6 +69,15 @@ function rand_favs_btns_unreact(element) {
     element.classList.remove("on_hover_red_btn_white_wrd");
 }
 
+const openIconModal = () => {
+    let modal = document.getElementById("info-icon-modal")
+    modal.style.display = "block";
+};
+const closeIconModal = () => {
+    let modal = document.getElementById("info-icon-modal")
+    modal.style.display = "none";
+};
+
 
 // var geocoder;
 // var map;
