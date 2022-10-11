@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry</title>
+</head>
+<body>
+    <h1>Testing Map Stuff</h1>
+    <div class="map-list-container">
+        <div id="map">
+            <input type="hidden" id="lat" name="lat" value={{lat}}>
+            <input type="hidden" id="lng" name="lng" value={{lng}}>
+        </div>
+        <div id="list-container">
+            <form id="places" action="/process_form" method="post">
+                <legend> Restaurants </legend>
+                <!-- this will be propagated by the js file -->
+            </form>
+        </div>
+    </div>
+    <a href="/testing_autocomplete">Go To Test Autocomplete</a>
+    <a href="/testing_user_location">Go To Test User Location</a>
+</body>
+<script src="/static/script.js"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&libraries=places&callback=initMap&v=weekly"
+    defer
+></script>
+</html>
