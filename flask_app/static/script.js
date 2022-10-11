@@ -70,34 +70,34 @@ function rand_favs_btns_unreact(element) {
 }
 
 
-var geocoder;
-var map;
-function initMap() {
-    geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(37.4221, -122.0841);
-    var mapOptions = {
-        zoom: 14,
-        center: latlng
-    }
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    geocodeAddress();
-}
+// var geocoder;
+// var map;
+// function initMap() {
+//     geocoder = new google.maps.Geocoder();
+//     var latlng = new google.maps.LatLng(37.4221, -122.0841);
+//     var mapOptions = {
+//         zoom: 14,
+//         center: latlng
+//     }
+//     map = new google.maps.Map(document.getElementById('map'), mapOptions);
+//     geocodeAddress();
+// }
 
-function geocodeAddress() {
-    var address = document.getElementById('address').innerText;
-    console.log(address)
-    geocoder.geocode( {'address': address}, function(results, status) {
-        if (status == 'OK') {
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-        } else {
-            alert('Geocode was not successful for the following resason: ' + status);
-        }
-    });
-}
+// function geocodeAddress() {
+//     var address = document.getElementById('address').innerText;
+//     console.log(address)
+//     geocoder.geocode( {'address': address}, function(results, status) {
+//         if (status == 'OK') {
+//             map.setCenter(results[0].geometry.location);
+//             var marker = new google.maps.Marker({
+//                 map: map,
+//                 position: results[0].geometry.location
+//             });
+//         } else {
+//             alert('Geocode was not successful for the following resason: ' + status);
+//         }
+//     });
+// }
 
 function initMap(){
     // icon used for creating markers on the map
@@ -231,3 +231,125 @@ function initMap(){
     service.nearbySearch(request, callback);
     
 };
+
+function initAutocomplete() {
+    let restaurantName = document.querySelector("#name");
+    let streetAddress = document.querySelector("#street_address");
+    let city = document.querySelector("#city");
+    let state = document.querySelector("#state");
+    let zipCode = document.querySelector("#zip_code");
+
+    const autocomplete = new google.maps.places.Autocomplete(restaurantName, {
+        componentRestrictions: { country: ["us"] },
+        // add bounds for lng and lat to limit search area
+        fields: ["address_components", "geometry", "name"],
+        types: ["restaurant"],
+    });
+
+    const fillInAddress = () => {
+        const place = autocomplete.getPlace();
+        let autoRestaurantName = place.name;
+        let autoStreetAddress = "";
+        let autoCity = "";
+        let autoState = "";
+        let autoZipCode = "";
+
+        for (const component of place.address_components) {
+            const componentType = component.types[0];
+            
+            switch (componentType) {
+                case "street_number": {
+                    autoStreetAddress = `${component.long_name} ${autoStreetAddress}`;
+                    break;
+                }
+                case "route": {
+                    autoStreetAddress += component.short_name;
+                    break;
+                }
+                case "postal_code": {
+                    autoZipCode = `${component.long_name}${autoZipCode}`;
+                    break;
+                }
+                case "postal_code_suffix": {
+                    autoZipCode = `${autoZipCode}-${component.long_name}`;
+                    break;
+                }
+                case "locality": {
+                    autoCity = component.long_name;
+                    break;
+                }
+                case "administrative_area_level_1": {
+                    autoState = component.short_name;
+                    break;
+                }
+            }
+        }
+        restaurantName.value = autoRestaurantName;
+        streetAddress.value = autoStreetAddress;
+        city.value = autoCity;
+        state.value = autoState;
+        zipCode.value = autoZipCode;
+    }
+    autocomplete.addListener("place_changed", fillInAddress);
+};
+
+// fix error handling of user location
+const getUserLocation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                hiddenLat = document.getElementById("lat");
+                hiddenLng = document.getElementById("lng");
+
+                hiddenLat.value = position.coords.latitude;
+                hiddenLng.value = position.coords.longitude;
+
+                document.forms["user_location_form"].submit();
+            },
+            () => {
+                handleLocationError(true)
+            }
+        );
+    }
+    else {
+        handleLocationError(false);
+    }
+};
+
+const handleLocationError = (browserHasGeolocation) => {
+    browserHasGeolocation
+        ? alert("Error: The geolocation service failed")
+        : alert("Error: Your browser does not support geolocation")
+};
+
+const findLatLngManualEntry = () => {
+    let streetAddressInput = document.getElementById("street_address").value;
+    let cityInput = document.getElementById("city").value
+    let stateInput = document.getElementById("state").value
+    let zipCodeInput = document.getElementById("zip_code").value
+
+    let address = streetAddressInput + " "
+                + cityInput + " "
+                + stateInput + " "
+                + zipCodeInput;
+
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode( {'address': address} )
+        .then((results) => {
+            console.log("results.results[0]", results.results[0].geometry.location.lat);
+            const res = results.results[0].geometry.location;
+            let hiddenLat = document.getElementById("lat")
+            let hiddenLng = document.getElementById("lng")
+
+            hiddenLat.value = res.lat();
+            hiddenLng.value = res.lng();
+            document.forms["manual_entry_form"].submit();
+        })
+        .catch((error) => {
+            alert("Geocode failed: " + error);
+            console.log("Geocode failed: " + error);
+        })
+};
+
+window.initMap = initMap;
+window.initAutocomplete = initAutocomplete;

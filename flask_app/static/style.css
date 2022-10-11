@@ -289,6 +289,17 @@
 }
 
 #map {
-    height: 500px;
-    width: 500px;
+    height: 400px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+}
+
+.map-list-container {
+    display: flex;
+}
+
+#places {
+    display: flex;
+    flex-direction: column;
 }

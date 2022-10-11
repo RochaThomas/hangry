@@ -21,15 +21,15 @@
     <div class="allow-location-container">
         <p>Hangry would like to use your location in order to provide suggested nearby restaurants. 
             Allow Hangry to use your location?</p>
-            <h2 class="info-icon">i</h2>
-            <!-- for styling make the manual entry button a lighter almost pinkish rose red -->
-            <!-- make allow button plain red -->
-            <form id="user_location_form" action="/process_user_location" method="post">
-                <button><a href="/manual_location_entry">Manual Entry</a></button>
-                <input type="hidden" id="lat" name="lat">
-                <input type="hidden" id="lng" name="lng">
-                <input type="button" value="Allow" onclick="getUserLocation()">
-            </form>
+        <h2 class="info-icon">i</h2>
+        <!-- for styling make the manual entry button a lighter almost pinkish rose red -->
+        <!-- make allow button plain red -->
+        <form id="user_location_form" action="/one-time-user/process_user_location" method="post">
+            <button><a href="/one-time-user/manual_location_entry">Manual Entry</a></button>
+            <input type="hidden" id="lat" name="lat">
+            <input type="hidden" id="lng" name="lng">
+            <input type="button" value="Allow" onclick="getUserLocation()">
+        </form>
     </div>
 </body>
 <script src="../static/script.js"></script>
