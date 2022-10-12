@@ -75,7 +75,7 @@
     font-weight: bold;
 }
 
-.content, .user-location-content {
+.content, .user-location-content, .manual-entry-content {
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -304,7 +304,8 @@
     flex-direction: column;
 }
 
-.user-location-content {
+/* allow user location alert page */
+.user-location-content, .manual-entry-content {
     flex-direction: column;
     justify-content: center;
     gap: 25px;
@@ -365,7 +366,7 @@
     justify-content: space-between;
     padding: 10px 20px;
 }
-#manual-entry-button, #allow-button {
+#manual-entry-button, #allow-button, #manual-entry-submit-button {
     width: 100px;
     height: 25px;
     color: white;
@@ -374,7 +375,7 @@
     border-radius: 5px;
     cursor: pointer;
 }
-#allow-button:hover {
+#allow-button:hover, #manual-entry-submit-button:hover {
     background-color: #b70603;
     border-color: #b70603;
 }
@@ -389,4 +390,33 @@
 #manual-entry-link {
     color: white;
     text-decoration: none;
+}
+
+/* user location manual entry page */
+.manual-entry-container {
+    align-self: center;
+    border: black medium solid;
+    border-radius: 15px;
+    padding: 25px 50px;
+}
+.manual-entry-container .info-icon-container {
+    left: -10px;
+}
+#manual_entry_form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.input-container {
+    display: flex;
+    justify-content: right;
+    padding: 5px 100px 0px 100px;
+    gap: 25px;
+}
+#manual-entry-submit-button {
+    height: 30px;
+    width: 125px;
+    font-size: 15px;
+    margin-top: 15px;
+    margin-right: 100px;
 }
