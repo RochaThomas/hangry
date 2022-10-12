@@ -327,7 +327,10 @@ const getUserLocation = () => {
 
 const handleLocationError = (browserHasGeolocation) => {
     browserHasGeolocation
-        ? alert("Error: The geolocation service failed")
+        ? alert(
+            'Error: The geolocation service failed.\n' + 
+            '\nSolution: Check to see if you have your location enabled for this website on your browser or choose the "Manual Entry" option to enter your address instead.'
+        )
         : alert("Error: Your browser does not support geolocation")
 };
 
