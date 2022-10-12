@@ -18,23 +18,31 @@
     <!-- add a back button -->
     <!-- have a body type div with grey background and put the back button in the grey div 
         and put allow-location-container in that div-->
-    <div class="allow-location-container">
-        <p>Hangry would like to use your location in order to provide suggested nearby restaurants. 
-            Allow Hangry to use your location?</p>
-        <div class="info-icon-container" onmouseover="openIconModal()" onmouseout="closeIconModal()">
-            <h2 id="info-icon">i</h2>
-            <div id="info-icon-modal">
-                <p>Modal text explaining why and what the options are</p>
+    <div class="user-location-content">
+        <a class="back-button" href="/">Back</a>
+        <div class="allow-location-container">
+            <h2>ALERT!</h2>
+            <p class="message">
+                Hangry would like to use your location in order to provide suggested nearby restaurants. 
+                Allow Hangry to use your location?
+            </p>
+            <div class="info-icon-container" onmouseover="openIconModal()" onmouseout="closeIconModal()">
+                <h3 id="info-icon">i</h3>
+                <div id="info-icon-modal">
+                    <p>Modal text explaining why and what the options are</p>
+                </div>
             </div>
+            <!-- for styling make the manual entry button a lighter almost pinkish rose red -->
+            <!-- make allow button plain red -->
+            <form id="user_location_form" action="/one-time-user/process_user_location" method="post">
+                <input type="hidden" id="lat" name="lat">
+                <input type="hidden" id="lng" name="lng">
+                <div class="user-location-option-buttons-container">
+                    <button><a href="/one-time-user/manual_location_entry">Manual Entry</a></button>
+                    <input type="button" value="Allow" onclick="getUserLocation()">
+                </div>
+            </form>
         </div>
-        <!-- for styling make the manual entry button a lighter almost pinkish rose red -->
-        <!-- make allow button plain red -->
-        <form id="user_location_form" action="/one-time-user/process_user_location" method="post">
-            <button><a href="/one-time-user/manual_location_entry">Manual Entry</a></button>
-            <input type="hidden" id="lat" name="lat">
-            <input type="hidden" id="lng" name="lng">
-            <input type="button" value="Allow" onclick="getUserLocation()">
-        </form>
     </div>
 </body>
 <script src="../static/script.js"></script>
