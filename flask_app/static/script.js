@@ -241,6 +241,7 @@ function initMap(){
     
 };
 
+// adapt to fill user location addresses as well as restaurant addresses
 function initAutocomplete() {
     let restaurantName = document.querySelector("#name");
     let streetAddress = document.querySelector("#street_address");
