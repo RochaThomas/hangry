@@ -34,6 +34,12 @@ def disp_use_location_one_time_user():
         return redirect('/dashboard')
     return render_template('use_location.html')
 
+@app.route('/one-time-user/manual_location_entry')
+def disp_manual_entry_form_one_time_user():
+    if 'user_id' in session:
+        return redirect('/dashboard')
+    return render_template('user_manual_entry.html')
+
 @app.route('/one-time-user/map')
 def disp_one_time_user_map():
     if 'user_id' in session:

@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    /* border: thin dotted red; */
+    /* border: thin dotted blue; */
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
@@ -75,7 +75,7 @@
     font-weight: bold;
 }
 
-.content {
+.content, .user-location-content {
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -289,6 +289,104 @@
 }
 
 #map {
-    height: 500px;
-    width: 500px;
+    height: 400px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+}
+
+.map-list-container {
+    display: flex;
+}
+
+#places {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-location-content {
+    flex-direction: column;
+    justify-content: center;
+    gap: 25px;
+    padding: 10px 100px 50px 100px;
+}
+.back-button {
+    padding: 0px 10px;
+    font-size: large;
+    text-decoration: none;
+}
+.allow-location-container {
+    align-self: center;
+    width: 400px;
+    border: black solid medium;
+    border-radius: 15px;
+}
+.allow-location-container h2 {
+    padding: 10px 10px;
+}
+.message {
+    padding: 10px 50px 5px 50px;
+}
+.info-icon-container {
+    display: inline-block;
+    position: relative;
+    left: 40px;
+    padding: 0px 0px 0px 10px;
+}
+#info-icon {
+    width: 20px;
+    height: 20px;
+    border: #3f66da thin solid;
+    border-radius: 50%;
+    text-align: center;
+    color: #3f66da;
+    cursor: default;
+}
+#info-icon-modal {
+    width: 300px;
+    display: none;
+    border: black solid medium;
+    border-radius: 15px;
+    background-color: white;
+    position: absolute;
+    left: -325px;
+    top: -6px;
+    padding: 0px 10px;
+}
+#info-icon-modal h3 {
+    text-align: right;
+    font-size: x-large;
+}
+#info-icon-modal p {
+    padding: 5px 10px 10px 10px;
+}
+.user-location-option-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+#manual-entry-button, #allow-button {
+    width: 100px;
+    height: 25px;
+    color: white;
+    background-color: #e00a05;
+    border: #e00a05 solid thin;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#allow-button:hover {
+    background-color: #b70603;
+    border-color: #b70603;
+}
+#manual-entry-button {
+    background-color: #ff6d6a;
+    border-color: #ff6d6a;
+}
+#manual-entry-button:hover {
+    background-color: #e00a05;
+    border-color: #e00a05;
+}
+#manual-entry-link {
+    color: white;
+    text-decoration: none;
 }
