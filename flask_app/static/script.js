@@ -116,6 +116,15 @@ function initMap(){
         anchor: new google.maps.Point(0,25),
     };
 
+    const mapStyling = [
+        {
+            featureType: "poi.business.food_and_drink",
+            stylers: [
+                { visibility: "off"}
+            ],
+        }
+    ];
+
     const userLat = Number(document.getElementById("lat").value);
     const userLng = Number(document.getElementById("lng").value);
 
@@ -123,6 +132,7 @@ function initMap(){
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 17,
         center: userLocation,
+        styles: mapStyling,
     });
 
     new google.maps.Marker({
@@ -130,6 +140,8 @@ function initMap(){
         map: map,
     });
 
+    // change the request to get the icon?
+    // icon_mask_base_uri and icon_background_color
     const service = new google.maps.places.PlacesService(map);
     const request = {
         location: userLocation,
@@ -151,6 +163,11 @@ function initMap(){
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             places = results;
 
+            // use the place icon (icon_mask_base_uri and icon_background color) to style icon
+            // change how the icons react as well
+            // change icon size onhover if possible
+            //      if not possible change the color to yellow on hover or something like that
+            // change icon color on click to green or blue to indicate the restaurant has been selected
             for (const place of places) {
                 if (place.geometry && place.geometry.location){
                     const marker = new google.maps.Marker(

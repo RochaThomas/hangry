@@ -75,7 +75,7 @@
     font-weight: bold;
 }
 
-.content, .user-location-content, .manual-entry-content {
+.content, .user-location-content, .manual-entry-content, .one-time-map-content {
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -305,7 +305,7 @@
 }
 
 /* allow user location alert page */
-.user-location-content, .manual-entry-content {
+.user-location-content, .manual-entry-content, .one-time-map-content {
     flex-direction: column;
     justify-content: center;
     gap: 25px;
