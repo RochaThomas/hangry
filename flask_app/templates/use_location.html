@@ -42,13 +42,11 @@
                     </p>
                 </div>
             </div>
-            <!-- for styling make the manual entry button a lighter almost pinkish rose red -->
-            <!-- make allow button plain red -->
             <form id="user_location_form" action="/one-time-user/process_user_location" method="post">
                 <input type="hidden" id="lat" name="lat">
                 <input type="hidden" id="lng" name="lng">
                 <div class="user-location-option-buttons-container">
-                    <button id="manual-entry-button" ><a id="manual-entry-link" href="/one-time-user/manual_location_entry">Manual Entry</a></button>
+                    <button type="button" id="manual-entry-button" ><a id="manual-entry-link" href="/one-time-user/manual_location_entry">Manual Entry</a></button>
                     <input id="allow-button" type="button" value="Allow" onclick="getUserLocation()">
                 </div>
             </form>

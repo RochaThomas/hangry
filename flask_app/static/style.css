@@ -311,7 +311,7 @@
     gap: 25px;
     padding: 10px 100px 50px 100px;
 }
-.back-button {
+.back-button, .home-button {
     padding: 0px 10px;
     font-size: large;
     text-decoration: none;
@@ -419,4 +419,10 @@
     font-size: 15px;
     margin-top: 15px;
     margin-right: 100px;
+}
+/* #manual_entry_form .input-container input {
+    width: 300px;
+} */
+.pac-container, .pac-item {
+    width: inherit !important;
 }
