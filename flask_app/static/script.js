@@ -241,23 +241,40 @@ function initMap(){
     
 };
 
+// adapt to fill user location addresses as well as restaurant addresses
 function initAutocomplete() {
-    let restaurantName = document.querySelector("#name");
+    let restaurantName;
+    if (document.getElementById("name")) {
+        // console.log("if statement worked");
+        restaurantName = document.querySelector("#name");
+    }
     let streetAddress = document.querySelector("#street_address");
     let city = document.querySelector("#city");
     let state = document.querySelector("#state");
     let zipCode = document.querySelector("#zip_code");
 
-    const autocomplete = new google.maps.places.Autocomplete(restaurantName, {
-        componentRestrictions: { country: ["us"] },
-        // add bounds for lng and lat to limit search area
-        fields: ["address_components", "geometry", "name"],
-        types: ["restaurant"],
-    });
+    let autocomplete;
+
+    if (restaurantName) {
+        autocomplete = new google.maps.places.Autocomplete(restaurantName, {
+            componentRestrictions: { country: ["us"] },
+            // add bounds for lng and lat to limit search area
+            fields: ["address_components", "geometry", "name"],
+            types: ["restaurant"],
+        });
+    }
+    else {
+        autocomplete = new google.maps.places.Autocomplete(streetAddress, {
+            componentRestrictions: { country: ["us"] },
+            // add bounds for lng and lat to limit search area
+            fields: ["address_components"],
+            types: ["address"],
+        });
+    }
 
     const fillInAddress = () => {
         const place = autocomplete.getPlace();
-        let autoRestaurantName = place.name;
+        let autoRestaurantName;
         let autoStreetAddress = "";
         let autoCity = "";
         let autoState = "";
@@ -293,7 +310,11 @@ function initAutocomplete() {
                 }
             }
         }
-        restaurantName.value = autoRestaurantName;
+        
+        if (place.name) {
+            autoRestaurantName = place.name;
+            restaurantName.value = autoRestaurantName;
+        }
         streetAddress.value = autoStreetAddress;
         city.value = autoCity;
         state.value = autoState;

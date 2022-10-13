@@ -4,36 +4,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
     <title>Hangry</title>
 </head>
 <body>
-    <h1>Manual Entry</h1>
-    <form id="manual_entry_form" action="/one-time-user/process_user_location" method="post">
-        <div class="input-container">
-            <label for="street_address">Street Address: </label>
-            <input type="text" name="street_address" id="street_address">
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/login"><button class="button navbar_login" onmouseover="nav_login_react(this)" onmouseout="nav_login_unreact(this)">Login</button></a>
+            <a href="/register"><button class="button navbar_sign_up" onmouseover="nav_sign_up_react(this)" onmouseout="nav_sign_up_unreact(this)">Sign Up</button></a>
         </div>
-        <div class="input-container">
-            <label for="city">City: </label>
-            <input type="text" name="city" id="city">
+    </div>
+    <div class="manual-entry-content">
+        <a class="home-button" href="/">Home</a>
+        <div class="manual-entry-container">
+            <h1>Manually Enter Your Location</h1>
+            <h3>Enter an address so Hangry can suggest nearby <br> restaurants for you</h3>
+            <div class="info-icon-container" onmouseover="openIconModal()" onmouseout="closeIconModal()">
+                <h3 id="info-icon">i</h3>
+                <div id="info-icon-modal">
+                    <h3> → </h3>
+                    <h4>What does Hangry use my location for?</h4>
+                    <p>
+                        Hangry only uses your location to search your area for nearby restaurants in order
+                        to provide you with suggests on places you might want to eat at.
+                    </p>
+                    <h4>Why is there a manual entry option?</h4>
+                    <p>
+                        Some users don't like to allow their browsers to access their location but Hangry
+                        still needs an address to provide nearby restaurant suggestions. For those users, 
+                        we allow an address to be manually entered. You can either enter your address
+                        or possibly the address of a nearby shopping center if you don't feel comfortable 
+                        sharing your exact location.
+                    </p>
+                </div>
+            </div>
+            <!-- next steps... incorporate address autocomplete -->
+            <form id="manual_entry_form" action="/one-time-user/process_user_location" method="post">
+                <div class="input-container">
+                    <label for="street_address">Street Address: </label>
+                    <input type="text" name="street_address" id="street_address" placeholder="">
+                </div>
+                <div class="input-container">
+                    <label for="city">City: </label>
+                    <input type="text" name="city" id="city">
+                </div>
+                <div class="input-container">
+                    <label for="state">State: </label>
+                    <input type="text" name="state" id="state">
+                </div>
+                <div class="input-container">
+                    <label for="zip_code">Zip Code: </label>
+                    <input type="text" name="zip_code" id="zip_code">
+                </div>
+                <input type="hidden" id="lat" name="lat">
+                <input type="hidden" id="lng" name="lng">
+                <input type="button" id="manual-entry-submit-button" value="Submit Location" onclick="findLatLngManualEntry()">
+            </form>
         </div>
-        <div class="input-container">
-            <label for="state">State: </label>
-            <input type="text" name="state" id="state">
-        </div>
-        <div class="input-container">
-            <label for="zip_code">Zip Code: </label>
-            <input type="text" name="zip_code" id="zip_code">
-        </div>
-        <input type="hidden" id="lat" name="lat">
-        <input type="hidden" id="lng" name="lng">
-        <input type="button" value="Submit Location" onclick="findLatLngManualEntry()">
-    </form>
-    <a href="/">Home</a>
+    </div>
 </body>
 <script src="/static/script.js"></script>
 <script 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initAutocomplete&libraries=places&v=weekly"
     defer
 ></script>
 </html>
