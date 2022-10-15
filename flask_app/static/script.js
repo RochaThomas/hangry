@@ -110,11 +110,10 @@ const closeIconModal = () => {
 
 function initMap(){
     // icon used for creating markers on the map
-    // const icon = {
-    //     url: "/static/checkPin.png",
-    //     scaledSize: new google.maps.Size(25, 25),
-    //     anchor: new google.maps.Point(0,25),
-    // };
+    const icon = {
+        scaledSize: new google.maps.Size(25, 25),
+        anchor: new google.maps.Point(0,25),
+    };
 
     const mapStyling = [
         {
@@ -153,8 +152,6 @@ function initMap(){
     const callback = (results, status) => {
         console.log(results);
 
-        const path = "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z";
-
         // get the html list
         let listOfPlaces = document.getElementById("places");
 
@@ -164,7 +161,6 @@ function initMap(){
         // check if the response from the request is okay
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             places = results;
-
             // use the place icon (icon_mask_base_uri and icon_background color) to style icon
             // change how the icons react as well
             // change icon size onhover if possible
@@ -172,17 +168,25 @@ function initMap(){
             // change icon color on click to green or blue to indicate the restaurant has been selected
             for (const place of places) {
                 if (place.geometry && place.geometry.location){
-                    icon = {
-                        path: String(place.icon_base_mask_uri),
-                        fillColor: place.icon_background_color,
-                        fillOpacity: 1,
+                    let label = {
+                        fontFamily: "Material Icons",
+                        color: "#ffffff",
+                        fontSize: "16px",
+                    }
+                    if (place.types.includes("bar") || place.types.includes("nightclub")) {
+                        label.text = "\ue540";
+                    }
+                    else if (place.types.includes("cafe") || place.types.includes("bakery")) {
+                        label.text = "\ue541";
+                    }
+                    else {
+                        label.text = "\ue56c";
                     }
                     const marker = new google.maps.Marker(
                         {
                             position: place.geometry.location,
                             map: map,
-                            icon: icon,
-                            animation: google.maps.Animation.DROP,
+                            label: label,
                         }
                     );
 
