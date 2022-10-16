@@ -233,6 +233,7 @@ function initMap(){
                         });
                         marker.setOpacity(1.0);
                         // maybe add a toggle button on the page to turn off panTo mode
+                        // add title and display title on mouse over
                         map.panTo(place.geometry.location);
                     });
 
