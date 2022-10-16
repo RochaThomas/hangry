@@ -166,27 +166,34 @@ function initMap(){
             // change icon size onhover if possible
             //      if not possible change the color to yellow on hover or something like that
             // change icon color on click to green or blue to indicate the restaurant has been selected
+
+            const findIconType = (types) => {
+                if (types.includes("bar") || types.includes("nightclub")) {
+                    return "\ue540";
+                }
+                else if (types.includes("cafe") || types.includes("bakery")) {
+                    return "\ue541";
+                }
+                else {
+                    return "\ue56c";
+                } 
+            }
+
             for (const place of places) {
                 if (place.geometry && place.geometry.location){
                     let label = {
                         fontFamily: "Material Icons",
                         color: "#ffffff",
                         fontSize: "16px",
+                        text: findIconType(place.types),
                     }
-                    if (place.types.includes("bar") || place.types.includes("nightclub")) {
-                        label.text = "\ue540";
-                    }
-                    else if (place.types.includes("cafe") || place.types.includes("bakery")) {
-                        label.text = "\ue541";
-                    }
-                    else {
-                        label.text = "\ue56c";
-                    }
+                    
                     const marker = new google.maps.Marker(
                         {
                             position: place.geometry.location,
                             map: map,
                             label: label,
+                            opacity: 0.7,
                         }
                     );
 
@@ -220,23 +227,33 @@ function initMap(){
                     inputContainer.appendChild(labelPlaceInput);
 
                     inputContainer.addEventListener("mouseover", () => {
-                        bigSize = new google.maps.Size(35, 35);
-                        bigAnchor = new google.maps.Point(0, 35);
-                        marker.setIcon({
-                            ...marker.icon,
-                            scaledSize: bigSize,
-                            anchor: bigAnchor,
+                        // bigSize = new google.maps.Size(35, 35);
+                        // bigAnchor = new google.maps.Point(0, 35);
+                        // marker.setIcon({
+                        //     ...marker.icon,
+                        //     scaledSize: bigSize,
+                        //     anchor: bigAnchor,
+                        // });
+                        marker.setLabel({
+                            ...marker.label,
+                            text: "\ue8b6",
                         });
+                        marker.setOpacity(1.0);
                     });
 
                     inputContainer.addEventListener("mouseout", () => {
-                        smallSize = new google.maps.Size(25, 25);
-                        smallAnchor = new google.maps.Point(0, 25);
-                        marker.setIcon({
-                            ...marker.icon,
-                            scaledSize: smallSize,
-                            anchor: smallAnchor,
+                        // smallSize = new google.maps.Size(25, 25);
+                        // smallAnchor = new google.maps.Point(0, 25);
+                        // marker.setIcon({
+                        //     ...marker.icon,
+                        //     scaledSize: smallSize,
+                        //     anchor: smallAnchor,
+                        // });
+                        marker.setLabel({
+                            ...marker.label,
+                            text: findIconType(place.types),
                         });
+                        marker.setOpacity(0.7);
                     });
 
                     placeInput.addEventListener("click", () => {
