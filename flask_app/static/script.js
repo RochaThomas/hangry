@@ -232,6 +232,7 @@ function initMap(){
                             text: "\ue8b6",
                         });
                         marker.setOpacity(1.0);
+                        // maybe add a toggle button on the page to turn off panTo mode
                         map.panTo(place.geometry.location);
                     });
 
