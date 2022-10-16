@@ -184,7 +184,7 @@ function initMap(){
                     let label = {
                         fontFamily: "Material Icons",
                         color: "#ffffff",
-                        fontSize: "16px",
+                        fontSize: "18px",
                         text: findIconType(place.types),
                     }
                     
@@ -227,13 +227,6 @@ function initMap(){
                     inputContainer.appendChild(labelPlaceInput);
 
                     inputContainer.addEventListener("mouseover", () => {
-                        // bigSize = new google.maps.Size(35, 35);
-                        // bigAnchor = new google.maps.Point(0, 35);
-                        // marker.setIcon({
-                        //     ...marker.icon,
-                        //     scaledSize: bigSize,
-                        //     anchor: bigAnchor,
-                        // });
                         marker.setLabel({
                             ...marker.label,
                             text: "\ue8b6",
@@ -242,32 +235,38 @@ function initMap(){
                     });
 
                     inputContainer.addEventListener("mouseout", () => {
-                        // smallSize = new google.maps.Size(25, 25);
-                        // smallAnchor = new google.maps.Point(0, 25);
-                        // marker.setIcon({
-                        //     ...marker.icon,
-                        //     scaledSize: smallSize,
-                        //     anchor: smallAnchor,
-                        // });
-                        marker.setLabel({
-                            ...marker.label,
-                            text: findIconType(place.types),
-                        });
-                        marker.setOpacity(0.7);
+                        if (placeInput.classList.contains("selected")) {
+                            marker.setLabel({
+                                ...marker.label,
+                                text: findIconType(place.types),
+                            });
+                            marker.setOpacity(0.7);
+                        }
+                        else if (placeInput.classList.contains("unselected")) {
+                            marker.setLabel({
+                                ...marker.label,
+                                text: "\ue5cd",
+                            });
+                            marker.setOpacity(0.3);
+                        }
                     });
 
                     placeInput.addEventListener("click", () => {
                         if (placeInput.classList.contains("selected")) {
-                            marker.setIcon({...marker.icon, 
-                                url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+                            marker.setLabel({
+                                ...marker.label,
+                                text: "\ue5cd",
                             });
+                            marker.setOpacity(0.3)
                             placeInput.classList.add("unselected");
                             placeInput.classList.remove("selected");
                         }
                         else if (placeInput.classList.contains("unselected")) {
-                            marker.setIcon({...marker.icon, 
-                                url: "/static/checkPin.png",
+                            marker.setLabel({
+                                ...marker.label,
+                                text: findIconType(place.types),
                             });
+                            marker.setOpacity(0.7)
                             placeInput.classList.add("selected");
                             placeInput.classList.remove("unselected");
                         }
