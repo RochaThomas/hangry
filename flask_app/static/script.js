@@ -232,6 +232,7 @@ function initMap(){
                             text: "\ue8b6",
                         });
                         marker.setOpacity(1.0);
+                        map.panTo(place.geometry.location);
                     });
 
                     inputContainer.addEventListener("mouseout", () => {
