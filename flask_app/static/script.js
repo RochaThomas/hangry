@@ -194,18 +194,20 @@ function initMap(){
                             map: map,
                             label: label,
                             opacity: 0.7,
+                            title: place.name,
                         }
                     );
 
                     const infoWindow = new google.maps.InfoWindow({content: place.name});
-                    marker.addListener("mouseover", () => {
+                    const openCloseInfoWindow = () => {
                         if (prevWindow){
                             prevWindow.close()
                         }
-
+    
                         prevWindow = infoWindow;
                         infoWindow.open(map, marker);
-                    });
+                    }
+                    marker.addListener("mouseover", openCloseInfoWindow);
 
                     const inputContainer = document.createElement("div");
                     inputContainer.class = "input-container";
@@ -232,9 +234,10 @@ function initMap(){
                             text: "\ue8b6",
                         });
                         marker.setOpacity(1.0);
-                        // maybe add a toggle button on the page to turn off panTo mode
-                        // add title and display title on mouse over
-                        map.panTo(place.geometry.location);
+                        openCloseInfoWindow();
+                        if (document.getElementById("toggle-pan-to").checked) {
+                            map.panTo(place.geometry.location);
+                        }
                     });
 
                     inputContainer.addEventListener("mouseout", () => {
