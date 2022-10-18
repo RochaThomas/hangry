@@ -427,8 +427,8 @@
 .switch {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 24px;
+    width: 45px;
+    height: 20px;
 }
 .switch input { 
     opacity: 0;
@@ -449,10 +449,10 @@
 .slider:before {
     position: absolute;
     content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
     background-color: white;
     -webkit-transition: .2s;
     transition: .2s;
@@ -464,9 +464,9 @@ input:focus + .slider {
     box-shadow: 0 0 1px #0275ff;
 }
 input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+    -webkit-transform: translateX(24px);
+    -ms-transform: translateX(24px);
+    transform: translateX(24px);
 }
 .slider.round {
     border-radius: 34px;
@@ -480,16 +480,15 @@ input:checked + .slider:before {
     flex-direction: column;
     width: 100%;
 }
-/* fix the styling for smaller font
-    centered horizontally and vertically
-    fix styling for when toggle is off */
 .options {
     display: flex;
     justify-content: space-between;
-    width: 250px;
+    width: 225px;
+    align-items: center;
 }
 .options #options-title {
-    width: 165px;
+    width: 140px;
+    font-size: 16px;
 }
 .pan-to-icon {
     left: 0px;
