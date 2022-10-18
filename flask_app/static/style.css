@@ -480,6 +480,9 @@ input:checked + .slider:before {
     flex-direction: column;
     width: 100%;
 }
+/* fix the styling for smaller font
+    centered horizontally and vertically
+    fix styling for when toggle is off */
 .options {
     display: flex;
     justify-content: space-between;
