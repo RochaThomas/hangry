@@ -435,5 +435,15 @@ const findLatLngManualEntry = () => {
         })
 };
 
+const togglePanToWords = () => {
+    let wordToChange = document.getElementById("panToStatus");
+    if (!document.getElementById("toggle-pan-to").checked) {
+        wordToChange.textContent = "Off";
+    }
+    else {
+        wordToChange.textContent = "On";
+    }
+}
+
 window.initMap = initMap;
 window.initAutocomplete = initAutocomplete;

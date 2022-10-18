@@ -20,19 +20,37 @@
     <div class="one-time-map-content">
         <h1>Suggested Nearby Restaurants Map</h1>
         <div class="map-list-container">
-            <div id="map">
-                <input type="hidden" id="lat" name="lat" value={{lat}}>
-                <input type="hidden" id="lng" name="lng" value={{lng}}>
+            <div class="map-options-container">
+                <div id="map">
+                    <input type="hidden" id="lat" name="lat" value={{lat}}>
+                    <input type="hidden" id="lng" name="lng" value={{lng}}>
+                </div>
+                <div class="options">
+                    <h3 id="options-title">Pan to Marker: <span id="panToStatus">On</span></h3>
+                    <div class="info-icon-container pan-to-icon" onmouseover="openIconModal()" onmouseout="closeIconModal()">
+                        <h3 id="info-icon">i</h3>
+                        <div id="info-icon-modal">
+                            <h3> → </h3>
+                            <h4>What is the "Pan To Marker" option?</h4>
+                            <p>
+                                The "Pan to Marker" setting centers the map on which ever restaurant's marker the user is
+                                focused on. Some users don't like how much this causes the map to move so we provide the 
+                                option for the user to turn this setting off.
+                            </p>
+                        </div>
+                    </div>
+                    <label class="switch">
+                        <input id="toggle-pan-to" type="checkbox" checked onclick="togglePanToWords()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             <div id="list-container">
                 <form id="places" action="/process_form" method="post">
                     <legend> Restaurants </legend>
                     <!-- this will be propagated by the js file -->
                 </form>
-                <label class="switch">
-                    <input id="toggle-pan-to" type="checkbox" checked>
-                    <span class="slider round"></span>
-                </label>
+                <!-- style and format content for toggle -->
             </div>
         </div>
     </div>
