@@ -147,11 +147,10 @@ function initMap(){
         location: userLocation,
         radius: 500,
         type: "restaurant",
-        fields: ["name", "geometry"],
     };
 
     const callback = (results, status) => {
-        console.log(results);
+        // console.log(results);
 
         // get the html list
         let listOfPlaces = document.getElementById("places");
@@ -199,125 +198,135 @@ function initMap(){
                         }
                     );
 
-                    let priceFill = "",
-                        priceShadow = "",
-                        restaurantHours = "",
-                        operationStatus = "",
-                        photos = "";
-                    
-                    for (let i = 0; i < place.price_level; i++) {
-                        priceFill += '$';
-                    }
-                    for (let j = 0; j < 4 - priceFill.length; j++) {
-                        priceShadow += '$';
-                    }
-
-                    // open_now is depreciated find a new way to acces hours
-                    if (place.opening_hours.open_now) {
-                        operationStatus = `<p class="is-open">Open</p>`;
-                    }
-                    else {
-                        operationStatus = `<p class="is-closed">Closed</p>`;
-                    }
-
-                    const contentString = 
-                        `<div class="info-window-content">` + 
-                            `<h3 class="info-window-title">` + place.name + `</h3>` +
-                            `<div class="price-hours">` +
-                                `<p class="restaurant-price">` + 
-                                    `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
-                                `</p>` + 
-                                `<p class="restaurant-hours">` + 
-                                    `Hours: ` + restaurantHours + 
-                                `</p>` + 
-                                operationStatus +
-                            `</div>` +
-                            `<div class="restaurant-photos">` + 
-                                photos +
-                            `</div>` +
-                        `</div>`;
-
-                    const infoWindow = new google.maps.InfoWindow({content: contentString});
-                    const openCloseInfoWindow = () => {
-                        if (prevWindow){
-                            prevWindow.close()
+                    // incorporate the same if check above that checks the status
+                    // then refactor code to be neater. all the information in the function call before is available in getDetails
+                    // use get details response instead
+                    console.log("place id: ", place.place_id);
+                    service.getDetails({
+                        placeId: place.place_id,
+                    }, async (result) => {
+                        await console.log(result);
+                        let priceFill = "",
+                            priceShadow = "",
+                            restaurantHours = "",
+                            operationStatus = "",
+                            photos = "";
+                        
+                        for (let i = 0; i < place.price_level; i++) {
+                            priceFill += '$';
+                        }
+                        for (let j = 0; j < 4 - priceFill.length; j++) {
+                            priceShadow += '$';
                         }
     
-                        prevWindow = infoWindow;
-                        infoWindow.open(map, marker);
-                    }
-                    marker.addListener("mouseover", openCloseInfoWindow);
-
-                    const inputContainer = document.createElement("div");
-                    inputContainer.class = "input-container";
-                    listOfPlaces.appendChild(inputContainer);
-
-                    const placeInput = document.createElement("input");
-                    const labelPlaceInput = document.createElement("label");
-
-                    placeInput.type = "checkbox";
-                    placeInput.checked = true;
-                    placeInput.id = place.place_id;
-                    placeInput.classList.add("selected");
-                    placeInput.name = place.place_id;
-                    placeInput.value = place.name;
-                    labelPlaceInput.htmlFor = place.place_id;
-                    labelPlaceInput.textContent = place.name;
-
-                    inputContainer.appendChild(placeInput);
-                    inputContainer.appendChild(labelPlaceInput);
-
-                    inputContainer.addEventListener("mouseover", () => {
-                        marker.setLabel({
-                            ...marker.label,
-                            text: "\ue8b6",
+                        // open_now is depreciated find a new way to acces hours
+                        // if (place.opening_hours.open_now) {
+                        //     operationStatus = `<p class="is-open">Open</p>`;
+                        // }
+                        // else {
+                        //     operationStatus = `<p class="is-closed">Closed</p>`;
+                        // }
+    
+                        const contentString = 
+                            `<div class="info-window-content">` + 
+                                `<h3 class="info-window-title">` + place.name + `</h3>` +
+                                `<div class="price-hours">` +
+                                    `<p class="restaurant-price">` + 
+                                        `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
+                                    `</p>` + 
+                                    `<p class="restaurant-hours">` + 
+                                        `Hours: ` + restaurantHours + 
+                                    `</p>` + 
+                                    operationStatus +
+                                `</div>` +
+                                `<div class="restaurant-photos">` + 
+                                    photos +
+                                `</div>` +
+                            `</div>`;
+    
+                        const infoWindow = new google.maps.InfoWindow({content: contentString});
+                        const openCloseInfoWindow = () => {
+                            if (prevWindow){
+                                prevWindow.close()
+                            }
+        
+                            prevWindow = infoWindow;
+                            infoWindow.open(map, marker);
+                        }
+                        marker.addListener("mouseover", openCloseInfoWindow);
+    
+                        const inputContainer = document.createElement("div");
+                        inputContainer.class = "input-container";
+                        listOfPlaces.appendChild(inputContainer);
+    
+                        const placeInput = document.createElement("input");
+                        const labelPlaceInput = document.createElement("label");
+    
+                        placeInput.type = "checkbox";
+                        placeInput.checked = true;
+                        placeInput.id = place.place_id;
+                        placeInput.classList.add("selected");
+                        placeInput.name = place.place_id;
+                        placeInput.value = place.name;
+                        labelPlaceInput.htmlFor = place.place_id;
+                        labelPlaceInput.textContent = place.name;
+    
+                        inputContainer.appendChild(placeInput);
+                        inputContainer.appendChild(labelPlaceInput);
+    
+                        inputContainer.addEventListener("mouseover", () => {
+                            marker.setLabel({
+                                ...marker.label,
+                                text: "\ue8b6",
+                            });
+                            marker.setOpacity(1.0);
+                            openCloseInfoWindow();
+                            if (document.getElementById("toggle-pan-to").checked) {
+                                map.panTo(place.geometry.location);
+                            }
                         });
-                        marker.setOpacity(1.0);
-                        openCloseInfoWindow();
-                        if (document.getElementById("toggle-pan-to").checked) {
-                            map.panTo(place.geometry.location);
-                        }
-                    });
-
-                    inputContainer.addEventListener("mouseout", () => {
-                        if (placeInput.classList.contains("selected")) {
-                            marker.setLabel({
-                                ...marker.label,
-                                text: findIconType(place.types),
-                            });
-                            marker.setOpacity(0.7);
-                        }
-                        else if (placeInput.classList.contains("unselected")) {
-                            marker.setLabel({
-                                ...marker.label,
-                                text: "\ue5cd",
-                            });
-                            marker.setOpacity(0.3);
-                        }
-                    });
-
-                    placeInput.addEventListener("click", () => {
-                        if (placeInput.classList.contains("selected")) {
-                            marker.setLabel({
-                                ...marker.label,
-                                text: "\ue5cd",
-                            });
-                            marker.setOpacity(0.3)
-                            placeInput.classList.add("unselected");
-                            placeInput.classList.remove("selected");
-                        }
-                        else if (placeInput.classList.contains("unselected")) {
-                            marker.setLabel({
-                                ...marker.label,
-                                text: findIconType(place.types),
-                            });
-                            marker.setOpacity(0.7)
-                            placeInput.classList.add("selected");
-                            placeInput.classList.remove("unselected");
-                        }
+    
+                        inputContainer.addEventListener("mouseout", () => {
+                            if (placeInput.classList.contains("selected")) {
+                                marker.setLabel({
+                                    ...marker.label,
+                                    text: findIconType(place.types),
+                                });
+                                marker.setOpacity(0.7);
+                            }
+                            else if (placeInput.classList.contains("unselected")) {
+                                marker.setLabel({
+                                    ...marker.label,
+                                    text: "\ue5cd",
+                                });
+                                marker.setOpacity(0.3);
+                            }
+                        });
+    
+                        placeInput.addEventListener("click", () => {
+                            if (placeInput.classList.contains("selected")) {
+                                marker.setLabel({
+                                    ...marker.label,
+                                    text: "\ue5cd",
+                                });
+                                marker.setOpacity(0.3)
+                                placeInput.classList.add("unselected");
+                                placeInput.classList.remove("selected");
+                            }
+                            else if (placeInput.classList.contains("unselected")) {
+                                marker.setLabel({
+                                    ...marker.label,
+                                    text: findIconType(place.types),
+                                });
+                                marker.setOpacity(0.7)
+                                placeInput.classList.add("selected");
+                                placeInput.classList.remove("unselected");
+                            }
+                        });
                     });
                 }
             }
+
 
             const submitButton = document.createElement("input");
             submitButton.type = "submit";
