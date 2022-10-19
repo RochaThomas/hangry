@@ -498,3 +498,17 @@ input:checked + .slider:before {
     width: 210px;
     left: -235px;
 }
+
+/* info window styling */
+.price-fill {
+    color: black;
+}
+.price-shadow {
+    color: lightgray;
+}
+.is-open {
+    color: green;
+}
+.is-closed {
+    color: red;
+}

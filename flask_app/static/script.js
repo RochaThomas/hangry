@@ -142,6 +142,7 @@ function initMap(){
     // change the request to get the icon?
     // icon_mask_base_uri and icon_background_color
     const service = new google.maps.places.PlacesService(map);
+    // expand request fields to take more than just name and geometry
     const request = {
         location: userLocation,
         radius: 500,
@@ -198,7 +199,45 @@ function initMap(){
                         }
                     );
 
-                    const infoWindow = new google.maps.InfoWindow({content: place.name});
+                    let priceFill = "",
+                        priceShadow = "",
+                        restaurantHours = "",
+                        operationStatus = "",
+                        photos = "";
+                    
+                    for (let i = 0; i < place.price_level; i++) {
+                        priceFill += '$';
+                    }
+                    for (let j = 0; j < 4 - priceFill.length; j++) {
+                        priceShadow += '$';
+                    }
+
+                    // open_now is depreciated find a new way to acces hours
+                    if (place.opening_hours.open_now) {
+                        operationStatus = `<p class="is-open">Open</p>`;
+                    }
+                    else {
+                        operationStatus = `<p class="is-closed">Closed</p>`;
+                    }
+
+                    const contentString = 
+                        `<div class="info-window-content">` + 
+                            `<h3 class="info-window-title">` + place.name + `</h3>` +
+                            `<div class="price-hours">` +
+                                `<p class="restaurant-price">` + 
+                                    `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
+                                `</p>` + 
+                                `<p class="restaurant-hours">` + 
+                                    `Hours: ` + restaurantHours + 
+                                `</p>` + 
+                                operationStatus +
+                            `</div>` +
+                            `<div class="restaurant-photos">` + 
+                                photos +
+                            `</div>` +
+                        `</div>`;
+
+                    const infoWindow = new google.maps.InfoWindow({content: contentString});
                     const openCloseInfoWindow = () => {
                         if (prevWindow){
                             prevWindow.close()
