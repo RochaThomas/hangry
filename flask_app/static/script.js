@@ -192,23 +192,37 @@ function initMap(){
             const initInfoWindowContent = (placeId, infoWindow, marker) => {
                 service.getDetails({
                     placeId: placeId,
-                    fields: ['name'],
+                    fields: ['formatted_address', 'name', 'opening_hours', 'photos', 'price_level', 'utc_offset_minutes','website'],
                 }, async (result, status) => {
                     if (status == google.maps.places.PlacesServiceStatus.OK) {
                         console.log(result);
-                        let name = "",
+                        let name = result.name,
                             priceFill = "",
                             priceShadow = "",
                             restaurantHours = "",
                             operationStatus = "",
                             photos = "";
-                    
-                        // for (let i = 0; i < place.price_level; i++) {
-                        //     priceFill += '$';
-                        // }
-                        // for (let j = 0; j < 4 - priceFill.length; j++) {
-                        //     priceShadow += '$';
-                        // }
+                        
+                        // settting pricing
+                        for (let i = 0; i < result.price_level; i++) {
+                            priceFill += '$';
+                        }
+                        for (let j = 0; j < 4 - priceFill.length; j++) {
+                            priceShadow += '$';
+                        }
+
+                        // settting restaurant hours
+                        for (let i = 0; i < result.opening_hours.weekday_text.length; i++) {
+                            restaurantHours += `<p>` + result.opening_hours.weekday_text[i] +`</p>`
+                        }
+
+                        if (result.opening_hours.isOpen()) {
+                            operationStatus = `<p class="is-open">Open</p>`
+                        }
+                        else {
+                            operationStatus = `<p class="is-closed">Closed</p>`
+                        }
+
                         const contentString = 
                             `<div class="info-window-content">` + 
                                 `<h3 class="info-window-title">` + name + `</h3>` +
@@ -216,14 +230,19 @@ function initMap(){
                                     `<p class="restaurant-price">` + 
                                         `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
                                     `</p>` + 
-                                    `<p class="restaurant-hours">` + 
-                                        `Hours: ` + restaurantHours + 
-                                    `</p>` + 
                                     operationStatus +
                                 `</div>` +
+                                `<p class="info-window-website-label"> Website: <a href="` + result.website + `">` + result.website + `</a>` +
                                 `<div class="restaurant-photos">` + 
                                     photos +
                                 `</div>` +
+                                `<div class="restaurant-hours">` + 
+                                    `<p>Hours: </p>` + 
+                                    `<div class="restaurant-hours">` +
+                                        restaurantHours +
+                                    `</div>` +
+                                `</div>` + 
+
                             `</div>`;
                         infoWindow.setContent(contentString);
                     }
@@ -252,14 +271,6 @@ function initMap(){
                             title: place.name,
                         }
                     );
-
-                    // open_now is depreciated find a new way to acces hours
-                    // if (place.opening_hours.open_now) {
-                    //     operationStatus = `<p class="is-open">Open</p>`;
-                    // }
-                    // else {
-                    //     operationStatus = `<p class="is-closed">Closed</p>`;
-                    // }
 
                     const infoWindow = new google.maps.InfoWindow({content: null});
 
