@@ -314,6 +314,9 @@ function initMap(){
 
                     inputContainer.addEventListener("mouseout", () => {
                         window.clearTimeout(timer);
+                        if (prevWindow) {
+                            prevWindow.close();
+                        }
                         if (placeInput.classList.contains("selected")) {
                             marker.setLabel({
                                 ...marker.label,
