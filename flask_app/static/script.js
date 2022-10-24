@@ -192,7 +192,7 @@ function initMap(){
             const initInfoWindowContent = (placeId, infoWindow, marker) => {
                 service.getDetails({
                     placeId: placeId,
-                    fields: ['formatted_address', 'name', 'opening_hours', 'photos', 'price_level', 'utc_offset_minutes','website'],
+                    fields: ['formatted_address', 'name', 'opening_hours', 'photos', 'price_level', 'url', 'utc_offset_minutes','website'],
                 }, async (result, status) => {
                     if (status == google.maps.places.PlacesServiceStatus.OK) {
                         console.log(result);
@@ -201,7 +201,9 @@ function initMap(){
                             priceShadow = "",
                             restaurantHours = "",
                             operationStatus = "",
-                            photos = "";
+                            firstPhoto = "",
+                            restOfPhotos = "",
+                            linkToGooglePage = "";
                         
                         // settting pricing
                         for (let i = 0; i < result.price_level; i++) {
@@ -223,26 +225,44 @@ function initMap(){
                             operationStatus = `<p class="is-closed">Closed</p>`
                         }
 
+                        // setting photos and url to google page
+                        if (result.photos) {
+                            firstPhoto = `<img src="` + result.photos[0].getUrl() + `" alt="` + result.name + `photo 1" width="400" height="400">`;
+                            restOfPhotos = `<div class="rest-of-photos">`;
+                            for (let i = 1; i < 4; i++){
+                                if (result.photos[i]){
+                                    restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `">`;
+                                }
+                            }
+                            linkToGooglePage = 
+                                `<span class="link-to-google-page">` + 
+                                    `<a href="` + result.url + `">Click For More +</a>` +
+                                `</span>`;
+                            restOfPhotos += linkToGooglePage + `</div>`;
+                        }
+                        console.log('google page: ', result.url);
+
                         const contentString = 
                             `<div class="info-window-content">` + 
                                 `<h3 class="info-window-title">` + name + `</h3>` +
-                                `<div class="price-hours">` +
+                                `<div class="price-status">` +
+                                    operationStatus +
                                     `<p class="restaurant-price">` + 
                                         `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
                                     `</p>` + 
-                                    operationStatus +
                                 `</div>` +
                                 `<p class="info-window-website-label"> Website: <a href="` + result.website + `">` + result.website + `</a>` +
                                 `<div class="restaurant-photos">` + 
-                                    photos +
+                                    firstPhoto +
+                                    restOfPhotos +
                                 `</div>` +
                                 `<div class="restaurant-hours">` + 
                                     `<p>Hours: </p>` + 
-                                    `<div class="restaurant-hours">` +
+                                    `<div class="hours-days">` +
                                         restaurantHours +
                                     `</div>` +
                                 `</div>` + 
-
+                                `<p class"formatted-address">Address: ` + result.formatted_address + `</p>` +
                             `</div>`;
                         infoWindow.setContent(contentString);
                     }
