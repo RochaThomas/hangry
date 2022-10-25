@@ -160,7 +160,7 @@ function initMap(){
 
         // check if the response from the request is okay
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            // console.log(results);
+            console.log(results);
             places = results;
             // use the place icon (icon_mask_base_uri and icon_background color) to style icon
             // change how the icons react as well
@@ -189,29 +189,21 @@ function initMap(){
                 infoWindow.open(map, marker);
             }
 
-            const initInfoWindowContent = (placeId, infoWindow, marker) => {
+            const initInfoWindowContent = (placeId, price, infoWindow, marker) => {
                 service.getDetails({
                     placeId: placeId,
-                    fields: ['formatted_address', 'name', 'opening_hours', 'photos', 'price_level', 'url', 'utc_offset_minutes','website'],
+                    fields: ['formatted_address', 'name', 'opening_hours', 'photos', 'url', 'utc_offset_minutes','website'],
                 }, async (result, status) => {
                     if (status == google.maps.places.PlacesServiceStatus.OK) {
                         console.log(result);
                         let name = result.name,
-                            priceFill = "",
-                            priceShadow = "",
                             restaurantHours = "",
                             operationStatus = "",
                             firstPhoto = "",
                             restOfPhotos = "",
                             linkToGooglePage = "";
                         
-                        // settting pricing
-                        for (let i = 0; i < result.price_level; i++) {
-                            priceFill += '$';
-                        }
-                        for (let j = 0; j < 4 - priceFill.length; j++) {
-                            priceShadow += '$';
-                        }
+                        // price set from nearby search results
 
                         // settting restaurant hours
                         for (let i = 0; i < result.opening_hours.weekday_text.length; i++) {
@@ -246,9 +238,7 @@ function initMap(){
                                 `<h3 class="info-window-title">` + name + `</h3>` +
                                 `<div class="price-status">` +
                                     operationStatus +
-                                    `<p class="restaurant-price">` + 
-                                        `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
-                                    `</p>` + 
+                                    price + 
                                 `</div>` +
                                 `<p class="info-window-website-label"> Website: <a href="` + result.website + `" target="_blank" rel="noopener noreferrer">` + result.website + `</a>` +
                                 `<div class="restaurant-photos">` + 
@@ -296,7 +286,7 @@ function initMap(){
 
                     marker.addListener("mouseover", () => {
                         if (!infoWindow.content) {
-                            initInfoWindowContent(place.place_id, infoWindow, marker);
+                            initInfoWindowContent(place.place_id, price, infoWindow, marker);
                         }
                         else {
                             openCloseInfoWindow(infoWindow, marker);
@@ -304,7 +294,7 @@ function initMap(){
                     });
 
                     const inputContainer = document.createElement("div");
-                    inputContainer.class = "input-container";
+                    inputContainer.classList.add("list-input-container");
                     listOfPlaces.appendChild(inputContainer);
 
                     const placeInput = document.createElement("input");
@@ -316,8 +306,27 @@ function initMap(){
                     placeInput.classList.add("selected");
                     placeInput.name = place.place_id;
                     placeInput.value = place.name;
+
+                    let priceFill = "",
+                        priceShadow = "",
+                        price = "";
+
+                    // setting price for list and info windows
+                    for (let i = 0; i < place.price_level; i++) {
+                        priceFill += '$';
+                    }
+                    for (let j = 0; j < 4 - priceFill.length; j++) {
+                        priceShadow += '$';
+                    }
+                    price =
+                        `<p class="restaurant-price">` + 
+                            `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
+                        `</p>`;
+
                     labelPlaceInput.htmlFor = place.place_id;
-                    labelPlaceInput.textContent = place.name;
+                    labelPlaceInput.innerHTML = 
+                        `<p class="restaurant-input-name">` + place.name + `</p>` +
+                        price;
 
                     inputContainer.appendChild(placeInput);
                     inputContainer.appendChild(labelPlaceInput);
@@ -326,7 +335,7 @@ function initMap(){
                     inputContainer.addEventListener("mouseover", () => {
                         timer = window.setTimeout(() => {
                             if (!infoWindow.content) {
-                                initInfoWindowContent(place.place_id, infoWindow, marker);
+                                initInfoWindowContent(place.place_id, price, infoWindow, marker);
                             }
                             else {
                                 openCloseInfoWindow(infoWindow, marker);

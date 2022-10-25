@@ -563,3 +563,16 @@ input:checked + .slider:before {
     gap: 10px;
     margin-bottom: 10px;
 }
+
+/* styling restaurant list */
+.list-input-container {
+    display: inline-block;
+    border: thin blue dotted;
+    width: 300px;
+}
+.list-input-container input {
+    float: right;
+}
+.restaurant-input-name {
+    font-size: larger;
+}
