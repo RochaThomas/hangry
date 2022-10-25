@@ -541,12 +541,15 @@ input:checked + .slider:before {
 .link-to-google-page {
     height: 192px;
     width: 192px;
-    border: black thin solid;
+    border: #e8e7e7 thin solid;
     background-color: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: larger;
+}
+.restaurant-photos img, .link-to-google-page {
+    border-radius: 3px;
 }
 .restaurant-hours {
     display: flex;
