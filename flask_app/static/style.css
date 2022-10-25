@@ -526,6 +526,10 @@ input:checked + .slider:before {
 .info-window-website-label {
     margin-bottom: 5px;
 }
+.first-photo {
+    width: 400px;
+    height: 400px;
+}
 .rest-of-photos {
     margin-top: 10px;
     display: flex;

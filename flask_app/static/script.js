@@ -227,20 +227,19 @@ function initMap(){
 
                         // setting photos and url to google page
                         if (result.photos) {
-                            firstPhoto = `<img src="` + result.photos[0].getUrl() + `" alt="` + result.name + `photo 1" width="400" height="400">`;
+                            firstPhoto = `<img class="first-photo" src="` + result.photos[0].getUrl() + `" alt="` + result.name + `photo 1" onclick="openLinkNewTab('` + result.photos[0].getUrl() + `')">`;
                             restOfPhotos = `<div class="rest-of-photos">`;
                             for (let i = 1; i < 4; i++){
                                 if (result.photos[i]){
-                                    restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `">`;
+                                    restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `" onclick="openLinkNewTab('` + result.photos[i].getUrl() + `')">`;
                                 }
                             }
                             linkToGooglePage = 
                                 `<span class="link-to-google-page">` + 
-                                    `<a href="` + result.url + `">Click For More +</a>` +
+                                    `<a href="` + result.url + `" target="_blank" rel="noopener noreferrer">Click For More +</a>` +
                                 `</span>`;
                             restOfPhotos += linkToGooglePage + `</div>`;
                         }
-                        console.log('google page: ', result.url);
 
                         const contentString = 
                             `<div class="info-window-content">` + 
@@ -251,7 +250,7 @@ function initMap(){
                                         `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
                                     `</p>` + 
                                 `</div>` +
-                                `<p class="info-window-website-label"> Website: <a href="` + result.website + `">` + result.website + `</a>` +
+                                `<p class="info-window-website-label"> Website: <a href="` + result.website + `" target="_blank" rel="noopener noreferrer">` + result.website + `</a>` +
                                 `<div class="restaurant-photos">` + 
                                     firstPhoto +
                                     restOfPhotos +
@@ -557,6 +556,10 @@ const togglePanToWords = () => {
     else {
         wordToChange.textContent = "On";
     }
+}
+
+const openLinkNewTab = (link) => {
+    window.open(link, '_blank').focus();
 }
 
 window.initMap = initMap;
