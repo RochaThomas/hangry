@@ -542,6 +542,9 @@ input:checked + .slider:before {
     height: 195px;
     width: 195px;
 }
+.rest-of-photos img, .first-photo {
+    object-fit: cover;
+}
 .link-to-google-page {
     height: 192px;
     width: 192px;
