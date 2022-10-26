@@ -293,6 +293,8 @@
     /* The height is 400 pixels */
     width: 100%;
     /* The width is the width of the web page */
+    border: #e00a05 medium solid;
+    border-radius: 5px;
 }
 
 .map-list-container {
@@ -311,6 +313,9 @@
     justify-content: center;
     gap: 25px;
     padding: 10px 100px 50px 100px;
+}
+.one-time-map-content {
+    gap: 0px;
 }
 .back-button, .home-button {
     padding: 0px 10px;
@@ -500,6 +505,35 @@ input:checked + .slider:before {
     left: -235px;
 }
 
+/* one-time map styling */
+.one-time-map-content {
+    gap: 0px;
+}
+.map-title {
+    margin-bottom: 10px;
+}
+.directions {
+    display: flex;
+    border: #e00a05 medium solid;
+    border-radius: 5px;
+    background-color: #ffffff;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+}
+.directions-content {
+    margin-top: 3px;
+}
+.directions-message, .extra-info {
+    margin-left: 10px;
+    font-size: 18px;
+}
+.directions-title, .extra-info {
+    color: #e00a05;
+}
+.extra-info {
+    margin-top: 5px;
+}
+
 /* info window styling */
 .price-fill {
     color: black;
@@ -570,6 +604,8 @@ input:checked + .slider:before {
     font-size: x-large;
     background-color: #e00a05;
     color: #ffffff;
+    /* background-color: #ffffff;
+    color: #e00a05; */
     border: #e00a05 thin solid;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
@@ -584,16 +620,16 @@ input:checked + .slider:before {
     border: #e00a05 solid 2px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    margin-bottom: 4px;
 }
 .list-input-container {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px #e00a05 solid;
+    border-bottom: 2px #e00a05 solid;
     width: 300px;
-    height: 50px;
-    padding: 5px 10px;
+    padding: 10px;
 }
 .list-input-container input {
     width: 20px;
@@ -601,10 +637,12 @@ input:checked + .slider:before {
 }
 .restaurant-input-name {
     font-size: larger;
+    font-weight: bold;
 }
 .label-input-container {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 .list-icon {
     font-family: "Material Icons";
@@ -620,9 +658,9 @@ input:checked + .slider:before {
 }
 .submit-selected {
     height: 30px;
-    background-color: #ffffff;
-    color: #e00a05;
+    background-color: #e00a05;
+    color: #ffffff;
     font-size: large;
     border-radius: 6px;
-    border-color: #e00a05;
+    border: #e00a05 thin solid;
 }
