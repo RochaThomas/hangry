@@ -565,12 +565,23 @@ input:checked + .slider:before {
 }
 
 /* styling restaurant list */
+.restaurant-list-header {
+    font-size: x-large;
+    text-align: center;
+    background-color: #e00a05;
+    color: #ffffff;
+    border: #e00a05 thin solid;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
 .list-input-container {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
-    border: thin blue dotted;
+    border-top: thin #e00a05 solid;
+    border-left: thin #e00a05 solid;
+    border-right: thin #e00a05 solid;
     width: 300px;
     height: 50px;
     padding: 0px 5px;
