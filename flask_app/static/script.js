@@ -264,13 +264,19 @@ function initMap(){
 
             for (const place of places) {
                 if (place.geometry && place.geometry.location){
+
+                    // find icon used for marker and restaurant list
+                    const restaurantIcon = findIconType(place.types);
+
+                    // set marker icon
                     let label = {
                         fontFamily: "Material Icons",
                         color: "#ffffff",
                         fontSize: "18px",
-                        text: findIconType(place.types),
+                        text: restaurantIcon,
                     }
                     
+                    // set marker
                     const marker = new google.maps.Marker(
                         {
                             position: place.geometry.location,
@@ -359,7 +365,7 @@ function initMap(){
                         if (placeInput.classList.contains("selected")) {
                             marker.setLabel({
                                 ...marker.label,
-                                text: findIconType(place.types),
+                                text: restaurantIcon,
                             });
                             marker.setOpacity(0.7);
                         }
@@ -385,19 +391,13 @@ function initMap(){
                         else if (placeInput.classList.contains("unselected")) {
                             marker.setLabel({
                                 ...marker.label,
-                                text: findIconType(place.types),
+                                text: restaurantIcon,
                             });
                             marker.setOpacity(0.7)
                             placeInput.classList.add("selected");
                             placeInput.classList.remove("unselected");
                         }
-                    });
-
-                    // incorporate the same if check above that checks the status
-                    // then refactor code to be neater. all the information in the function call before is available in getDetails
-                    // use get details response instead
-                    // console.log("place id: ", place.place_id);
-                    
+                    });                    
                 }
             }
 
