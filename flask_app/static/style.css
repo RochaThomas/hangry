@@ -566,13 +566,31 @@ input:checked + .slider:before {
 
 /* styling restaurant list */
 .list-input-container {
-    display: inline-block;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
     border: thin blue dotted;
     width: 300px;
-}
-.list-input-container input {
-    float: right;
+    height: 50px;
+    padding: 0px 5px;
 }
 .restaurant-input-name {
     font-size: larger;
+}
+.label-input-container {
+    display: flex;
+    gap: 10px;
+}
+.list-icon {
+    font-family: "Material Icons";
+    font-size: 24px;
+    color: #ffffff;
+    background-color: #e00a05;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
 }

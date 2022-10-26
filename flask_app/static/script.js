@@ -233,6 +233,7 @@ function initMap(){
                             restOfPhotos += linkToGooglePage + `</div>`;
                         }
 
+                        // translating content into html for infoWindow
                         const contentString = 
                             `<div class="info-window-content">` + 
                                 `<h3 class="info-window-title">` + name + `</h3>` +
@@ -331,8 +332,14 @@ function initMap(){
 
                     labelPlaceInput.htmlFor = place.place_id;
                     labelPlaceInput.innerHTML = 
-                        `<p class="restaurant-input-name">` + place.name + `</p>` +
-                        price;
+                        `<div class="label-input-container">` +
+                            `<h3 class="list-icon">` + restaurantIcon + `</h3>` +
+                            `<div class="list-name-price">` +
+                            `<p class="restaurant-input-name">` + place.name + `</p>` +
+                            price +
+                            `</div>` + 
+                        `</div>`;
+                            
 
                     inputContainer.appendChild(placeInput);
                     inputContainer.appendChild(labelPlaceInput);
@@ -397,7 +404,7 @@ function initMap(){
                             placeInput.classList.add("selected");
                             placeInput.classList.remove("unselected");
                         }
-                    });                    
+                    });
                 }
             }
 
