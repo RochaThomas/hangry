@@ -385,7 +385,7 @@ function initMap(){
                         }
                     });
 
-                    placeInput.addEventListener("click", () => {
+                    inputContainer.addEventListener("click", () => {
                         if (placeInput.classList.contains("selected")) {
                             marker.setLabel({
                                 ...marker.label,
@@ -394,6 +394,7 @@ function initMap(){
                             marker.setOpacity(0.3)
                             placeInput.classList.add("unselected");
                             placeInput.classList.remove("selected");
+                            placeInput.checked = false;
                         }
                         else if (placeInput.classList.contains("unselected")) {
                             marker.setLabel({
@@ -403,6 +404,7 @@ function initMap(){
                             marker.setOpacity(0.7)
                             placeInput.classList.add("selected");
                             placeInput.classList.remove("unselected");
+                            placeInput.checked = true;
                         }
                     });
                 }
