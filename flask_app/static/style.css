@@ -590,6 +590,10 @@ input:checked + .slider:before {
     height: 50px;
     padding: 5px 10px;
 }
+.list-input-container input {
+    width: 20px;
+    height: 20px;
+}
 .restaurant-input-name {
     font-size: larger;
 }
