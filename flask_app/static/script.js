@@ -153,7 +153,7 @@ function initMap(){
         // console.log(results);
 
         // get the html list
-        let listOfPlaces = document.getElementById("places");
+        let listOfPlaces = document.getElementById("list-of-places");
 
         // setting prevWindow for onhover window display handling
         let prevWindow = false;
@@ -409,10 +409,10 @@ function initMap(){
             }
 
 
-            const submitButton = document.createElement("input");
-            submitButton.type = "submit";
-            submitButton.value = "Submit Selected Restaurants";
-            listOfPlaces.appendChild(submitButton);
+            // const submitButton = document.createElement("input");
+            // submitButton.type = "submit";
+            // submitButton.value = "Submit Selected Restaurants";
+            // listOfPlaces.appendChild(submitButton);
 
         }
     }

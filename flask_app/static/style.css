@@ -565,10 +565,6 @@ input:checked + .slider:before {
 }
 
 /* styling restaurant list */
-.places {
-    height: 600px;
-    overflow-y: scroll;
-}
 .restaurant-list-header {
     font-size: x-large;
     text-align: center;
@@ -577,6 +573,11 @@ input:checked + .slider:before {
     border: #e00a05 thin solid;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
+    height: 30px;
+}
+.list-of-places {
+    height: 550px;
+    overflow-y: scroll;
 }
 .list-input-container {
     display: flex;
