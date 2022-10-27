@@ -53,6 +53,12 @@ def disp_one_time_user_map():
         lng = -121.8853
     return render_template("one_use_map.html", lat=lat, lng=lng)
 
+@app.route('/one-time-user/manual_restaurant_add')
+def disp_manual_restaurant_add():
+    if 'user_id' in session:
+        return redirect('/dashboard')
+    return render_template('manual_restaurant_add.html', restaurants = session['restaurants'])
+
 @app.route('/dashboard')
 def disp_dashboard():
     if 'user_id' not in session:
@@ -96,3 +102,16 @@ def process_user_location():
     session['lat'] = request.form['lat']
     session['lng'] = request.form['lng']
     return redirect("/one-time-user/map")
+
+@app.route('/one-time-user/process_one_time_map', methods=['POST'])
+def process_one_time_map():
+    restaurants = []
+
+    for key in request.form:
+        restaurants.append({
+            'name': request.form[key],
+            'placeId': key,
+        })
+    
+    session['restaurants'] = restaurants
+    return redirect("/one-time-user/manual_restaurant_add")

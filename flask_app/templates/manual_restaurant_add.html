@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/login"><button class="button navbar_login" onmouseover="nav_login_react(this)" onmouseout="nav_login_unreact(this)">Login</button></a>
+            <a href="/register"><button class="button navbar_sign_up" onmouseover="nav_sign_up_react(this)" onmouseout="nav_sign_up_unreact(this)">Sign Up</button></a>
+        </div>
+    </div>
+    <div class="manual-restaurant-add-content">
+        <a class="back-button" href="/"> ← Back</a>
+        <div class="manual-restaurant-add-container">
+            <form action="/one-time-user/process_manual_restaurant_add" method="post">
+                <div class="input-container">
+                    <label for="name">Restaurant Name: </label>
+                    <input type="text" name="name" id="name">
+                </div>
+                <div class="input-container">
+                    <label for="street_address">Address: </label>
+                    <input type="text" name="street_address" id="street_address">
+                </div>
+                <div class="input-container">
+                    <label for="city">City: </label>
+                    <input type="text" name="city" id="city">
+                </div>
+                <div class="input-container">
+                    <label for="state">State: </label>
+                    <input type="text" name="state" id="state">
+                </div>
+                <div class="input-container">
+                    <label for="zipcode">Zip Code: </label>
+                    <input type="text" name="zip_code" id="zip_code">
+                </div>
+                <input type="submit" value="Add Restaurant">
+            </form>
+            <div class="list-of-selected">
+                {% for restaurant in restaurants %}
+                    <p>{{restaurant.name}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -111,10 +111,18 @@ const closeIconModal = () => {
 function initMap(){
     // icon used for creating markers on the map
     const icon = {
-        url: "/static/checkPin.png",
         scaledSize: new google.maps.Size(25, 25),
         anchor: new google.maps.Point(0,25),
     };
+
+    const mapStyling = [
+        {
+            featureType: "poi.business.food_and_drink",
+            stylers: [
+                { visibility: "off"}
+            ],
+        }
+    ];
 
     const userLat = Number(document.getElementById("lat").value);
     const userLng = Number(document.getElementById("lng").value);
@@ -123,6 +131,7 @@ function initMap(){
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 17,
         center: userLocation,
+        styles: mapStyling,
     });
 
     new google.maps.Marker({
@@ -130,49 +139,169 @@ function initMap(){
         map: map,
     });
 
+    // change the request to get the icon?
+    // icon_mask_base_uri and icon_background_color
     const service = new google.maps.places.PlacesService(map);
+    // expand request fields to take more than just name and geometry
     const request = {
         location: userLocation,
         radius: 500,
         type: "restaurant",
-        fields: ["name", "geometry"],
     };
 
     const callback = (results, status) => {
-        console.log(results);
+        // console.log(results);
 
         // get the html list
-        let listOfPlaces = document.getElementById("places");
+        let listOfPlaces = document.getElementById("list-of-places");
 
         // setting prevWindow for onhover window display handling
         let prevWindow = false;
 
         // check if the response from the request is okay
         if (status == google.maps.places.PlacesServiceStatus.OK) {
+            console.log(results);
             places = results;
+            // use the place icon (icon_mask_base_uri and icon_background color) to style icon
+            // change how the icons react as well
+            // change icon size onhover if possible
+            //      if not possible change the color to yellow on hover or something like that
+            // change icon color on click to green or blue to indicate the restaurant has been selected
+
+            const findIconType = (types) => {
+                if (types.includes("bar") || types.includes("nightclub")) {
+                    return "\ue540";
+                }
+                else if (types.includes("cafe") || types.includes("bakery")) {
+                    return "\ue541";
+                }
+                else {
+                    return "\ue56c";
+                } 
+            }
+
+            const openCloseInfoWindow = (infoWindow, marker) => {
+                if (prevWindow){
+                    prevWindow.close()
+                }
+
+                prevWindow = infoWindow;
+                infoWindow.open(map, marker);
+            }
+
+            const initInfoWindowContent = (placeId, price, infoWindow, marker) => {
+                service.getDetails({
+                    placeId: placeId,
+                    fields: ['formatted_address', 'name', 'opening_hours', 'photos', 'url', 'utc_offset_minutes','website'],
+                }, async (result, status) => {
+                    if (status == google.maps.places.PlacesServiceStatus.OK) {
+                        console.log(result);
+                        let name = result.name,
+                            restaurantHours = "",
+                            operationStatus = "",
+                            firstPhoto = "",
+                            restOfPhotos = "",
+                            linkToGooglePage = "";
+                        
+                        // price set from nearby search results
+
+                        // settting restaurant hours
+                        for (let i = 0; i < result.opening_hours.weekday_text.length; i++) {
+                            restaurantHours += `<p>` + result.opening_hours.weekday_text[i] +`</p>`
+                        }
+
+                        if (result.opening_hours.isOpen()) {
+                            operationStatus = `<p class="is-open">Open</p>`
+                        }
+                        else {
+                            operationStatus = `<p class="is-closed">Closed</p>`
+                        }
+
+                        // setting photos and url to google page
+                        if (result.photos) {
+                            firstPhoto = `<img class="first-photo" src="` + result.photos[0].getUrl() + `" alt="` + result.name + `photo 1" onclick="openLinkNewTab('` + result.photos[0].getUrl() + `')">`;
+                            restOfPhotos = `<div class="rest-of-photos">`;
+                            for (let i = 1; i < 4; i++){
+                                if (result.photos[i]){
+                                    restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `" onclick="openLinkNewTab('` + result.photos[i].getUrl() + `')">`;
+                                }
+                            }
+                            linkToGooglePage = 
+                                `<span class="link-to-google-page">` + 
+                                    `<a href="` + result.url + `" target="_blank" rel="noopener noreferrer">Click For More +</a>` +
+                                `</span>`;
+                            restOfPhotos += linkToGooglePage + `</div>`;
+                        }
+
+                        // translating content into html for infoWindow
+                        const contentString = 
+                            `<div class="info-window-content">` + 
+                                `<h3 class="info-window-title">` + name + `</h3>` +
+                                `<div class="price-status">` +
+                                    operationStatus +
+                                    price + 
+                                `</div>` +
+                                `<p class="info-window-website-label"> Website: <a href="` + result.website + `" target="_blank" rel="noopener noreferrer">` + result.website + `</a>` +
+                                `<div class="restaurant-photos">` + 
+                                    firstPhoto +
+                                    restOfPhotos +
+                                `</div>` +
+                                `<div class="restaurant-hours">` + 
+                                    `<p>Hours: </p>` + 
+                                    `<div class="hours-days">` +
+                                        restaurantHours +
+                                    `</div>` +
+                                `</div>` + 
+                                `<p class"formatted-address">Address: ` + result.formatted_address + `</p>` +
+                            `</div>`;
+                        infoWindow.setContent(contentString);
+                    }
+                    else {
+                        console.log('Status: ', status);
+                    }
+                    await openCloseInfoWindow(infoWindow, marker);
+                });
+            }
 
             for (const place of places) {
                 if (place.geometry && place.geometry.location){
+
+                    // find icon used for marker and restaurant list
+                    const restaurantIcon = findIconType(place.types);
+
+                    // set marker icon
+                    let label = {
+                        fontFamily: "Material Icons",
+                        color: "#ffffff",
+                        fontSize: "18px",
+                        text: restaurantIcon,
+                    }
+                    
+                    // set marker
                     const marker = new google.maps.Marker(
                         {
                             position: place.geometry.location,
                             map: map,
-                            icon: icon,
+                            label: label,
+                            opacity: 0.7,
+                            title: place.name,
                         }
                     );
 
-                    const infoWindow = new google.maps.InfoWindow({content: place.name});
-                    marker.addListener("mouseover", () => {
-                        if (prevWindow){
-                            prevWindow.close()
-                        }
+                    const infoWindow = new google.maps.InfoWindow({content: null});
 
-                        prevWindow = infoWindow;
-                        infoWindow.open(map, marker);
+
+                    marker.addListener("mouseover", () => {
+                        if (!infoWindow.content) {
+                            initInfoWindowContent(place.place_id, price, infoWindow, marker);
+                        }
+                        else {
+                            openCloseInfoWindow(infoWindow, marker);
+                        }
                     });
 
                     const inputContainer = document.createElement("div");
-                    inputContainer.class = "input-container";
+                    inputContainer.classList.add("list-input-container");
                     listOfPlaces.appendChild(inputContainer);
 
                     const placeInput = document.createElement("input");
@@ -184,55 +313,108 @@ function initMap(){
                     placeInput.classList.add("selected");
                     placeInput.name = place.place_id;
                     placeInput.value = place.name;
+
+                    let priceFill = "",
+                        priceShadow = "",
+                        price = "";
+
+                    // setting price for list and info windows
+                    for (let i = 0; i < place.price_level; i++) {
+                        priceFill += '$';
+                    }
+                    for (let j = 0; j < 4 - priceFill.length; j++) {
+                        priceShadow += '$';
+                    }
+                    price =
+                        `<p class="restaurant-price">` + 
+                            `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
+                        `</p>`;
+
                     labelPlaceInput.htmlFor = place.place_id;
-                    labelPlaceInput.textContent = place.name;
+                    labelPlaceInput.innerHTML = 
+                        `<div class="label-input-container">` +
+                            `<h3 class="list-icon">` + restaurantIcon + `</h3>` +
+                            `<div class="list-name-price">` +
+                            `<p class="restaurant-input-name">` + place.name + `</p>` +
+                            price +
+                            `</div>` + 
+                        `</div>`;
+                            
 
                     inputContainer.appendChild(placeInput);
                     inputContainer.appendChild(labelPlaceInput);
 
+                    let timer = null;
                     inputContainer.addEventListener("mouseover", () => {
-                        bigSize = new google.maps.Size(35, 35);
-                        bigAnchor = new google.maps.Point(0, 35);
-                        marker.setIcon({
-                            ...marker.icon,
-                            scaledSize: bigSize,
-                            anchor: bigAnchor,
+                        timer = window.setTimeout(() => {
+                            if (!infoWindow.content) {
+                                initInfoWindowContent(place.place_id, price, infoWindow, marker);
+                            }
+                            else {
+                                openCloseInfoWindow(infoWindow, marker);
+                            }
+                        }, "1000");
+                        marker.setLabel({
+                            ...marker.label,
+                            text: "\ue8b6",
                         });
+                        marker.setOpacity(1.0);
+                        if (document.getElementById("toggle-pan-to").checked) {
+                            map.panTo(place.geometry.location);
+                        }
                     });
 
                     inputContainer.addEventListener("mouseout", () => {
-                        smallSize = new google.maps.Size(25, 25);
-                        smallAnchor = new google.maps.Point(0, 25);
-                        marker.setIcon({
-                            ...marker.icon,
-                            scaledSize: smallSize,
-                            anchor: smallAnchor,
-                        });
-                    });
-
-                    placeInput.addEventListener("click", () => {
+                        window.clearTimeout(timer);
+                        if (prevWindow) {
+                            prevWindow.close();
+                        }
                         if (placeInput.classList.contains("selected")) {
-                            marker.setIcon({...marker.icon, 
-                                url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
+                            marker.setLabel({
+                                ...marker.label,
+                                text: restaurantIcon,
                             });
-                            placeInput.classList.add("unselected");
-                            placeInput.classList.remove("selected");
+                            marker.setOpacity(0.7);
                         }
                         else if (placeInput.classList.contains("unselected")) {
-                            marker.setIcon({...marker.icon, 
-                                url: "/static/checkPin.png",
+                            marker.setLabel({
+                                ...marker.label,
+                                text: "\ue5cd",
                             });
+                            marker.setOpacity(0.3);
+                        }
+                    });
+
+                    inputContainer.addEventListener("click", () => {
+                        if (placeInput.classList.contains("selected")) {
+                            marker.setLabel({
+                                ...marker.label,
+                                text: "\ue5cd",
+                            });
+                            marker.setOpacity(0.3)
+                            placeInput.classList.add("unselected");
+                            placeInput.classList.remove("selected");
+                            placeInput.checked = false;
+                        }
+                        else if (placeInput.classList.contains("unselected")) {
+                            marker.setLabel({
+                                ...marker.label,
+                                text: restaurantIcon,
+                            });
+                            marker.setOpacity(0.7)
                             placeInput.classList.add("selected");
                             placeInput.classList.remove("unselected");
+                            placeInput.checked = true;
                         }
                     });
                 }
             }
 
-            const submitButton = document.createElement("input");
-            submitButton.type = "submit";
-            submitButton.value = "Submit Selected Restaurants";
-            listOfPlaces.appendChild(submitButton);
+
+            // const submitButton = document.createElement("input");
+            // submitButton.type = "submit";
+            // submitButton.value = "Submit Selected Restaurants";
+            // listOfPlaces.appendChild(submitButton);
 
         }
     }
@@ -383,6 +565,20 @@ const findLatLngManualEntry = () => {
             console.log("Geocode failed: " + error);
         })
 };
+
+const togglePanToWords = () => {
+    let wordToChange = document.getElementById("panToStatus");
+    if (!document.getElementById("toggle-pan-to").checked) {
+        wordToChange.textContent = "Off";
+    }
+    else {
+        wordToChange.textContent = "On";
+    }
+}
+
+const openLinkNewTab = (link) => {
+    window.open(link, '_blank').focus();
+}
 
 window.initMap = initMap;
 window.initAutocomplete = initAutocomplete;
