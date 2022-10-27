@@ -75,7 +75,7 @@
     font-weight: bold;
 }
 
-.content, .user-location-content, .manual-entry-content, .one-time-map-content {
+.content, .user-location-content, .manual-entry-content, .one-time-map-content, .manual-restaurant-add-content {
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -308,7 +308,7 @@
 }
 
 /* allow user location alert page */
-.user-location-content, .manual-entry-content, .one-time-map-content {
+.user-location-content, .manual-entry-content, .one-time-map-content, .manual-restaurant-add-content {
     flex-direction: column;
     justify-content: center;
     gap: 25px;
@@ -663,4 +663,16 @@ input:checked + .slider:before {
     font-size: large;
     border-radius: 6px;
     border: #e00a05 thin solid;
+}
+
+/* styling manual restaurant add page */
+.manual-restaurant-add-container {
+    display: flex;
+}
+.list-of-selected {
+    display: flex;
+    flex-direction: column;
+    border: solid #e00a05 medium;
+    border-radius: 5px;
+    background-color: #ffffff;
 }
