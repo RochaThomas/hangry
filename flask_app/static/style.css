@@ -419,15 +419,16 @@
     padding: 5px 100px 0px 100px;
     gap: 25px;
 }
-#manual-entry-submit-button {
+#manual-entry-submit-button, .manual-restaurant-add-submit, .solve-my-hanger {
     height: 30px;
     width: 125px;
     font-size: 15px;
     margin-top: 15px;
     margin-right: 100px;
 }
-.pac-container, .pac-item {
+.pac-container, .pac-item, .pac-item-query {
     width: inherit !important;
+    font-size: medium;
 }
 /* toggle switch */
 .switch {
@@ -668,11 +669,48 @@ input:checked + .slider:before {
 /* styling manual restaurant add page */
 .manual-restaurant-add-container {
     display: flex;
+    justify-content: space-around;
 }
-.list-of-selected {
+.manual-restaurant-add-title, .list-of-selected-title {
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+}
+.form-body, .list-of-selected {
     display: flex;
     flex-direction: column;
     border: solid #e00a05 medium;
     border-radius: 5px;
     background-color: #ffffff;
+}
+.list-of-selected {
+    font-size: larger;
+    padding: 5px 10px;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+.form-body {
+    width: 430px;
+    padding: 10px 0px;
+}
+.form-body .input-container {
+    padding: 5px 15px 0px 15px;
+    font-size: larger;
+    width: 375px;
+}
+.form-body .input-container input {
+    font-size: medium;
+}
+.manual-restaurant-add-submit, .solve-my-hanger {
+    color: #ffffff;
+    background-color: #e00a05;
+    border: #e00a05 solid thin;
+    border-radius: 5px;
+    font-size: larger;
+    width: fit-content;
+    height: fit-content;
+    padding: 5px 10px;
+}
+.manual-restaurant-add-submit {
+    margin-left: 235px;
 }
