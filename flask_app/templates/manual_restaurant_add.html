@@ -53,12 +53,13 @@
                         <label for="zipcode">Zip Code: </label>
                         <input type="text" name="zip_code" id="zip_code">
                     </div>
+                    <input type="hidden" id="place_id" name="place_id">
                     <input class="manual-restaurant-add-submit" type="submit" value="Add Restaurant">
                 </div>
             </form>
             <div class="list-of-selected-container">
                 <h3 class="list-of-selected-title">List of Your Selected Restaurants</h3>
-                <div class="list-of-selected">
+                <div id="list-of-selected" class="list-of-selected">
                     {% for restaurant in restaurants %}
                         <p>{{restaurant.name}}</p>
                     {% endfor %}

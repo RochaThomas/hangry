@@ -687,7 +687,9 @@ input:checked + .slider:before {
     font-size: larger;
     padding: 5px 10px;
     max-height: 400px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
 }
 .form-body {
     width: 430px;

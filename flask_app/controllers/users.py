@@ -115,3 +115,22 @@ def process_one_time_map():
     
     session['restaurants'] = restaurants
     return redirect("/one-time-user/manual_restaurant_add")
+
+@app.route('/one-time-user/process_manual_restaurant_add', methods=['POST'])
+def process_manual_restaurant_add():
+    restaurants = session['restaurants']
+    # make sure the restaurant they are trying to add isn't already on the list
+    dup = False
+    print(restaurants)
+    for restaurant in restaurants:
+        if restaurant['placeId'] == request.form['place_id']:
+            dup = True
+            break
+    if dup == False:
+        restaurants.append({
+            'name': request.form['name'],
+            'placeId': request.form['place_id']
+        })
+    session['restaurants'] = restaurants
+
+    return redirect("/one-time-user/manual_restaurant_add")

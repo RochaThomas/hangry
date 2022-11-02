@@ -425,15 +425,25 @@ function initMap(){
 
 // adapt to fill user location addresses as well as restaurant addresses
 function initAutocomplete() {
+    // if the page has a scroll bar, keep it at the correct spot
+    if (document.getElementById("list-of-selected")) {
+        let scrollbar = document.querySelector("#list-of-selected")
+        scrollbar.scrollTop = -scrollbar.scrollHeight;
+    }
+
     let restaurantName;
     if (document.getElementById("name")) {
-        // console.log("if statement worked");
         restaurantName = document.querySelector("#name");
     }
     let streetAddress = document.querySelector("#street_address");
     let city = document.querySelector("#city");
     let state = document.querySelector("#state");
     let zipCode = document.querySelector("#zip_code");
+    let placeId;
+
+    if (document.querySelector("#place_id")) {
+        placeId = document.querySelector("#place_id");
+    }
 
     let autocomplete;
 
@@ -441,7 +451,7 @@ function initAutocomplete() {
         autocomplete = new google.maps.places.Autocomplete(restaurantName, {
             componentRestrictions: { country: ["us"] },
             // add bounds for lng and lat to limit search area
-            fields: ["address_components", "geometry", "name"],
+            fields: ["address_components", "geometry", "name", "place_id"],
             types: ["restaurant"],
         });
     }
@@ -496,6 +506,9 @@ function initAutocomplete() {
         if (place.name) {
             autoRestaurantName = place.name;
             restaurantName.value = autoRestaurantName;
+        }
+        if (place.place_id) {
+            placeId.value = place.place_id;
         }
         streetAddress.value = autoStreetAddress;
         city.value = autoCity;
