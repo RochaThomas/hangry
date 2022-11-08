@@ -690,6 +690,7 @@ input:checked + .slider:before {
     overflow-y: auto;
     display: flex;
     flex-direction: column-reverse;
+    width: 360px;
 }
 .form-body {
     width: 430px;
