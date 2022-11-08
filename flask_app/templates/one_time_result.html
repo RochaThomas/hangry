@@ -15,8 +15,17 @@
             <a href="/register"><button class="button navbar_sign_up" onmouseover="nav_sign_up_react(this)" onmouseout="nav_sign_up_unreact(this)">Sign Up</button></a>
         </div>
     </div>
-    <p>{{result}}</p>
-    <p>{{resultId}}</p>
-    <a href="/one-time-user/result">Try Again</a>
+    <div class="one-time-result-content">
+        <h1>Cure Your Hanger!</h1>
+        <div class="one-time-result-container">
+            <div class="result-container">
+                <h2>Go to {{result}}!</h2>
+                <input type="hidden" id="result_id" name="result_id" value={{resultId}}>
+            </div>
+            <div class="result-options-container">
+                <button class="try-again-button"><a class="try-again-link" href="/one-time-user/result">Try Again</a></button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
