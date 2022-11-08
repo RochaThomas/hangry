@@ -579,6 +579,95 @@ const findLatLngManualEntry = () => {
         })
 };
 
+const getResultInfo = () => {
+    console.log("hit")
+    let resultInfo = document.getElementById("result-info");
+    const service = new google.maps.places.PlacesService(resultInfo);
+    const placeId = document.getElementById('result_id').value;
+
+    service.getDetails({
+        placeId: placeId,
+        fields: ['formatted_address', 'opening_hours', 'photos', 'price_level', 'url', 'utc_offset_minutes','website'],
+    }, (result, status) => {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            console.log(result);
+            let restaurantHours = "",
+                operationStatus = "",
+                firstPhoto = "",
+                restOfPhotos = "",
+                linkToGooglePage = "",
+                priceFill = "",
+                priceShadow = "";
+            
+            // price set from nearby search results
+            for (let i = 0; i < result.price_level; i++) {
+                priceFill += '$';
+            }
+            for (let j = 0; j < 4 - priceFill.length; j++) {
+                priceShadow += '$';
+            }
+            price =
+                `<p class="restaurant-price">` + 
+                    `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
+                `</p>`;
+
+            // settting restaurant hours
+            for (let i = 0; i < result.opening_hours.weekday_text.length; i++) {
+                restaurantHours += `<p>` + result.opening_hours.weekday_text[i] +`</p>`
+            }
+
+            if (result.opening_hours.isOpen()) {
+                operationStatus = `<p class="is-open">Open</p>`
+            }
+            else {
+                operationStatus = `<p class="is-closed">Closed</p>`
+            }
+
+            // setting photos and url to google page
+            if (result.photos) {
+                firstPhoto = `<img class="first-photo" src="` + result.photos[0].getUrl() + `" alt="` + result.name + `photo 1" onclick="openLinkNewTab('` + result.photos[0].getUrl() + `')">`;
+                restOfPhotos = `<div class="rest-of-photos">`;
+                for (let i = 1; i < 4; i++){
+                    if (result.photos[i]){
+                        restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `" onclick="openLinkNewTab('` + result.photos[i].getUrl() + `')">`;
+                    }
+                }
+                linkToGooglePage = 
+                    `<span class="link-to-google-page">` + 
+                        `<a href="` + result.url + `" target="_blank" rel="noopener noreferrer">Click For More +</a>` +
+                    `</span>`;
+                restOfPhotos += linkToGooglePage + `</div>`;
+            }
+
+            // translating content into html for infoWindow
+            const contentString = 
+                `<div class="info-window-content">` + 
+                    `<h3 class="info-window-title">` + name + `</h3>` +
+                    `<div class="price-status">` +
+                        operationStatus +
+                        price + 
+                    `</div>` +
+                    `<p class="info-window-website-label"> Website: <a href="` + result.website + `" target="_blank" rel="noopener noreferrer">` + result.website + `</a>` +
+                    `<div class="restaurant-photos">` + 
+                        firstPhoto +
+                        restOfPhotos +
+                    `</div>` +
+                    `<div class="restaurant-hours">` + 
+                        `<p>Hours: </p>` + 
+                        `<div class="hours-days">` +
+                            restaurantHours +
+                        `</div>` +
+                    `</div>` + 
+                    `<p class"formatted-address">Address: ` + result.formatted_address + `</p>` +
+                `</div>`;
+            resultInfo.innerHTML = contentString;
+        }
+        else {
+            console.log('Status: ', status);
+        }
+    });
+}
+
 const togglePanToWords = () => {
     let wordToChange = document.getElementById("panToStatus");
     if (!document.getElementById("toggle-pan-to").checked) {
@@ -593,6 +682,7 @@ const openLinkNewTab = (link) => {
     window.open(link, '_blank').focus();
 }
 
-
+// getResultInfo();
 window.initMap = initMap;
 window.initAutocomplete = initAutocomplete;
+window.getResultInfo = getResultInfo;
