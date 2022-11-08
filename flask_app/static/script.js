@@ -593,5 +593,6 @@ const openLinkNewTab = (link) => {
     window.open(link, '_blank').focus();
 }
 
+
 window.initMap = initMap;
 window.initAutocomplete = initAutocomplete;

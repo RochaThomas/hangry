@@ -714,6 +714,11 @@ input:checked + .slider:before {
     height: fit-content;
     padding: 5px 10px;
 }
+.solve-my-hanger-link {
+    color: #ffffff;
+    font-size: larger;
+    text-decoration: none;
+}
 .manual-restaurant-add-submit {
     margin-left: 235px;
 }

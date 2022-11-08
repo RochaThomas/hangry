@@ -4,6 +4,7 @@ from flask_app import app
 from flask import render_template, request, redirect, session, flash
 from flask_app.models.user import User
 from flask_bcrypt import Bcrypt
+import random
 bcrypt = Bcrypt(app)
 
 @app.route('/')
@@ -58,6 +59,23 @@ def disp_manual_restaurant_add():
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('manual_restaurant_add.html', restaurants = session['restaurants'])
+
+@app.route('/one-time-user/result')
+def disp_one_time_result():
+    if 'user_id' in session:
+        return redirect('/dashboard')
+    
+    def randomize(restaurants):
+        idx = random.randint(0, (len(restaurants) - 1))
+        return restaurants[idx]
+
+    newResult = randomize(session['restaurants'])
+    if 'result' in session and len(session['restaurants']) > 1:
+        while newResult['placeId'] == session['result']['placeId']:
+            newResult = randomize(session['restaurants'])
+    
+    session['result'] = newResult
+    return render_template('one_time_result.html', result=session['result']['name'], resultId = session['result']['placeId'])
 
 @app.route('/dashboard')
 def disp_dashboard():
