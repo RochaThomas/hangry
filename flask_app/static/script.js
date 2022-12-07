@@ -568,13 +568,22 @@ const findLatLngManualEntry = () => {
             const res = results.results[0].geometry.location;
             let hiddenLat = document.getElementById("lat")
             let hiddenLng = document.getElementById("lng")
-
             hiddenLat.value = res.lat();
             hiddenLng.value = res.lng();
-            document.forms["manual_entry_form"].submit();
+            if (document.forms["manual_entry_form"]) {
+                document.forms["manual_entry_form"].submit();
+            }
+            if (document.forms["add_location_form"]) {
+                document.forms["add_location_form"].submit();
+            }
         })
         .catch((error) => {
-            alert("Geocode failed: " + error);
+            if (document.forms["manual_entry_form"]) {
+                document.forms["manual_entry_form"].submit();
+            }
+            if (document.forms["add_location_form"]) {
+                document.forms["add_location_form"].submit();
+            }
             console.log("Geocode failed: " + error);
         })
 };
@@ -607,7 +616,7 @@ const getResultInfo = () => {
                 priceShadow += '$';
             }
             price =
-                `<p class="restaurant-price">` + 
+                `<p class="res-restaurant-price">` + 
                     `Price: ` + `<span class="price-fill">` + priceFill + `</span>` + `<span class="price-shadow">` + priceShadow + `</span>` + 
                 `</p>`;
 
@@ -625,40 +634,55 @@ const getResultInfo = () => {
 
             // setting photos and url to google page
             if (result.photos) {
-                firstPhoto = `<img class="first-photo" src="` + result.photos[0].getUrl() + `" alt="` + result.name + `photo 1" onclick="openLinkNewTab('` + result.photos[0].getUrl() + `')">`;
-                restOfPhotos = `<div class="rest-of-photos">`;
+                firstPhoto = `<img class="res-first-photo" src="` + result.photos[0].getUrl() + `" alt="` + result.name + `photo 1" onclick="openLinkNewTab('` + result.photos[0].getUrl() + `')">`;
+                restOfPhotos = `<div class="res-rest-of-photos">`;
+                restOfPhotos += `<div class="res-rest-of-photos-top">`;
                 for (let i = 1; i < 4; i++){
                     if (result.photos[i]){
-                        restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `" onclick="openLinkNewTab('` + result.photos[i].getUrl() + `')">`;
+                        if (i < 3) {
+                            restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `" onclick="openLinkNewTab('` + result.photos[i].getUrl() + `')">`;
+                        }
+                        else {
+                            restOfPhotos += `</div>`;
+                            restOfPhotos += `<div class="res-rest-of-photos-bottom">`;
+                            restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `" onclick="openLinkNewTab('` + result.photos[i].getUrl() + `')">`;
+                        }
                     }
                 }
                 linkToGooglePage = 
-                    `<span class="link-to-google-page">` + 
+                    `<span class="res-link-to-google-page">` + 
                         `<a href="` + result.url + `" target="_blank" rel="noopener noreferrer">Click For More +</a>` +
                     `</span>`;
-                restOfPhotos += linkToGooglePage + `</div>`;
+                restOfPhotos += linkToGooglePage + `</div>` + `</div>`;
             }
 
             // translating content into html for infoWindow
             const contentString = 
-                `<div class="info-window-content">` + 
-                    `<h3 class="info-window-title">` + name + `</h3>` +
-                    `<div class="price-status">` +
-                        operationStatus +
-                        price + 
-                    `</div>` +
-                    `<p class="info-window-website-label"> Website: <a href="` + result.website + `" target="_blank" rel="noopener noreferrer">` + result.website + `</a>` +
-                    `<div class="restaurant-photos">` + 
+                `<div class="info-window-content res-content">` + 
+                operationStatus +
+                    `<div class="res-info">` +
+                        `<div class="res-price-website-address">` +
+                            price + 
+                            `<div class="res-info-website-container">` +
+                                `<p class="res-info-label">Website: ` + `</p>` + 
+                                `<a class="res-info-website" href="` + result.website + `" target="_blank" rel="noopener noreferrer">` + result.website + `</a>` +
+                            `</div>` +
+                            `<div class="res-info-address-container">` +
+                                `<p class="res-info-label">Address: ` + `</p>` + 
+                                `<p class="res-formatted-address">` + result.formatted_address + `</p>` +
+                            `</div>` +
+                        `</div>` +
+                        `<div class="res-restaurant-hours">` + 
+                            `<p>Hours: </p>` + 
+                            `<div class="hours-days">` +
+                                restaurantHours +
+                            `</div>` +
+                        `</div>` + 
+                    `</div>` + 
+                    `<div class="res-restaurant-photos">` + 
                         firstPhoto +
                         restOfPhotos +
                     `</div>` +
-                    `<div class="restaurant-hours">` + 
-                        `<p>Hours: </p>` + 
-                        `<div class="hours-days">` +
-                            restaurantHours +
-                        `</div>` +
-                    `</div>` + 
-                    `<p class"formatted-address">Address: ` + result.formatted_address + `</p>` +
                 `</div>`;
             resultInfo.innerHTML = contentString;
         }

@@ -33,6 +33,14 @@
             <form class="manual-restaurant-add-form" action="/one-time-user/process_manual_restaurant_add" method="post">
                 <legend class="manual-restaurant-add-title">Manually Add a Restaurant to Your List</legend>
                 <div class="form-body">
+                    <!-- jinja error handling messages -->
+                    {% with one_time_restaurant_entry_errors = get_flashed_messages(category_filter=['one_time_restaurant_entry_error']) %}
+                        {% if one_time_restaurant_entry_errors %}
+                            {% for one_time_restaurant_entry_error in one_time_restaurant_entry_errors %}
+                                <p class="error">{{one_time_restaurant_entry_error}}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
                     <div class="input-container">
                         <label for="name">Restaurant Name: </label>
                         <input type="text" name="name" id="name" placeholder="">
@@ -50,7 +58,7 @@
                         <input type="text" name="state" id="state">
                     </div>
                     <div class="input-container">
-                        <label for="zipcode">Zip Code: </label>
+                        <label for="zip_code">Zip Code: </label>
                         <input type="text" name="zip_code" id="zip_code">
                     </div>
                     <input type="hidden" id="place_id" name="place_id">

@@ -9,17 +9,14 @@ class Restaurant:
     def __init__(self, data):
         self.id = data['id']
         self.name = data['name']
-        self.street = data['street']
-        self.city = data['city']
-        self.zipcode = data['zipcode']
-        self.min_away = data['min_away']
+        self.google_id = data['google_id']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
     @classmethod
     def add_restaurant(cls, data):
-        query = """INSERT INTO restaurants (name, street, city, zipcode, min_away, created_at, updated_at)
-                VALUES (%(name)s, %(street)s, %(city)s, %(zipcode)s, %(min_away)s, NOW(), NOW());"""
+        query = """INSERT INTO restaurants (name, google_id, created_at, updated_at)
+                VALUES (%(name)s, %(google_id)s, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
@@ -72,5 +69,17 @@ class Restaurant:
                         is_valid = False
         if restaurant['min_away'] == '':
             flash('Field "How Far Away It Is" is required.', 'restaurant_entry_error')
+            is_valid = False
+        return is_valid
+
+    @staticmethod
+    def is_valid_one_time_restaurant_entry(restaurant):
+        is_valid = True
+        if (restaurant["name"] == "" or 
+            restaurant["street_address"] == "" or 
+            restaurant["city"] == "" or
+            restaurant["state"] == "" or
+            restaurant["zip_code"] == ""):
+            flash('All fields must be filled in.', 'one_time_restaurant_entry_error')
             is_valid = False
         return is_valid

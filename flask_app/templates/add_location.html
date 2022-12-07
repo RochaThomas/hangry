@@ -20,7 +20,7 @@
     <div class="content content_add">
         <div class="add_div">
             <h1>Add a Location</h1>
-            <form class="add_form" action="/location/add/process" method="post">
+            <form id="add_location_form" class="add_location_form" action="/location/add/process" method="post">
                 {% with location_entry_errors = get_flashed_messages(category_filter=['location_entry_error']) %}
                     {% if location_entry_errors %}
                         {% for location_entry_error in location_entry_errors %}
@@ -29,26 +29,32 @@
                     {% endif %}
                 {% endwith %}
                 <div class="input_div">
-                    <label for="name">Name: </label>
-                    <input type="text" name="name" id="name">
+                    <label for="location_name">Name: </label>
+                    <input type="text" name="location_name" id="location_name">
                 </div>
                 <div class="address">
                     <label for="address">Address: </label>
                     <div class="input_div">
-                        <label for="street">Street </label>
-                        <input type="text" name="street" id="street">
+                        <label for="street_address">Street </label>
+                        <input type="text" name="street_address" id="street_address" placeholder="">
                     </div>
                     <div class="input_div">
                         <label for="city">City </label>
                         <input type="text" name="city" id="city">
                     </div>
                     <div class="input_div">
-                        <label for="zipcode">Zipcode </label>
-                        <input type="text" name="zipcode" id="zipcode">
+                        <label for="state">State </label>
+                        <input type="text" name="state" id="state">
+                    </div>
+                    <div class="input_div">
+                        <label for="zip_code">Zip Code </label>
+                        <input type="text" name="zip_code" id="zip_code">
                     </div>
                 </div>
+                <input type="hidden" id="lat" name="lat">
+                <input type="hidden" id="lng" name="lng">
                 <input type="hidden" name="user_id" value="{{user.id}}">
-                <input class="button box_button add_button" id="add_button" type="submit" value="Add" onmouseover="add_react(this)" onmouseout="add_unreact(this)">
+                <input class="button box_button add_button" id="add_button" type="button" value="Add" onmouseover="add_react(this)" onmouseout="add_unreact(this)" onclick="findLatLngManualEntry()">
             </form>
         </div>
         <div class="your_locations">
@@ -60,6 +66,10 @@
             </ul>
         </div>
     </div>
-    <script src="../static/script.js"></script>
 </body>
+<script src="../static/script.js"></script>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initAutocomplete&libraries=places&v=weekly"
+    defer
+></script>
 </html>

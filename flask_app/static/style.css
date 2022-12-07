@@ -141,7 +141,7 @@
 .register input, .login_form input {
     width: 200px;
 }
-.reg_error, .login_error, .location_entry_error , .restaurant_entry_error, .selection_error{
+.reg_error, .login_error, .location_entry_error , .restaurant_entry_error, .selection_error .error {
     text-align: center;
     color: #e00a05;
     font-size: 12pt;
@@ -183,17 +183,17 @@
     flex-direction: column;
     gap: 50px;
 }
-.add_form {
+.add_location_form {
     display: flex;
     flex-direction: column;
     gap: 25px;
     /* width: 300px; */
 }
-.add_form label {
+.add_location_form label {
     font-size: 16pt;
     float: left;
 }
-.add_form input {
+.add_location_form input {
     width: 200px;
 }
 .input_div {
@@ -430,6 +430,13 @@
     width: inherit !important;
     font-size: medium;
 }
+.one_time_location_error {
+    align-self: center;
+    text-align: center;
+    color: #e00a05;
+    font-size: 12pt;
+}
+
 /* toggle switch */
 .switch {
     position: relative;
@@ -631,6 +638,7 @@ input:checked + .slider:before {
     border-bottom: 2px #e00a05 solid;
     width: 300px;
     padding: 10px;
+    padding-right: 25px;
 }
 .list-input-container input {
     width: 20px;
@@ -667,6 +675,7 @@ input:checked + .slider:before {
 }
 
 /* styling manual restaurant add page */
+
 .manual-restaurant-add-container {
     display: flex;
     justify-content: space-around;
@@ -704,7 +713,7 @@ input:checked + .slider:before {
 .form-body .input-container input {
     font-size: medium;
 }
-.manual-restaurant-add-submit, .solve-my-hanger, .try-again-button {
+.manual-restaurant-add-submit, .solve-my-hanger, .try-again-button, .result-options-home-button {
     color: #ffffff;
     background-color: #e00a05;
     border: #e00a05 solid thin;
@@ -714,7 +723,7 @@ input:checked + .slider:before {
     height: fit-content;
     padding: 5px 10px;
 }
-.solve-my-hanger-link, .try-again-link {
+.solve-my-hanger-link, .try-again-link, .result-options-home-link {
     color: #ffffff;
     font-size: larger;
     text-decoration: none;
@@ -724,14 +733,101 @@ input:checked + .slider:before {
 }
 
 /* styling one time result page */
+.result-page-title {
+    color: #e00a05;
+    font-size: 30pt;
+}
 .one-time-result-content {
     flex-direction: column;
+    padding: 50px 100px;
+    gap: 50px;
 }
 .one-time-result-container {
     display: flex;
 }
 .result-container {
-    border: #e00a05 medium solid;
+    border: #e00a05 thick solid;
     border-radius: 5px;
     background-color: #ffffff;
+    padding: 10px;
+    margin-right: 25px;
+}
+.res-info {
+    display: flex;
+    margin-bottom: 10px;
+}
+.res-price-website-address {
+    display: flex;
+    flex-direction: column;
+    width: 460px;
+    margin-right: 10px;
+}
+.res-restaurant-price, .res-info-website, .res-restaurant-hours, .res-formatted-address, .res-info-label, .res-content .is-open, .res-content .is-closed {
+    font-size: larger;
+}
+.res-info-website-container, .res-info-address-container {
+    display: flex;
+    gap: 5px;
+}
+.res-info-website {
+    word-break: break-all;
+}
+.res-formatted-address {
+    overflow-wrap: normal;
+}
+.res-restaurant-photos {
+    display: flex;
+}
+.res-first-photo {
+    width: 460px;
+    height: 460px;
+    margin-right: 10px;
+}
+.res-rest-of-photos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.res-rest-of-photos-top, .res-rest-of-photos-bottom {
+    display: flex;
+    gap: 10px;
+}
+.res-rest-of-photos img{
+    height: 225px;
+    width: 225px;
+}
+.res-rest-of-photos img, .res-first-photo {
+    object-fit: cover;
+}
+.res-link-to-google-page {
+    height: 222px;
+    width: 222px;
+    border: #e8e7e7 thin solid;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16pt;
+}
+.res-restaurant-photos img, .res-link-to-google-page {
+    border-radius: 3px;
+}
+.result-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.result-options-try-again, .result-options-home {
+    background-color: #ffffff;
+    height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px;
+    border: #e00a05 medium solid;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+.result-options-home {
+    height: 75px;
 }

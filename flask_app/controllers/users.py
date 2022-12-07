@@ -3,6 +3,8 @@ from crypt import methods
 from flask_app import app
 from flask import render_template, request, redirect, session, flash
 from flask_app.models.user import User
+from flask_app.models.restaurant import Restaurant
+from flask_app.models.location import Location
 from flask_bcrypt import Bcrypt
 import random
 bcrypt = Bcrypt(app)
@@ -67,6 +69,8 @@ def disp_one_time_result():
     
     def randomize(restaurants):
         idx = random.randint(0, (len(restaurants) - 1))
+        print("num restaurants:", len(restaurants) - 1)
+        print("idx:", idx)
         return restaurants[idx]
 
     newResult = randomize(session['restaurants'])
@@ -117,6 +121,8 @@ def logout():
 
 @app.route('/one-time-user/process_user_location', methods=['POST'])
 def process_user_location():
+    if not Location.is_valid_one_time_location_entry(request.form):
+        return redirect("/one-time-user/manual_location_entry")
     session['lat'] = request.form['lat']
     session['lng'] = request.form['lng']
     return redirect("/one-time-user/map")
@@ -136,6 +142,8 @@ def process_one_time_map():
 
 @app.route('/one-time-user/process_manual_restaurant_add', methods=['POST'])
 def process_manual_restaurant_add():
+    if not Restaurant.is_valid_one_time_restaurant_entry(request.form):
+        return redirect("/one-time-user/manual_restaurant_add")
     restaurants = session['restaurants']
     # make sure the restaurant they are trying to add isn't already on the list
     dup = False

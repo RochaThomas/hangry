@@ -35,17 +35,22 @@
                 <div class="address">
                     <label for="address">Address: </label>
                     <div class="input_div">
-                        <label for="street">Street </label>
-                        <input type="text" name="street" id="street">
+                        <label for="street_address">Street </label>
+                        <input type="text" name="street_address" id="street_address">
                     </div>
                     <div class="input_div">
                         <label for="city">City </label>
                         <input type="text" name="city" id="city">
                     </div>
                     <div class="input_div">
-                        <label for="zipcode">Zipcode </label>
-                        <input type="text" name="zipcode" id="zipcode">
+                        <label for="state">State </label>
+                        <input type="text" name="state" id="state">
                     </div>
+                    <div class="input_div">
+                        <label for="zip_code">Zip Code </label>
+                        <input type="text" name="zip_code" id="zip_code">
+                    </div>
+                    <input type="hidden" id="place_id" name="place_id">
                 </div>
                 <div class="input_div">
                     <label for="location_id">Location List:</label>
@@ -55,13 +60,6 @@
                             <option value="{{location.id}}">{{location.name}}</option>
                         {% endfor %}
                     </select>
-                </div>
-                <div class="input_div">
-                    <label for="min_away">How Far Away It Is: </label>
-                    <div class="input_and_unit">
-                        <input type="number" name="min_away" id="min_away" min="1">
-                        <p>minutes</p>
-                    </div>
                 </div>
                 <input class="button box_button add_button" id="add_button" type="submit" value="Add" onmouseover="add_react(this)" onmouseout="add_unreact(this)">
             </form>
@@ -85,6 +83,10 @@
             </ul>
         </div>
     </div>
-    <script src="../static/script.js"></script>
 </body>
+<script src="../static/script.js"></script>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initAutocomplete&libraries=places&v=weekly"
+    defer
+></script>
 </html>
