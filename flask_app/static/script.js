@@ -509,6 +509,7 @@ function initAutocomplete() {
         }
         if (place.place_id) {
             placeId.value = place.place_id;
+            console.log("place id hit: ", place.place_id)
         }
         streetAddress.value = autoStreetAddress;
         city.value = autoCity;
@@ -550,42 +551,62 @@ const handleLocationError = (browserHasGeolocation) => {
         : alert("Error: Your browser does not support geolocation")
 };
 
-const findLatLngManualEntry = () => {
-    let streetAddressInput = document.getElementById("street_address").value;
-    let cityInput = document.getElementById("city").value
-    let stateInput = document.getElementById("state").value
-    let zipCodeInput = document.getElementById("zip_code").value
+const geocode = () => {
+    // check if form submission came from add_favorite_form & has place id already
+    // if there is already a place id then submit form
+    if (document.forms["add_favorite_form"] && document.getElementById("place_id").value != ""){
+        document.forms["add_favorite_form"].submit();
+    }
+    // run geocode if not from add_favorite_form & no place id
+    else {
+        // identify the form type
+        let formType;
+        // from manual_entry_form
+        if (document.forms["manual_entry_form"]){
+            formType = "manual_entry_form"; 
+        }
+        // from add_location_form
+        if (document.forms["add_location_form"]){
+            formType = "add_location_form"; 
+        }
+        // from add_favorite_form
+        if (document.forms["add_favorite_form"]) {
+            formType = "add_favorite_form"; 
+        }
 
-    let address = streetAddressInput + " "
-                + cityInput + " "
-                + stateInput + " "
-                + zipCodeInput;
-
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode( {'address': address} )
-        .then((results) => {
-            console.log("results.results[0]", results.results[0].geometry.location.lat);
-            const res = results.results[0].geometry.location;
-            let hiddenLat = document.getElementById("lat")
-            let hiddenLng = document.getElementById("lng")
-            hiddenLat.value = res.lat();
-            hiddenLng.value = res.lng();
-            if (document.forms["manual_entry_form"]) {
-                document.forms["manual_entry_form"].submit();
-            }
-            if (document.forms["add_location_form"]) {
-                document.forms["add_location_form"].submit();
-            }
-        })
-        .catch((error) => {
-            if (document.forms["manual_entry_form"]) {
-                document.forms["manual_entry_form"].submit();
-            }
-            if (document.forms["add_location_form"]) {
-                document.forms["add_location_form"].submit();
-            }
-            console.log("Geocode failed: " + error);
-        })
+        // get address from input
+        let streetAddress = document.getElementById("street_address").value;
+        let city = document.getElementById("city").value
+        let state = document.getElementById("state").value
+        let zipCode = document.getElementById("zip_code").value
+    
+        address = [streetAddress, city, state, zipCode].join(" ");
+    
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode( {'address': address} )
+            .then((results) => {
+                // if form type is add_favorite_form
+                if (formType == "add_favorite_form") {
+                    console.log("results.results[0].place_id: ", results.results[0].place_id);
+                    let resultId = results.results[0].place_id
+                    let placeId = document.getElementById("place_id");
+                    placeId.value = resultId;
+                }
+                // if it's not add_favorite_form, get lat & lng
+                else {
+                    console.log("results.results[0]", results.results[0].geometry.location.lat);
+                    const res = results.results[0].geometry.location;
+                    let hiddenLat = document.getElementById("lat")
+                    let hiddenLng = document.getElementById("lng")
+                    hiddenLat.value = res.lat();
+                    hiddenLng.value = res.lng();
+                }
+            })
+            .catch((error) => {
+                console.log("Geocode failed: " + error);
+            })
+            document.forms[formType].submit();
+    }
 };
 
 const getResultInfo = () => {
@@ -692,6 +713,38 @@ const getResultInfo = () => {
     });
 }
 
+// testing to see if this can be called
+// if there is no place id (didn't use autocomplete)
+// get place id
+const getPlaceId = () => {
+    if (document.getElementById("place_id").value != "") {
+        document.forms["add_favorite_form"].submit();
+    }
+    else {
+        let address;
+        let streetAddress = document.getElementById("street_address").value;
+        let city = document.getElementById("city").value;
+        let state = document.getElementById("state").value;
+        let zipCode = document.getElementById("zip_code").value;
+        let placeId = document.getElementById("place_id");
+
+        address = [streetAddress, city, state, zipCode].join(" ");
+        console.log(address);
+
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode( {'address': address} )
+            .then((results) => {
+                console.log("results.results[0].place_id: ", results.results[0].place_id);
+                let resultId = results.results[0].place_id
+                placeId.value = resultId;
+            })
+            .catch((error) => {
+                console.log("Geocoder failed: ", error);
+            });
+        document.forms["add_favorite_form"].submit();
+    }
+}
+
 const togglePanToWords = () => {
     let wordToChange = document.getElementById("panToStatus");
     if (!document.getElementById("toggle-pan-to").checked) {
@@ -710,3 +763,4 @@ const openLinkNewTab = (link) => {
 window.initMap = initMap;
 window.initAutocomplete = initAutocomplete;
 window.getResultInfo = getResultInfo;
+window.getPlaceId = getPlaceId;

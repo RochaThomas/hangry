@@ -16,7 +16,7 @@ class Restaurant:
     @classmethod
     def add_restaurant(cls, data):
         query = """INSERT INTO restaurants (name, google_id, created_at, updated_at)
-                VALUES (%(name)s, %(google_id)s, NOW(), NOW());"""
+                VALUES (%(name)s, %(place_id)s, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
@@ -51,25 +51,34 @@ class Restaurant:
     @staticmethod
     def is_valid_restaurant_entry(restaurant):
         is_valid = True
-        if len(restaurant['name']) < 2:
+        if (restaurant['name'] == "" and
+            restaurant['street_address'] == "" and
+            restaurant['city'] == "" and
+            restaurant['state'] == "" and
+            restaurant['zip_code'] == "" and
+            restaurant['location_id'] == ""):
+            flash('All fields must be filled in', 'restaurant_entry_error')
+            is_valid = False
+        elif len(restaurant['name']) < 2:
             flash('Name must be at least two characters.', 'restaurant_entry_error')
             is_valid = False
-        data = {
-            'id': restaurant['location_id']
-        }
-        if restaurant['location_id'] == '':
+        elif restaurant['place_id'] == '':
+            flash('Enter a valid address.', 'restaurant_entry_error')
+            is_valid = False
+        elif restaurant['location_id'] == '':
             flash('Field "Location List" is required.', 'restaurant_entry_error')
             is_valid = False
         else:
-            all_favorites_for_location = Restaurant.get_all_favorites_for_location(data)
+            all_favorites_for_location = Restaurant.get_all_favorites_for_location({
+                'id': restaurant['location_id']
+            })
             if all_favorites_for_location:
+                print("hit")
                 for one_favorite in all_favorites_for_location:
-                    if one_favorite.name == restaurant['name']:
-                        flash('You already have a favorite with that name for this location. Restaurant names must be unique.', 'location_entry_error')
+                    if one_favorite.google_id == restaurant['place_id']:
+                        print("made it")
+                        flash('This restaurant is already a favorite for this location. Enter a new restaurant.', 'restaurant_entry_error')
                         is_valid = False
-        if restaurant['min_away'] == '':
-            flash('Field "How Far Away It Is" is required.', 'restaurant_entry_error')
-            is_valid = False
         return is_valid
 
     @staticmethod

@@ -183,17 +183,17 @@
     flex-direction: column;
     gap: 50px;
 }
-.add_location_form {
+.add_location_form, .add_favorite_form {
     display: flex;
     flex-direction: column;
     gap: 25px;
     /* width: 300px; */
 }
-.add_location_form label {
+.add_location_form label, .add_favorite_form label {
     font-size: 16pt;
     float: left;
 }
-.add_location_form input {
+.add_location_form input, .add_favorite_form input {
     width: 200px;
 }
 .input_div {

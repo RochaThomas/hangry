@@ -20,7 +20,7 @@
     <div class="content content_add">
         <div class="add_div">
             <h1>Add a Favorite</h1>
-            <form class="add_form" action="/restaurant/add_favorite/process" method="post">
+            <form id="add_favorite_form" class="add_favorite_form" action="/restaurant/add_favorite/process" method="post">
                 {% with restaurant_entry_errors = get_flashed_messages(category_filter=['restaurant_entry_error']) %}
                     {% if restaurant_entry_errors %}
                         {% for restaurant_entry_error in restaurant_entry_errors %}
@@ -61,7 +61,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <input class="button box_button add_button" id="add_button" type="submit" value="Add" onmouseover="add_react(this)" onmouseout="add_unreact(this)">
+                <input class="button box_button add_button" id="add_button" type="button" value="Add" onclick="geocode()" onmouseover="add_react(this)" onmouseout="add_unreact(this)">
             </form>
         </div>
         <div class="your_favorites">
