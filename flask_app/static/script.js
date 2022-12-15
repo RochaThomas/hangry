@@ -713,38 +713,6 @@ const getResultInfo = () => {
     });
 }
 
-// testing to see if this can be called
-// if there is no place id (didn't use autocomplete)
-// get place id
-const getPlaceId = () => {
-    if (document.getElementById("place_id").value != "") {
-        document.forms["add_favorite_form"].submit();
-    }
-    else {
-        let address;
-        let streetAddress = document.getElementById("street_address").value;
-        let city = document.getElementById("city").value;
-        let state = document.getElementById("state").value;
-        let zipCode = document.getElementById("zip_code").value;
-        let placeId = document.getElementById("place_id");
-
-        address = [streetAddress, city, state, zipCode].join(" ");
-        console.log(address);
-
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode( {'address': address} )
-            .then((results) => {
-                console.log("results.results[0].place_id: ", results.results[0].place_id);
-                let resultId = results.results[0].place_id
-                placeId.value = resultId;
-            })
-            .catch((error) => {
-                console.log("Geocoder failed: ", error);
-            });
-        document.forms["add_favorite_form"].submit();
-    }
-}
-
 const togglePanToWords = () => {
     let wordToChange = document.getElementById("panToStatus");
     if (!document.getElementById("toggle-pan-to").checked) {
@@ -763,4 +731,3 @@ const openLinkNewTab = (link) => {
 window.initMap = initMap;
 window.initAutocomplete = initAutocomplete;
 window.getResultInfo = getResultInfo;
-window.getPlaceId = getPlaceId;
