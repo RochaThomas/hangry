@@ -15,14 +15,20 @@ def disp_randomize_form():
     if 'location_id' not in session:
         session['location_id'] = -1
     if session['location_id'] == -1:
-        favorites = Users_favorite.get_all_favorites_for_user(data)
+        favorites = []
+        session['hidden'] = True
     else:
         data_ll_id = {
             'id': session['location_id']
         }
         favorites = Restaurant.get_all_favorites_for_location(data_ll_id)
+        session['hidden'] = False
     ll_id = int(session['location_id'])
     locations = Location.get_all_locations(data)
+
+    # set session hidden to hide restaurant list module until location is specified
+    if session.get('hidden') == True:
+        session['hidden'] = True
     
     return render_template('randomize_favorites.html', locations=locations, favorites=favorites, ll_id=ll_id)
 
@@ -46,7 +52,6 @@ def disp_narrowed_options():
 def randomize_selections():
     if not Users_favorite.is_valid_selection(request.form):
         return redirect('/favorites/randomize')
-    session.pop('location_id')
     random_favorite = Restaurant.get_one_random(request.form)
     session['result'] = random_favorite
     return redirect('/favorites/randomize/result')

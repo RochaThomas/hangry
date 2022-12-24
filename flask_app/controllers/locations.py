@@ -11,6 +11,13 @@ def disp_add_location():
     data = {
         'id': session['user_id']
     }
+
+    # reset randomization selection when external link is clicked
+    # resets 'hidden' and 'location_id' in session
+    if session.get('location_id') or session.get('hidden'):
+        session.pop('location_id')
+        session.pop('hidden')
+
     user = User.get_user_by_id(data)
     locations = Location.get_all_locations(data)
     return render_template('add_location.html', user=user, locations=locations)

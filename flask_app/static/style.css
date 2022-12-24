@@ -259,6 +259,9 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    width: 275px;
+    white-space: nowrap;
+    overflow-x: auto;
 }
 .your_locations h2, .your_favorites h2 {
     font-size: 22pt;

@@ -14,6 +14,13 @@ def disp_add_favorite():
     data = {
         'id': session['user_id']
     }
+    
+    # reset randomization selection when external link is clicked
+    # resets 'hidden' and 'location_id' in session
+    if session.get('location_id') or session.get('hidden'):
+        session.pop('location_id')
+        session.pop('hidden')
+
     locations = Location.get_all_locations(data)
     users_favorites = Users_favorite.get_all_favorites_for_user(data)
     return render_template('add_favorite.html', locations=locations, users_favorites=users_favorites)
