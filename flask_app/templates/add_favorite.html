@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="content content_add">
-        <div class="add_div">
+        <div id="connectToNearby" class="add_div">
             <h1>Add a Favorite</h1>
             <form id="add_favorite_form" class="add_favorite_form" action="/restaurant/add_favorite/process" method="post">
                 {% with restaurant_entry_errors = get_flashed_messages(category_filter=['restaurant_entry_error']) %}
@@ -30,25 +30,25 @@
                 {% endwith %}
                 <div class="input_div">
                     <label for="name">Name: </label>
-                    <input type="text" name="name" id="name">
+                    <input type="text" name="name" id="name" onchange="resetPlaceId()">
                 </div>
                 <div class="address">
                     <label for="address">Address: </label>
                     <div class="input_div">
                         <label for="street_address">Street </label>
-                        <input type="text" name="street_address" id="street_address">
+                        <input type="text" name="street_address" id="street_address" onchange="resetPlaceId()">
                     </div>
                     <div class="input_div">
                         <label for="city">City </label>
-                        <input type="text" name="city" id="city">
+                        <input type="text" name="city" id="city" onchange="resetPlaceId()">
                     </div>
                     <div class="input_div">
                         <label for="state">State </label>
-                        <input type="text" name="state" id="state">
+                        <input type="text" name="state" id="state" onchange="resetPlaceId()">
                     </div>
                     <div class="input_div">
                         <label for="zip_code">Zip Code </label>
-                        <input type="text" name="zip_code" id="zip_code">
+                        <input type="text" name="zip_code" id="zip_code" onchange="resetPlaceId()">
                     </div>
                     <input type="hidden" id="place_id" name="place_id">
                 </div>

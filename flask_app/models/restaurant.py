@@ -51,34 +51,31 @@ class Restaurant:
     @staticmethod
     def is_valid_restaurant_entry(restaurant):
         is_valid = True
-        if (restaurant['name'] == "" and
-            restaurant['street_address'] == "" and
-            restaurant['city'] == "" and
-            restaurant['state'] == "" and
-            restaurant['zip_code'] == "" and
-            restaurant['location_id'] == ""):
+        if (restaurant['name'] == "" or
+            restaurant['street_address'] == "" or
+            restaurant['city'] == "" or
+            restaurant['state'] == "" or
+            restaurant['zip_code'] == ""):
             flash('All fields must be filled in', 'restaurant_entry_error')
-            is_valid = False
-        elif len(restaurant['name']) < 2:
-            flash('Name must be at least two characters.', 'restaurant_entry_error')
             is_valid = False
         elif restaurant['place_id'] == '':
             flash('Enter a valid address.', 'restaurant_entry_error')
             is_valid = False
-        elif restaurant['location_id'] == '':
-            flash('Field "Location List" is required.', 'restaurant_entry_error')
-            is_valid = False
-        else:
-            all_favorites_for_location = Restaurant.get_all_favorites_for_location({
-                'id': restaurant['location_id']
-            })
-            if all_favorites_for_location:
-                print("hit")
-                for one_favorite in all_favorites_for_location:
-                    if one_favorite.google_id == restaurant['place_id']:
-                        print("made it")
-                        flash('This restaurant is already a favorite for this location. Enter a new restaurant.', 'restaurant_entry_error')
-                        is_valid = False
+        if (is_valid == True):
+            if restaurant['location_id'] == '':
+                flash('Field "Location List" is required.', 'restaurant_entry_error')
+                is_valid = False
+            else:
+                all_favorites_for_location = Restaurant.get_all_favorites_for_location({
+                    'id': restaurant['location_id']
+                })
+                if all_favorites_for_location:
+                    print("hit")
+                    for one_favorite in all_favorites_for_location:
+                        if one_favorite.google_id == restaurant['place_id']:
+                            print("made it")
+                            flash('This restaurant is already a favorite for this location. Enter a new restaurant.', 'restaurant_entry_error')
+                            is_valid = False
         return is_valid
 
     @staticmethod

@@ -16,7 +16,7 @@ class Location:
     @classmethod
     def add_location(cls, data):
         query = """INSERT INTO locations (name, lat, lng, user_id, created_at, updated_at)
-                VALUES (%(location_name)s, %(lat)s, %(lng)s, %(user_id)s, NOW(), NOW());"""
+                VALUES (%(name)s, %(lat)s, %(lng)s, %(user_id)s, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
@@ -46,18 +46,21 @@ class Location:
     @staticmethod
     def is_valid_location_entry(location):
         is_valid = True
-        if (not location['location_name'] and not location['lat'] and not location['lng']):
-            flash('All fields must be filled out.', 'location_entry_error')
+        if len(location['name']) < 1:
+            flash('A name is required.', 'location_entry_error')
             is_valid = False
-        elif len(location['location_name']) < 1:
-            flash('Name must be at least one character.', 'location_entry_error')
+        elif (location['street_address'] == "" or
+            location['city'] == "" or
+            location['state'] == "" or
+            location['zip_code'] == ""):
+            flash('All fields are required.', 'location_entry_error')
             is_valid = False
         elif (not location['lat'] or not location['lng']):
             flash('Please enter a valid address.', 'location_entry_error')
             is_valid = False
         data = {
             'id': location['user_id'],
-            'name': location['location_name']
+            'name': location['name']
         }
         check = Location.get_location_by_name(data)
         if check:

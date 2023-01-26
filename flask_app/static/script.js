@@ -409,13 +409,6 @@ function initMap(){
                     });
                 }
             }
-
-
-            // const submitButton = document.createElement("input");
-            // submitButton.type = "submit";
-            // submitButton.value = "Submit Selected Restaurants";
-            // listOfPlaces.appendChild(submitButton);
-
         }
     }
 
@@ -432,7 +425,8 @@ function initAutocomplete() {
     }
 
     let restaurantName;
-    if (document.getElementById("name")) {
+    if (document.getElementById("name") && 
+        (document.forms["add_favorite_form"])) {
         restaurantName = document.querySelector("#name");
     }
     let streetAddress = document.querySelector("#street_address");
@@ -551,15 +545,20 @@ const handleLocationError = (browserHasGeolocation) => {
         : alert("Error: Your browser does not support geolocation")
 };
 
+// for now it works but...THIS CODE IS SO UGLY!!!
+// NOT DRY AT ALL
+// FIGURE OUT HOW TO USE PROMISES AND ASYNC/AWAIT PROPERLY SO YOU DON'T HAVE REPETITIVE CODE
 const geocode = () => {
     // check if form submission came from add_favorite_form & has place id already
     // if there is already a place id then submit form
     if (document.forms["add_favorite_form"] && document.getElementById("place_id").value != ""){
+        console.log("hit: add fav form with place id");
         document.forms["add_favorite_form"].submit();
     }
     // run geocode if not from add_favorite_form & no place id
     else {
-        // identify the form type
+        console.log("hitting else statement where there is no placeId");
+        // identify the form type (change to switch statement)
         let formType;
         // from manual_entry_form
         if (document.forms["manual_entry_form"]){
@@ -574,40 +573,136 @@ const geocode = () => {
             formType = "add_favorite_form"; 
         }
 
+        // save form in var so it is accessible in callback for submission
+        var form = document.forms[formType];
+        
         // get address from input
         let streetAddress = document.getElementById("street_address").value;
         let city = document.getElementById("city").value
         let state = document.getElementById("state").value
         let zipCode = document.getElementById("zip_code").value
-    
-        address = [streetAddress, city, state, zipCode].join(" ");
-    
+        let address = [streetAddress, city, state, zipCode].join(" ");
         const geocoder = new google.maps.Geocoder();
-        geocoder.geocode( {'address': address} )
-            .then((results) => {
-                // if form type is add_favorite_form
-                if (formType == "add_favorite_form") {
-                    console.log("results.results[0].place_id: ", results.results[0].place_id);
-                    let resultId = results.results[0].place_id
-                    let placeId = document.getElementById("place_id");
-                    placeId.value = resultId;
+        
+        
+        if (formType =="add_favorite_form") {
+            // get name from input
+            let name = document.getElementById("name").value;
+            // get hidden place id
+            // goal of this if statement is to get the correct place id into the request form
+            let placeId = document.getElementById("place_id");
+            
+            // set an HTML connection for PlacesService to connect to
+            const connect = document.getElementById("connectToNearby");
+            
+            // instantiate the google PlacesService that are going to be used
+            const service = new google.maps.places.PlacesService(connect);
+
+            console.log("hitting before geocoder runs");
+
+            let geo = async () =>  {
+                try {
+                    console.log("hit try of geo before geocoder runs");
+                    
+                    // run geocoder to get the lat and lng of user's input location
+                    let res = await geocoder.geocode({'address': address});
+    
+                    console.log("hit after geocoder runs");
+                    console.log("result from async geo: ", res.results[0]);
+                    // AWAIT DISCONNECTS THE FORM
+                    
+                    // isolate lat and lng from geocode result
+                    lat = res.results[0].geometry.location.lat();
+                    lng = res.results[0].geometry.location.lng();
+    
+                    // pass lat and lng into nearby function
+                    nearby(lat, lng);
                 }
-                // if it's not add_favorite_form, get lat & lng
-                else {
-                    console.log("results.results[0]", results.results[0].geometry.location.lat);
-                    const res = results.results[0].geometry.location;
+                catch(error) {
+                    console.log("hit the catch of geo");
+                    console.error("geo error: ", error);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+    
+            let nearby = async (lat, lng) => {
+                try {
+                    console.log("hit try of nearby before nearbySearch runs");
+    
+                    // run nearbySearch to get the restaurant of the user's manual entry
+                    await service.nearbySearch({
+                        location: {lat: lat, lng: lng},
+                        keyword: [address],
+                        type: ["restaurant"],
+                        radius: 100,
+                    }, (results, status) => {
+                        if (status == 'OK') {
+                            console.log("result from callback: ", results);
+    
+                            // set hidden place_id using results of nearbySearch
+                            let resultId = results[0].place_id
+                            placeId.value = resultId;
+    
+                            // get the name of the location from results
+                            let resultName = results[0].name;
+                            // compare names
+                            if (name != resultName) {
+                                // if not equal alert the difference and what it is now saved as
+                                alert(`According to Google's database, the name of the location corresponding to the address you entered is ${resultName}, not ${name}. Hangry will record your entry as ${resultName}.`);
+                                name = resultName; 
+                            }
+                        }
+                        else {
+                            console.log("Status: ", status);
+                        }
+
+                        // this must go here
+                        console.log("hit in nearbySearch callback");
+    
+                        // reconnect form that loses connection due to promises and await
+                        // then submit form
+                        document.body.appendChild(form);
+                        form.submit();
+                    });
+                }
+                catch(error) {
+                    console.log("hit the catch of nearby");
+                    console.error("nearby error: ", error);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            geo();
+        }
+
+        // if it's not add_favorite_form, get lat & lng
+        else {
+            geocoder.geocode({address: address}, (results, status) => {
+                if (status == "OK") {
+                    console.log("results[0]", results[0].geometry.location.lat);
+                    const res = results[0].geometry.location;
                     let hiddenLat = document.getElementById("lat")
                     let hiddenLng = document.getElementById("lng")
                     hiddenLat.value = res.lat();
                     hiddenLng.value = res.lng();
                 }
+                else {
+                    console.log("Status: ", status);
+                }
+                form.submit();
             })
-            .catch((error) => {
-                console.log("Geocode failed: " + error);
-            })
-            document.forms[formType].submit();
+        }
     }
 };
+
+const resetPlaceId = () => {
+    let placeId = document.getElementById("place_id");
+    if (placeId.value != "") {
+        placeId.value = "";
+    }
+}
 
 const getResultInfo = () => {
     console.log("hit")
