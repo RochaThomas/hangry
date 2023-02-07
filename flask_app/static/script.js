@@ -127,6 +127,8 @@ function initMap(){
     const userLat = Number(document.getElementById("lat").value);
     const userLng = Number(document.getElementById("lng").value);
 
+    console.log("user location: ", userLat, " ", userLng);
+
     const userLocation = { lat: userLat, lng: userLng };
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 17,
@@ -145,12 +147,12 @@ function initMap(){
     // expand request fields to take more than just name and geometry
     const request = {
         location: userLocation,
-        radius: 500,
+        radius: 1000,
         type: "restaurant",
     };
 
     const callback = (results, status) => {
-        // console.log(results);
+        console.log(results);
 
         // get the html list
         let listOfPlaces = document.getElementById("list-of-places");
@@ -425,9 +427,13 @@ function initAutocomplete() {
     }
 
     let restaurantName;
+    let lat;
+    let lng;
     if (document.getElementById("name") && 
         (document.forms["add_favorite_form"])) {
         restaurantName = document.querySelector("#name");
+        lat = document.querySelector("#lat");
+        lng = document.querySelector("#lng");
     }
     let streetAddress = document.querySelector("#street_address");
     let city = document.querySelector("#city");
@@ -500,6 +506,8 @@ function initAutocomplete() {
         if (place.name) {
             autoRestaurantName = place.name;
             restaurantName.value = autoRestaurantName;
+            lat.value = place.geometry.location.lat();
+            lng.value = place.geometry.location.lng();
         }
         if (place.place_id) {
             placeId.value = place.place_id;
@@ -512,6 +520,65 @@ function initAutocomplete() {
     }
     autocomplete.addListener("place_changed", fillInAddress);
 };
+
+const initFavoritesMap = () => {
+    // get centroid to for center of initialization
+    // average lats and average lngs
+    let centroid = {};
+    let avgLat = 0;
+    let avgLng = 0;
+
+    const locations = document.getElementById("location_id").children;
+    let processedCoords = {}
+
+    console.log("locations: ", locations);
+    for (let i = 1; i < locations.length; i++) {
+        lat = parseFloat(locations[i].getAttribute("lat"));
+        lng = parseFloat(locations[i].getAttribute("lng"));
+        processedCoords[locations[i].value] = {lat: lat, lng: lng};
+        avgLat += lat;
+        avgLng += lng;
+    }
+
+    avgLat = avgLat / (locations.length - 1);
+    avgLng = avgLng / (locations.length - 1);
+    centroid = {lat: avgLat, lng: avgLng};
+    
+    // develop map
+    const mapStyling = [
+        {
+            featureType: "poi.business.food_and_drink",
+            stylers: [
+                {visibility: "off"}
+            ],
+        }
+    ]
+    
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 17,
+        center: centroid,
+        styles: mapStyling,
+    });
+
+    // markers for user's locations (home, work, etc.)
+    for (let key in processedCoords) {
+        new google.maps.Marker({
+            position: processedCoords[key],
+            map: map,
+        })
+    }
+
+
+    // try adding event listener for the locations list input
+    // onchange... run function that recenters the map and displays
+    // all the favorites for a location
+    let locationId = document.getElementById("location_id");
+
+    locationId.addEventListener('change', () => {
+        map.panTo(processedCoords[locationId.value]);
+    })
+    
+}
 
 // fix error handling of user location
 const getUserLocation = () => {
@@ -587,10 +654,14 @@ const geocode = () => {
         
         if (formType =="add_favorite_form") {
             // get name from input
-            let name = document.getElementById("name").value;
+            let name = document.getElementById("name");
+
             // get hidden place id
-            // goal of this if statement is to get the correct place id into the request form
+            // goal of this if statement is to get the correct place id, lat, and lng into the request form
             let placeId = document.getElementById("place_id");
+            let hiddenLat = document.getElementById("lat");
+            let hiddenLng = document.getElementById("lng");
+            
             
             // set an HTML connection for PlacesService to connect to
             const connect = document.getElementById("connectToNearby");
@@ -639,18 +710,23 @@ const geocode = () => {
                     }, (results, status) => {
                         if (status == 'OK') {
                             console.log("result from callback: ", results);
-    
-                            // set hidden place_id using results of nearbySearch
-                            let resultId = results[0].place_id
-                            placeId.value = resultId;
-    
+                            
+                            // set hidden place_id, lat, and lng using results of nearbySearch
+                            placeId.value = results[0].place_id;
+                            hiddenLat.value = results[0].geometry.location.lat();
+                            hiddenLng.value = results[0].geometry.location.lng();
+                            console.log(placeId.value)
+                            console.log(hiddenLat.value)
+                            console.log(hiddenLng.value)
+                            
                             // get the name of the location from results
                             let resultName = results[0].name;
+                            
                             // compare names
                             if (name != resultName) {
                                 // if not equal alert the difference and what it is now saved as
                                 alert(`According to Google's database, the name of the location corresponding to the address you entered is ${resultName}, not ${name}. Hangry will record your entry as ${resultName}.`);
-                                name = resultName; 
+                                name.value = resultName; 
                             }
                         }
                         else {
@@ -824,5 +900,6 @@ const openLinkNewTab = (link) => {
 
 // getResultInfo();
 window.initMap = initMap;
+window.initFavoritesMap = initFavoritesMap;
 window.initAutocomplete = initAutocomplete;
 window.getResultInfo = getResultInfo;

@@ -28,6 +28,16 @@
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
+                <input type="hidden" name="locations" id="locations" value="{{locations}}">
+                <div class="input_div">
+                    <label for="location_id">Choose a Location to Add a New Favorite:</label>
+                    <select name="location_id" id="location_id">
+                        <option value="" selected>Choose a Location</option>
+                        {% for location in locations %}
+                            <option lat="{{location.lat}}" lng="{{location.lng}}" value="{{location.id}}">{{location.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 <div class="input_div">
                     <label for="name">Name: </label>
                     <input type="text" name="name" id="name" onchange="resetPlaceId()">
@@ -50,20 +60,14 @@
                         <label for="zip_code">Zip Code </label>
                         <input type="text" name="zip_code" id="zip_code" onchange="resetPlaceId()">
                     </div>
+                    <input type="hidden" id="lat" name="lat">
+                    <input type="hidden" id="lng" name="lng">
                     <input type="hidden" id="place_id" name="place_id">
-                </div>
-                <div class="input_div">
-                    <label for="location_id">Location List:</label>
-                    <select name="location_id" id="location_id">
-                        <option value="" selected>Choose a Location</option>
-                        {% for location in locations %}
-                            <option value="{{location.id}}">{{location.name}}</option>
-                        {% endfor %}
-                    </select>
                 </div>
                 <input class="button box_button add_button" id="add_button" type="button" value="Add" onclick="geocode()" onmouseover="add_react(this)" onmouseout="add_unreact(this)">
             </form>
         </div>
+        <div class="map" id="map"></div>
         <div class="your_favorites">
             <h2>Your Favorites</h2>
             <!-- fill in with jinja code -->
@@ -86,7 +90,7 @@
 </body>
 <script src="../static/script.js"></script>
 <script 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initAutocomplete&libraries=places&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initFavoritesMap&libraries=places&v=weekly"
     defer
 ></script>
 </html>
