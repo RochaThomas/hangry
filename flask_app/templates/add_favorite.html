@@ -78,7 +78,14 @@
                         <ul>
                             {% for users_favorite in users_favorites %}
                                 {% if users_favorite.location_id == location.id %}
-                                    <li class="favorite_names">{{users_favorite.name}}</li>
+                                    <li 
+                                        class="favorites" 
+                                        lat="{{users_favorite.lat}}" 
+                                        lng="{{users_favorite.lng}}" 
+                                        location_id="{{users_favorite.location_id}}"
+                                    >
+                                        {{users_favorite.name}}
+                                    </li>
                                 {% endif %}
                             {% endfor %}
                         </ul>

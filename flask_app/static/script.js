@@ -522,6 +522,8 @@ function initAutocomplete() {
 };
 
 const initFavoritesMap = () => {
+    // connect autocomplete
+    initAutocomplete();
     // get centroid to for center of initialization
     // average lats and average lngs
     let centroid = {};
@@ -555,7 +557,7 @@ const initFavoritesMap = () => {
     ]
     
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 17,
+        zoom: 12,
         center: centroid,
         styles: mapStyling,
     });
@@ -568,6 +570,53 @@ const initFavoritesMap = () => {
         })
     }
 
+    // markers for all the favorites
+    let favorites = document.getElementsByClassName("favorites");
+    let markers = new Map();
+    let newMarker;
+    let favLat;
+    let favLng;
+    let favLocId;
+    let coords;
+
+    // creates new markers for all favorites, keeps display hidden, and stores them in a map
+    // they will be displayed once their location is selected
+    for (let i = 0; i < favorites.length; i++) {
+        favLat = parseFloat(favorites[i].getAttribute("lat"));
+        favLng = parseFloat(favorites[i].getAttribute("lng"));
+        favLocId = parseInt(favorites[i].getAttribute("location_id"));
+        coords = {lat: favLat, lng: favLng};
+
+        // map set to null to hide markers
+        // map will be set when location is chosen
+        // EDIT THE LOGO OF THE MARKERS NOW!!!! <<<<<<<<>>>>>>>
+        newMarker = new google.maps.Marker({
+            position: coords,
+            map: null,
+        })
+        if (markers.get(favLocId)) {
+            markers.get(favLocId).push(newMarker);
+        }
+        else {
+            markers.set(favLocId, [newMarker])
+        }
+    }
+
+    const showMarkers = (markers) => {
+        for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+
+    const hideMarkers = (markers, id) => {
+        for (let [key, value] of markers) {
+            if (key != id) {
+                for (let i = 0; i < value.length; i++) {
+                    value[i].setMap(null);
+                }
+            }
+        }
+    }
 
     // try adding event listener for the locations list input
     // onchange... run function that recenters the map and displays
@@ -576,6 +625,8 @@ const initFavoritesMap = () => {
 
     locationId.addEventListener('change', () => {
         map.panTo(processedCoords[locationId.value]);
+        showMarkers(markers.get(parseInt(locationId.value)));
+        hideMarkers(markers, parseInt(locationId.value));
     })
     
 }
