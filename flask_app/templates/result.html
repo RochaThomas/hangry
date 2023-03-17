@@ -7,7 +7,7 @@
     <title>Hangry: Result</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<body onload="initMap()">
+<body>
     <div class="navbar">
         <h2 id="page_title">Hangry</h2>
         <div class="button_div">
@@ -18,26 +18,30 @@
             <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
         </div>
     </div>
-    <div class="content result_content">
-        <h2>GO GET YOUR GRUB AT {{restaurant.name|upper}}!!!</h2>
-        <div class="result_display">
-            <div class="result_info">
-                <h3>Address: </h3>
-                <div class="address">
-                    <h4 class="restaurant_info">Street     {{restaurant.street}}</h4>
-                    <h4 class="restaurant_info">City       {{restaurant.city}}</h4>
-                    <h4 class="restaurant_info">Zipcode    {{restaurant.zipcode}}</h4>
-                </div>
-                <h3 class="restaurant_info">How Far Away It Is:    {{restaurant.min_away}} minutes</h3>
+    <div class="one-time-result-content">
+        <h1 class="result-page-title">Cure Your Hanger!</h1>
+        <div class="one-time-result-container">
+            <div class="result-container">
+                <h2>Go to {{restaurant.name}}!</h2>
+                <input type="hidden" id="result_id" name="result_id" value={{restaurant.google_id}}>
+                <div id="result-info" class="result-info"></div>
             </div>
-            <div class="map_div" id="map">
-                <p>this is where the map will go</p>
+            <div class="result-options-container">
+                <div class="result-options-try-again">
+                    <h3>Not What You Were Looking For?</h3>
+                    <p>If this option doesn't sound good, click "Try Again" to get another restaurant.</p>
+                    <button class="try-again-button"><a class="try-again-link" href="/one-time-user/result">Try Again</a></button>
+                </div>
+                <div class="result-options-home">
+                    <h3>Hanger Solved? Head Home!</h3>
+                    <button class="result-options-home-button"><a class="result-options-home-link" href="/">Home</a></button>
+                </div>
             </div>
         </div>
-        <p id="address" style="display: none;">{{restaurant.street}}, {{restaurant.city}} {{restaurant.zipcode}}</p>
     </div>
-    <script src="/static/script.js"></script>
-    <!-- add key to use, saved on comp -->
-    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"></script> -->
-</body>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&libraries=places&callback=getResultInfo&v=weekly"
+    defer
+></script>
+<script src="/static/script.js"></script></body>
 </html>

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangry: Add Favorite</title>
     <link rel="stylesheet" href="../static/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <div class="navbar">
@@ -32,9 +33,17 @@
                 <div class="input_div">
                     <label for="location_id">Choose a Location to Add a New Favorite:</label>
                     <select name="location_id" id="location_id">
-                        <option value="" selected>Choose a Location</option>
+                        {% if (prev_id|int(-1) == -1) %}
+                            <option value="-1" selected disabled>Choose a Location</option>
+                        {% else %}
+                            <option value="-1" disabled>Choose a Location</option>
+                        {% endif %}
                         {% for location in locations %}
-                            <option lat="{{location.lat}}" lng="{{location.lng}}" value="{{location.id}}">{{location.name}}</option>
+                            {% if (prev_id|int(-1) == location.id|int) %}
+                                <option selected lat="{{location.lat}}" lng="{{location.lng}}" value="{{location.id}}">{{location.name}}</option>
+                            {% else %}
+                                <option lat="{{location.lat}}" lng="{{location.lng}}" value="{{location.id}}">{{location.name}}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>

@@ -21,13 +21,19 @@ def disp_add_favorite():
         session.pop('location_id')
         session.pop('hidden')
 
+    if session.get('prev_id'):
+        prev_id = session['prev_id']
+    else:
+        prev_id = -1
+
     locations = Location.get_all_locations(data)
     users_favorites = Users_favorite.get_all_favorites_for_user(data)
-    return render_template('add_favorite.html', locations=locations, users_favorites=users_favorites)
+    return render_template('add_favorite.html', locations=locations, users_favorites=users_favorites, prev_id=prev_id)
 
 @app.route('/restaurant/add_favorite/process', methods=['POST'])
 def add_favorite():
     print(request.form)
+    session['prev_id'] = request.form['location_id']
     if not Restaurant.is_valid_restaurant_entry(request.form):
         return redirect('/restaurant/add_favorite')
     restaurant_id = Restaurant.add_restaurant(request.form)

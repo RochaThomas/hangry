@@ -88,6 +88,11 @@ def disp_dashboard():
     data = {
         'id': session['user_id']
     }
+
+    # reset prev id for adding favorites if this external link is clicked
+    if session.get('prev_id'):
+        session.pop('prev_id')
+    
     user = User.get_user_by_id(data)
     return render_template('dashboard.html', user=user)
 

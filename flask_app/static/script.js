@@ -524,29 +524,11 @@ function initAutocomplete() {
 const initFavoritesMap = () => {
     // connect autocomplete
     initAutocomplete();
-    // get centroid to for center of initialization
-    // average lats and average lngs
-    let centroid = {};
-    let avgLat = 0;
-    let avgLng = 0;
-
-    const locations = document.getElementById("location_id").children;
-    let processedCoords = {}
-
-    console.log("locations: ", locations);
-    for (let i = 1; i < locations.length; i++) {
-        lat = parseFloat(locations[i].getAttribute("lat"));
-        lng = parseFloat(locations[i].getAttribute("lng"));
-        processedCoords[locations[i].value] = {lat: lat, lng: lng};
-        avgLat += lat;
-        avgLng += lng;
-    }
-
-    avgLat = avgLat / (locations.length - 1);
-    avgLng = avgLng / (locations.length - 1);
-    centroid = {lat: avgLat, lng: avgLng};
     
     // develop map
+    // bounds will be used to set zoom on map markers dynamically
+    let bounds = new google.maps.LatLngBounds();
+
     const mapStyling = [
         {
             featureType: "poi.business.food_and_drink",
@@ -557,53 +539,119 @@ const initFavoritesMap = () => {
     ]
     
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 12,
-        center: centroid,
+        zoom: 14,
         styles: mapStyling,
     });
 
+    
     // markers for user's locations (home, work, etc.)
-    for (let key in processedCoords) {
-        new google.maps.Marker({
-            position: processedCoords[key],
-            map: map,
-        })
+    let lat, lng, name, location;
+    let locationCoords = {};
+    const locationsLabel = {
+        fontFamily: "Material Icons",
+        color: "#b41412",
+        fontSize: "20px",
+        text: "\ue838",
     }
+    
+    const locations = document.getElementById("location_id").children;
+    let processedLocations = new Map();
+
+    for (let i = 1; i < locations.length; i++) {
+        lat = parseFloat(locations[i].getAttribute("lat"));
+        lng = parseFloat(locations[i].getAttribute("lng"));
+        locationCoords = {lat: lat, lng: lng};
+        name = locations[i].textContent;
+        location = parseInt(locations[i].value);
+
+        let marker = new google.maps.Marker({
+            position: locationCoords,
+            map: map,
+            label: locationsLabel,
+        })
+        bounds.extend(locationCoords);
+
+        let info = new google.maps.InfoWindow({content: name});
+        marker.addListener("mouseover", () => {
+            info.open(map, marker);
+        })
+        marker.addListener("mouseout", () => {
+            info.close(map, marker);
+        })
+
+        processedLocations.set(location, locationCoords);
+    }
+    map.fitBounds(bounds);
+
+    console.log("processed locations: ", processedLocations);
 
     // markers for all the favorites
     let favorites = document.getElementsByClassName("favorites");
     let markers = new Map();
-    let newMarker;
     let favLat;
     let favLng;
+    let favName;
     let favLocId;
     let coords;
+    let lastId;
+
+    const favoritesLabel = {
+        fontFamily: "Material Icons",
+        color: "#b41412",
+        fontSize: "20px",
+        text: "\ue87d",
+    }
 
     // creates new markers for all favorites, keeps display hidden, and stores them in a map
     // they will be displayed once their location is selected
+    // as you iterate through favorites, set appropriate bounds
+    let favsBounds = new google.maps.LatLngBounds()
+
     for (let i = 0; i < favorites.length; i++) {
         favLat = parseFloat(favorites[i].getAttribute("lat"));
         favLng = parseFloat(favorites[i].getAttribute("lng"));
         favLocId = parseInt(favorites[i].getAttribute("location_id"));
+        // initialize new bounds when the location id changes
+        // this should take advantage of the fact that favs lists all favs for
+        // 1 location then all the favs for the next
+        if ((i != 0) && (favLocId == lastId)) {
+            favsBounds = new google.maps.LatLngBounds();
+        }
+        favName = favorites[i].textContent;
         coords = {lat: favLat, lng: favLng};
 
         // map set to null to hide markers
         // map will be set when location is chosen
-        // EDIT THE LOGO OF THE MARKERS NOW!!!! <<<<<<<<>>>>>>>
-        newMarker = new google.maps.Marker({
+        let newMarker = new google.maps.Marker({
             position: coords,
             map: null,
+            label: favoritesLabel,
         })
         if (markers.get(favLocId)) {
             markers.get(favLocId).push(newMarker);
+            markers.get(favLocId)[0].extend(coords);
         }
         else {
-            markers.set(favLocId, [newMarker])
+            favsBounds.extend(processedLocations.get(favLocId));
+            markers.set(favLocId, [favsBounds, newMarker]);
         }
+
+        // make info windows that display favorites names
+        let info = new google.maps.InfoWindow({content: favName});
+        newMarker.addListener("mouseover", () => {
+            info.open(map, newMarker);
+        })
+        newMarker.addListener("mouseout", () => {
+            info.close(map, newMarker);
+        })
+
+        // setting lastId so that we can tell when the next location's favorites begin
+        lastId = favLocId;
     }
+    console.log("favorites' markers: ", markers);
 
     const showMarkers = (markers) => {
-        for (let i = 0; i < markers.length; i++) {
+        for (let i = 1; i < markers.length; i++) {
             markers[i].setMap(map);
         }
     }
@@ -611,24 +659,99 @@ const initFavoritesMap = () => {
     const hideMarkers = (markers, id) => {
         for (let [key, value] of markers) {
             if (key != id) {
-                for (let i = 0; i < value.length; i++) {
+                for (let i = 1; i < value.length; i++) {
                     value[i].setMap(null);
                 }
             }
         }
     }
 
-    // try adding event listener for the locations list input
+    // set map markers function will show the appropriate markers based
+    // on the selected location
+    const setMapMarkers = (locationId) => {
+        map.fitBounds(markers.get(locationId)[0]);
+        showMarkers(markers.get(locationId));
+        hideMarkers(markers, locationId);
+    }
+    
+    // set map markers if there is a previous location id
+    let locationId = document.getElementById("location_id");
+    if (parseInt(locationId.value) > -1) {
+        setMapMarkers(parseInt(locationId.value));
+    }
+
+    // event listener for the locations list input
     // onchange... run function that recenters the map and displays
     // all the favorites for a location
-    let locationId = document.getElementById("location_id");
 
     locationId.addEventListener('change', () => {
-        map.panTo(processedCoords[locationId.value]);
-        showMarkers(markers.get(parseInt(locationId.value)));
-        hideMarkers(markers, parseInt(locationId.value));
+        setMapMarkers(parseInt(locationId.value))
     })
+}
+
+const initLocationsMap = () => {
+    // connect autocomplete
+    initAutocomplete();
+
+    // develop map
+    // bounds will be used to set zoom on map markers dynamically
+    let bounds = new google.maps.LatLngBounds();
+
+    const mapStyling = [
+        {
+            featureType: "poi.business.food_and_drink",
+            stylers: [
+                {visibility: "off"}
+            ],
+        }
+    ]
     
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 14,
+        styles: mapStyling,
+    });
+
+    
+    // markers for user's locations (home, work, etc.)
+    let lat, lng, name, location;
+    let locationCoords = {};
+    const locationsLabel = {
+        fontFamily: "Material Icons",
+        color: "#b41412",
+        fontSize: "20px",
+        text: "\ue838",
+    }
+    
+    const locations = document.getElementById("locations").children;
+    let processedLocations = new Map();
+
+    for (let i = 0; i < locations.length; i++) {
+        lat = parseFloat(locations[i].getAttribute("lat"));
+        lng = parseFloat(locations[i].getAttribute("lng"));
+        locationCoords = {lat: lat, lng: lng};
+        name = locations[i].textContent;
+        location = parseInt(locations[i].value);
+
+        let marker = new google.maps.Marker({
+            position: locationCoords,
+            map: map,
+            label: locationsLabel,
+        })
+        bounds.extend(locationCoords);
+
+        let info = new google.maps.InfoWindow({content: name});
+        marker.addListener("mouseover", () => {
+            info.open(map, marker);
+        })
+        marker.addListener("mouseout", () => {
+            info.close(map, marker);
+        })
+
+        processedLocations.set(location, locationCoords);
+    }
+    map.fitBounds(bounds);
+
+    console.log("processed locations: ", processedLocations);
 }
 
 // fix error handling of user location
@@ -952,5 +1075,6 @@ const openLinkNewTab = (link) => {
 // getResultInfo();
 window.initMap = initMap;
 window.initFavoritesMap = initFavoritesMap;
+window.initLocationsMap = initLocationsMap;
 window.initAutocomplete = initAutocomplete;
 window.getResultInfo = getResultInfo;

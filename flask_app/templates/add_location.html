@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangry: Add Location</title>
     <link rel="stylesheet" href="../static/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
     <div class="navbar">
@@ -57,11 +58,12 @@
                 <input class="button box_button add_button" id="add_button" type="button" value="Add" onmouseover="add_react(this)" onmouseout="add_unreact(this)" onclick="geocode()">
             </form>
         </div>
+        <div class="map" id="map"></div>
         <div class="your_locations">
             <h2>Your Locations</h2>
-            <ul>
+            <ul id="locations">
                 {% for location in locations %}
-                    <li>{{location.name}}</li>
+                    <li lat="{{location.lat}}" lng="{{location.lng}}">{{location.name}}</li>
                 {% endfor %}
             </ul>
         </div>
@@ -69,7 +71,7 @@
 </body>
 <script src="../static/script.js"></script>
 <script 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initAutocomplete&libraries=places&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initLocationsMap&libraries=places&v=weekly"
     defer
 ></script>
 </html>

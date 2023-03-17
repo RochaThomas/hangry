@@ -17,6 +17,9 @@ def disp_add_location():
     if session.get('location_id') or session.get('hidden'):
         session.pop('location_id')
         session.pop('hidden')
+    # reset prev id for adding favorites if this external link is clicked
+    if session.get('prev_id'):
+        session.pop('prev_id')
 
     user = User.get_user_by_id(data)
     locations = Location.get_all_locations(data)
