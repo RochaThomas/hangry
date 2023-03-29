@@ -17,10 +17,10 @@ def disp_add_favorite():
     
     # reset randomization selection when external link is clicked
     # resets 'hidden' and 'location_id' in session
-    if session.get('location_id') or session.get('hidden'):
+    if session.get('location_id'):
         session.pop('location_id')
+    if session.get('hidden'):
         session.pop('hidden')
-
     if session.get('prev_id'):
         prev_id = session['prev_id']
     else:

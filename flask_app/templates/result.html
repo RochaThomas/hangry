@@ -24,9 +24,11 @@
             <div class="result-container">
                 <h2>Go to {{restaurant.name}}!</h2>
                 <input type="hidden" id="result_id" name="result_id" value={{restaurant.google_id}}>
+                <input type="hidden" id="user_loc" name="user_loc" lat="{{lat}}" lng="{{lng}}">
                 <div id="result-info" class="result-info"></div>
             </div>
             <div class="result-options-container">
+                <div id="map" class="result-options-map-route"></div>
                 <div class="result-options-try-again">
                     <h3>Not What You Were Looking For?</h3>
                     <p>If this option doesn't sound good, click "Try Again" to get another restaurant.</p>

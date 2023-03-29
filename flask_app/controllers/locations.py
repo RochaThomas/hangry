@@ -25,6 +25,35 @@ def disp_add_location():
     locations = Location.get_all_locations(data)
     return render_template('add_location.html', user=user, locations=locations)
 
+@app.route('/location/first_location')
+def disp_first_location():
+    if 'user_id' not in session:
+        return redirect('/login')
+    return render_template('first_location.html', user_id=session['user_id'])
+
+@app.route('/location/first_location/map')
+def disp_first_location_map():
+    if 'user_id' not in session:
+        return redirect('/login')
+    if 'lat' in session and 'lng' in session:
+        lat = float(session['lat'])
+        lng = float(session['lng'])
+    else:
+        # change this location later
+        lat = 37.3387
+        lng = -121.8853
+    return render_template('first_location_map.html', lat=lat, lng=lng)
+
+@app.route('/location/first_location/process', methods=['POST'])
+def add_first_location():
+    if not Location.is_valid_location_entry(request.form):
+        return redirect('/location/first_location')
+    session['location_id'] = Location.add_location(request.form)
+    # change the redirect to a page with map similar to one time user map
+    session['lat'] = request.form['lat']
+    session['lng'] = request.form['lng']
+    return redirect("/location/first_location/map")
+
 @app.route('/location/add/process', methods=['POST'])
 def add_location():
     if not Location.is_valid_location_entry(request.form):

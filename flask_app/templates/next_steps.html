@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">I NEED FOOD NOW!!!</button></a>
+            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
+            <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
+            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+        </div>
+    </div>
+    <div class="next-steps-content">
+        <h1>You're All Set!</h1>
+        <div class="next-steps-message">
+            <h3 class="next-steps-message-title">Next Steps: </h3>
+            <div class="next-steps-message-content">
+                <p class="next-steps-message-info">
+                    Congratulations! You've successfully set up your first location and your favorites for that location.
+                    Now you can get to solving you Hanger! You can also set up more locations and add more favorites! Choose
+                    from the following options listed below.
+                </p>
+            </div>
+        </div>
+        <div class="next-steps-options-container">
+            <div class="next-steps-option-inverted">
+                <h3 class="options-title-inverted">Hungry now? Click below to pick somewhere to eat!</h3>
+                <a href="/dashboard"><button class="next-steps-options-button-inverted">Solve Some Hanger!</button></a>
+            </div>
+            <div class="next-steps-option">
+                <h3 class="options-title">One location not enough? Set up another below!</h3>
+                <a href="/location/add"><button class="next-steps-options-button">Add Another Location</button></a>
+            </div>
+            <div class="next-steps-option">
+                <h3 class="options-title">Forgot to add a favorite? Add more here!</h3>
+                <a href="/restaurant/add_favorite"><button class="next-steps-options-button">Add More Favorites</button></a>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/static/script.js"></script>
+</html>

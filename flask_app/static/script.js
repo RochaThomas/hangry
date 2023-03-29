@@ -314,7 +314,7 @@ function initMap(){
                     placeInput.id = place.place_id;
                     placeInput.classList.add("selected");
                     placeInput.name = place.place_id;
-                    placeInput.value = place.name;
+                    placeInput.value = [place.name,";;",place.geometry.location.lat(),";;",place.geometry.location.lng()];
 
                     let priceFill = "",
                         priceShadow = "",
@@ -430,7 +430,7 @@ function initAutocomplete() {
     let lat;
     let lng;
     if (document.getElementById("name") && 
-        (document.forms["add_favorite_form"])) {
+        (document.forms["add_favorite_form"] || document.forms["manual-restaurant-add-form"])) {
         restaurantName = document.querySelector("#name");
         lat = document.querySelector("#lat");
         lng = document.querySelector("#lng");
@@ -754,6 +754,35 @@ const initLocationsMap = () => {
     console.log("processed locations: ", processedLocations);
 }
 
+const initResultsRouteMap = (destinationLat, destinationLng) => {
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    const calculateAndDisplayResultRoute = () => {
+        directionsService
+            .route({
+                origin: {
+                    lat: parseFloat(document.getElementById("user_loc").getAttribute("lat")),
+                    lng: parseFloat(document.getElementById("user_loc").getAttribute("lng")),
+                },
+                destination: {lat: destinationLat, lng: destinationLng},
+                travelMode: google.maps.TravelMode.DRIVING,
+            })
+            .then((response) => {
+                directionsRenderer.setDirections(response);
+            })
+            .catch((e) => {
+                console.error("Error: ", e);
+            })
+    }
+
+    // CHANGE ZOOM AND CENTER BASED ON USERS LOCATION AND THE RESULT
+    const map = new google.maps.Map(document.getElementById("map"));
+
+    directionsRenderer.setMap(map);
+    calculateAndDisplayResultRoute(directionsService, directionsRenderer);
+}
+
+
 // fix error handling of user location
 const getUserLocation = () => {
     if (navigator.geolocation) {
@@ -955,25 +984,26 @@ const resetPlaceId = () => {
 }
 
 const getResultInfo = () => {
-    console.log("hit")
     let resultInfo = document.getElementById("result-info");
     const service = new google.maps.places.PlacesService(resultInfo);
     const placeId = document.getElementById('result_id').value;
-
+    
     service.getDetails({
         placeId: placeId,
-        fields: ['formatted_address', 'opening_hours', 'photos', 'price_level', 'url', 'utc_offset_minutes','website'],
+        fields: ['formatted_address', 'geometry.location', 'opening_hours', 'photos', 'price_level', 'url', 'utc_offset_minutes','website'],
     }, (result, status) => {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             console.log(result);
             let restaurantHours = "",
-                operationStatus = "",
-                firstPhoto = "",
-                restOfPhotos = "",
-                linkToGooglePage = "",
-                priceFill = "",
-                priceShadow = "";
+            operationStatus = "",
+            firstPhoto = "",
+            restOfPhotos = "",
+            linkToGooglePage = "",
+            priceFill = "",
+            priceShadow = "";
             
+            initResultsRouteMap(result.geometry.location.lat(), result.geometry.location.lng());
+
             // price set from nearby search results
             for (let i = 0; i < result.price_level; i++) {
                 priceFill += '$';
@@ -1078,3 +1108,4 @@ window.initFavoritesMap = initFavoritesMap;
 window.initLocationsMap = initLocationsMap;
 window.initAutocomplete = initAutocomplete;
 window.getResultInfo = getResultInfo;
+window.initResultsRouteMap = initResultsRouteMap;

@@ -39,7 +39,79 @@ def disp_result():
     data = {
         'id': session['result']
     }
-    return render_template('result.html', restaurant=Restaurant.get_one_restaurant(data))
+    location_data = {
+        'id': session['user_id'],
+        'location_id': session['location_id'],
+    }
+    location_info = Location.get_location_by_id(location_data)
+    lat = location_info.lat
+    lng = location_info.lng
+    print(location_info)
+    return render_template('result.html', restaurant=Restaurant.get_one_restaurant(data), lat=lat, lng=lng)
+
+@app.route('/favorites/first_location/next_steps')
+def process_restaurants_disp_next_steps():
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    for restaurant in session['restaurants']:
+        restaurant_id = Restaurant.add_restaurant({
+            'name': restaurant['name'],
+            'lat': restaurant['lat'],
+            'lng': restaurant['lng'],
+            'place_id': restaurant['placeId'],
+        })
+        Users_favorite.add_users_favorite({
+            'user_id': session['user_id'],
+            'restaurant_id': restaurant_id,
+            'location_id': session['location_id'],
+        })
+    return render_template('next_steps.html')
+
+@app.route('/favorites/first_location/manual_entry')
+def disp_first_location_favorites_manual_entry():
+    if 'user_id' not in session:
+        return redirect('/dashboard')
+    return render_template('first_location_favorites_manual_entry.html', restaurants = session['restaurants'])
+
+@app.route('/favorites/first_location/process_manual_entry', methods=['POST'])
+def first_location_process_manual_entry():
+    if not Restaurant.is_valid_one_time_restaurant_entry(request.form):
+        return redirect("/favorites/first_location/manual_entry")
+    restaurants = session['restaurants']
+    # make sure the restaurant they are trying to add isn't already on the list
+    dup = False
+    print(restaurants)
+    for restaurant in restaurants:
+        if restaurant['placeId'] == request.form['place_id']:
+            dup = True
+            break
+    if dup == False:
+        restaurants.append({
+            'name': request.form['name'],
+            'placeId': request.form['place_id'],
+            'lat': request.form['lat'],
+            'lng': request.form['lng']
+        })
+    session['restaurants'] = restaurants
+
+    return redirect("/favorites/first_location/manual_entry")
+
+@app.route('/favorites/first_location/process_map', methods=['POST'])
+def add_favorites_from_map():
+    restaurants = []
+
+    for key in request.form:
+        info = request.form[key].split(',;;,')
+        restaurants.append({
+            'name': info[0],
+            'lat': info[1],
+            'lng': info[2],
+            'placeId': key,
+        })
+    
+    session['restaurants'] = restaurants
+    return redirect('/favorites/first_location/manual_entry')
 
 @app.route('/favorites/randomize/location_list', methods=['POST'])
 def disp_narrowed_options():

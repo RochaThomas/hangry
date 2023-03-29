@@ -75,7 +75,7 @@
     font-weight: bold;
 }
 
-.content, .user-location-content, .manual-entry-content, .one-time-map-content, .manual-restaurant-add-content, .one-time-result-content {
+.content, .user-location-content, .manual-entry-content, .one-time-map-content, .manual-restaurant-add-content, .one-time-result-content, .next-steps-content {
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -123,7 +123,7 @@
     padding: 25px;
     background-color: #f5f5f5;
 }
-.register {
+.register, .quick_sign_up_register {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -135,13 +135,42 @@
     border: black thick solid;
     border-radius: 5px;
 }
-.register label, .login_form label {
+.quick_sign_up_register {
+    width: fit-content;
+}
+.register label, .quick_sign_up_register label, .login_form label {
     font-size: 16pt;
 }
-.register input, .login_form input {
+.register input, .quick_sign_up_register input, .login_form input {
     width: 200px;
 }
-.reg_error, .login_error, .location_entry_error , .restaurant_entry_error, .selection_error .error {
+
+.quick_sign_up_info {
+    display: flex;
+}
+.quick_sign_up_text {
+    color: #e00a05;
+}
+.quick_sign_up_user_info, .quick_sign_up_location_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 300px;
+}
+.quick_sign_up_location_info{
+    justify-content: center;
+    gap: 15px;
+}
+.quick_sign_up_location_label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 200px;
+    text-align: center;
+}
+
+.reg_error, .login_error, .location_entry_error , .restaurant_entry_error, .selection_error, .error {
     text-align: center;
     color: #e00a05;
     font-size: 12pt;
@@ -311,7 +340,7 @@
 }
 
 /* allow user location alert page */
-.user-location-content, .manual-entry-content, .one-time-map-content, .manual-restaurant-add-content {
+.user-location-content, .manual-entry-content, .one-time-map-content, .manual-restaurant-add-content, .next-steps-content {
     flex-direction: column;
     justify-content: center;
     gap: 25px;
@@ -422,7 +451,7 @@
     padding: 5px 100px 0px 100px;
     gap: 25px;
 }
-#manual-entry-submit-button, .manual-restaurant-add-submit, .solve-my-hanger {
+#manual-entry-submit-button, .manual-restaurant-add-submit, .solve-my-hanger, .first-location-add-restaurants {
     height: 30px;
     width: 125px;
     font-size: 15px;
@@ -523,7 +552,7 @@ input:checked + .slider:before {
 .map-title {
     margin-bottom: 10px;
 }
-.directions {
+.directions, .next-steps-message {
     display: flex;
     border: #e00a05 medium solid;
     border-radius: 5px;
@@ -531,14 +560,14 @@ input:checked + .slider:before {
     padding: 5px 10px;
     margin-bottom: 10px;
 }
-.directions-content {
+.directions-content, .next-steps-message-content {
     margin-top: 3px;
 }
-.directions-message, .extra-info {
+.directions-message, .extra-info, .next-steps-message-info {
     margin-left: 10px;
     font-size: 18px;
 }
-.directions-title, .extra-info {
+.directions-title, .next-steps-message-title, .extra-info {
     color: #e00a05;
 }
 .extra-info {
@@ -716,7 +745,7 @@ input:checked + .slider:before {
 .form-body .input-container input {
     font-size: medium;
 }
-.manual-restaurant-add-submit, .solve-my-hanger, .try-again-button, .result-options-home-button {
+.manual-restaurant-add-submit, .solve-my-hanger, .first-location-add-restaurants, .try-again-button, .result-options-home-button,.result-options-quick-sign-up-button {
     color: #ffffff;
     background-color: #e00a05;
     border: #e00a05 solid thin;
@@ -726,7 +755,7 @@ input:checked + .slider:before {
     height: fit-content;
     padding: 5px 10px;
 }
-.solve-my-hanger-link, .try-again-link, .result-options-home-link {
+.solve-my-hanger-link, .try-again-link, .result-options-home-link, .result-options-quick-sign-up-link, .first-location-add-restaurants-link {
     color: #ffffff;
     font-size: larger;
     text-decoration: none;
@@ -820,7 +849,7 @@ input:checked + .slider:before {
     flex-direction: column;
     gap: 25px;
 }
-.result-options-try-again, .result-options-home {
+.result-options-try-again, .result-options-home, .result-options-quick-sign-up {
     background-color: #ffffff;
     height: 125px;
     display: flex;
@@ -833,4 +862,65 @@ input:checked + .slider:before {
 }
 .result-options-home {
     height: 75px;
+}
+
+.next-steps-message-title {
+    width: 250px;
+    margin-top: 1px;
+    text-decoration: underline;
+}
+.next-steps-options-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+.next-steps-option, .next-steps-option-inverted {
+    width: 300px;
+    border: #e00a05 solid medium;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+}
+.options-title, .options-title-inverted {
+    text-align: center;
+    margin: 10px;
+    border: #e00a05 medium solid;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: none;
+    padding: 3px;
+}
+.options-title-inverted {
+    border-color: #ffffff;
+}
+.next-steps-option-inverted {
+    background-color: #e00a05;
+    border: #e00a05 solid medium;
+    color: #ffffff;
+}
+.next-steps-options-button, .next-steps-options-button-inverted {
+    border: solid medium #ffffff;
+    border-radius: 5px;
+    background-color: #e00a05;
+    color: #ffffff;
+    width: 200px;
+    height: 35px;
+    font-size: 18px;
+    margin: 10px;
+}
+.next-steps-options-button {
+    border: solid medium #e00a05;
+    background-color: #ffffff;
+    color: #e00a05;
+}
+.next-steps-options-button:hover {
+    border: solid medium #e00a05;
+    background-color: #e00a05;
+    color: #ffffff;
+}
+.next-steps-options-button-inverted:hover {
+    border: solid medium #b70603;
+    background-color: #ffffff;
+    color: #e00a05;
+    font-weight: bold;
 }

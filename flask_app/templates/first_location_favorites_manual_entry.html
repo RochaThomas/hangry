@@ -5,14 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangry</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="navbar">
         <h2 id="page_title">Hangry</h2>
         <div class="button_div">
-            <a href="/login"><button class="button navbar_login" onmouseover="nav_login_react(this)" onmouseout="nav_login_unreact(this)">Login</button></a>
-            <a href="/register"><button class="button navbar_sign_up" onmouseover="nav_sign_up_react(this)" onmouseout="nav_sign_up_unreact(this)">Sign Up</button></a>
+            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">I NEED FOOD NOW!!!</button></a>
+            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
+            <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
+            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
+            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
         </div>
     </div>
     <div class="manual-restaurant-add-content">
@@ -30,7 +33,7 @@
             </div>
         </div>
         <div class="manual-restaurant-add-container">
-            <form class="manual-restaurant-add-form" action="/one-time-user/process_manual_restaurant_add" method="post">
+            <form id="manual-restaurant-add-form" class="manual-restaurant-add-form" action="/favorites/first_location/process_manual_entry" method="post">
                 <legend class="manual-restaurant-add-title">Manually Add a Restaurant to Your List</legend>
                 <div class="form-body">
                     <!-- jinja error handling messages -->
@@ -75,7 +78,7 @@
                     {% endfor %}
                 </div>
                 <!-- add onclick function and styling -->
-                <button class="solve-my-hanger" type="button"><a class="solve-my-hanger-link" href="/one-time-user/result">Solve My Hanger!</a></button>
+                <button class="first-location-add-restaurants" type="button"><a class="first-location-add-restaurants-link" href="/favorites/first_location/next_steps">Submit Restaurants!</a></button>
             </div>
         </div>
     </div>

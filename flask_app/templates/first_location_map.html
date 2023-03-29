@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">I NEED FOOD NOW!!!</button></a>
+            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
+            <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
+            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
+            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+        </div>
+    </div>
+    <div class="one-time-map-content">
+        <h1 class="map-title">Suggested Nearby Restaurants Map</h1>
+        <div class="directions">
+            <h3 class="directions-title">Directions: </h3>
+            <div class="directions-content">
+                <p class="directions-message">
+                    According to Google these are the restaurants nearest to your location! All of them are preselected 
+                    but if you don't like one of them then deselect it by clicking the corresponding entry on the list.
+                    If you would like to see more information about the restaurants, hover over the markers on the map.
+                    Once you are done, click "Submit Selected Restaurants".
+                </p>
+                <h4 class="extra-info">
+                    Don't see a restaurant you were expecting on this list and you still want it as an option?
+                </h4>
+                <p class="directions-message">Don't worry! You can add it to your list on the next page!</p>
+            </div>
+        </div>
+        <div class="map-list-container">
+            <div class="map-options-container">
+                <div id="map">
+                    <input type="hidden" id="lat" name="lat" value={{lat}}>
+                    <input type="hidden" id="lng" name="lng" value={{lng}}>
+                </div>
+                <div class="options">
+                    <h3 id="options-title">Pan to Marker: <span id="panToStatus">On</span></h3>
+                    <div class="info-icon-container pan-to-icon" onmouseover="openIconModal()" onmouseout="closeIconModal()">
+                        <h3 id="info-icon">i</h3>
+                        <div id="info-icon-modal">
+                            <h3> → </h3>
+                            <h4>What is the "Pan To Marker" option?</h4>
+                            <p>
+                                The "Pan to Marker" setting centers the map on which ever restaurant's marker the user is
+                                focused on. Some users don't like how much this causes the map to move so we provide the 
+                                option for the user to turn this setting off.
+                            </p>
+                        </div>
+                    </div>
+                    <label class="switch">
+                        <input id="toggle-pan-to" type="checkbox" checked onclick="togglePanToWords()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <div id="list-container">
+                <form id="places" class="places" action="/favorites/first_location/process_map" method="post">
+                    <legend class="restaurant-list-header"> Restaurants Nearby</legend>
+                    <div id="list-of-places" class="list-of-places">
+                        <!-- this will be propagated by the js file -->
+                    </div>
+                    <input class="submit-selected" type="submit" value="Add Selected Restaurants">
+                </form>
+                <!-- style and format content for toggle -->
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/static/script.js"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&libraries=places&callback=initMap&v=weekly"
+    defer
+></script>
+</html>

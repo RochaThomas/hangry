@@ -5,6 +5,7 @@ from flask import render_template, request, redirect, session, flash
 from flask_app.models.user import User
 from flask_app.models.restaurant import Restaurant
 from flask_app.models.location import Location
+from flask_app.models.users_favorite import Users_favorite
 from flask_bcrypt import Bcrypt
 import random
 bcrypt = Bcrypt(app)
@@ -79,7 +80,14 @@ def disp_one_time_result():
             newResult = randomize(session['restaurants'])
     
     session['result'] = newResult
-    return render_template('one_time_result.html', result=session['result']['name'], resultId = session['result']['placeId'])
+    return render_template('one_time_result.html', result=session['result']['name'], resultId = session['result']['placeId'], lat=session['lat'], lng=session['lng'])
+
+@app.route('/one-time-user/quick-sign-up')
+def disp_quick_sign_up():
+    if 'user_id' in session:
+        return redirect('/dashboard')
+    
+    return render_template('quick_sign_up.html')
 
 @app.route('/dashboard')
 def disp_dashboard():
@@ -109,6 +117,44 @@ def register_new_user():
     }
     user_id = User.save(data)
     session['user_id'] = user_id
+    return redirect('/location/first_location')
+
+@app.route('/register/user/quick-sign-up', methods=['POST'])
+def register_new_user_quick_sign_up():
+    location_data = {
+        'name': request.form['location_name'],
+        'lat': session['lat'],
+        'lng': session['lng'],
+    }
+    valid_user =  User.registration_is_valid(request.form)
+    valid_location = Location.is_valid_location_entry_quick_sign_up(location_data)
+    if not valid_user or not valid_location:
+        return redirect('/one-time-user/quick-sign-up')
+    hashed_pw = bcrypt.generate_password_hash(request.form['password'])
+    data = {
+        'first_name': request.form['first_name'],
+        'last_name': request.form['last_name'],
+        'email': request.form['email'],
+        'password': hashed_pw
+    }
+    user_id = User.save(data)
+    location_data['user_id'] = user_id
+    location_id = Location.add_location(location_data)
+
+    for restaurant in session['restaurants']:
+        restaurant_id = Restaurant.add_restaurant({
+            'name': restaurant['name'],
+            'lat': restaurant['lat'],
+            'lng': restaurant['lng'],
+            'place_id': restaurant['placeId'],
+        })
+        Users_favorite.add_users_favorite({
+            'user_id': user_id,
+            'restaurant_id': restaurant_id,
+            'location_id': location_id,
+        })
+
+    session['user_id'] = user_id
     return redirect('/dashboard')
 
 @app.route('/login/user', methods=['POST'])
@@ -117,6 +163,10 @@ def login_user():
         return redirect('/login')
     user_in_db = User.get_user_by_email(request.form)
     session['user_id'] = user_in_db.id
+
+    # if there are no locations for this user... send to first location
+    if not Location.get_all_locations({'id': session['user_id']}):
+        return redirect('/location/first_location')
     return redirect('/dashboard')
 
 @app.route('/logout')
@@ -137,8 +187,11 @@ def process_one_time_map():
     restaurants = []
 
     for key in request.form:
+        info = request.form[key].split(',;;,')
         restaurants.append({
-            'name': request.form[key],
+            'name': info[0],
+            'lat': info[1],
+            'lng': info[2],
             'placeId': key,
         })
     
@@ -160,7 +213,9 @@ def process_manual_restaurant_add():
     if dup == False:
         restaurants.append({
             'name': request.form['name'],
-            'placeId': request.form['place_id']
+            'placeId': request.form['place_id'],
+            'lat': request.form['lat'],
+            'lng': request.form['lng'],
         })
     session['restaurants'] = restaurants
 

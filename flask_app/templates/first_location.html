@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Hangry</title>
+</head>
+<body>
+    <div class="navbar">
+        <h2 id="page_title">Hangry</h2>
+        <div class="button_div">
+            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+        </div>
+    </div>
+    <div class="manual-entry-content">
+        <div class="manual-entry-container">
+            <h1>Enter A Location And Give It A Name</h1>
+            <h3>Enter an address so Hangry can suggest nearby <br> restaurants for you</h3>
+            <div class="info-icon-container" onmouseover="openIconModal()" onmouseout="closeIconModal()">
+                <h3 id="info-icon">i</h3>
+                <div id="info-icon-modal">
+                    <h3> → </h3>
+                    <h4>What location should I enter?</h4>
+                    <p>
+                        Most users enter address for the places where they often reside such as their home
+                        or work. Some users enjoy their privacy and don't want apps to know their home and 
+                        work addresses but Hangry still needs an address to provide nearby restaurant
+                        suggestions. For those users, we suggest entering an address of a nearby location
+                        such as close shopping center if you don't feel comfortable sharing your exact 
+                        location.
+                    </p>
+                    <h4>What does Hangry use my location for?</h4>
+                    <p>
+                        Hangry only uses your location to search your area for nearby restaurants in order
+                        to provide you with suggests on places you might want to eat at.
+                    </p>
+                </div>
+            </div>
+            <!-- next steps... incorporate address autocomplete -->
+            <form id="manual_entry_form" action="/location/first_location/process" method="post">
+                {% with location_entry_errors = get_flashed_messages(category_filter=['location_entry_error']) %}
+                    {% if location_entry_errors %}
+                        {% for location_entry_error in location_entry_errors %}
+                            <p class="one_time_location_error">{{location_entry_error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <div class="input-container">
+                    <label for="name">Location Name: </label>
+                    <input type="text" name="name" id="name" placeholder="">
+                </div>
+                <div class="input-container">
+                    <label for="street_address">Street Address: </label>
+                    <input type="text" name="street_address" id="street_address" placeholder="">
+                </div>
+                <div class="input-container">
+                    <label for="city">City: </label>
+                    <input type="text" name="city" id="city">
+                </div>
+                <div class="input-container">
+                    <label for="state">State: </label>
+                    <input type="text" name="state" id="state">
+                </div>
+                <div class="input-container">
+                    <label for="zip_code">Zip Code: </label>
+                    <input type="text" name="zip_code" id="zip_code">
+                </div>
+                <input type="hidden" id="lat" name="lat">
+                <input type="hidden" id="lng" name="lng">
+                <input type="hidden" name="user_id" value="{{user_id}}">
+                <input type="button" id="manual-entry-submit-button" value="Submit Location" onclick="geocode()">
+            </form>
+        </div>
+    </div>
+</body>
+<script src="/static/script.js"></script>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initAutocomplete&libraries=places&v=weekly"
+    defer
+></script>
+</html>
