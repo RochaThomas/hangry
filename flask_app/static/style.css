@@ -79,8 +79,9 @@
     display: flex;
     justify-content: center;
     gap: 100px;
-    padding: 20px;
+    padding: 20px 100px;
     background-color: #f5f5f5;
+    height: 650px;
 }
 
 .box {
@@ -205,18 +206,18 @@
 }
 
 .content_add {
-    gap: 200px
+    gap: 100px
 }
 .add_div {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 25px;
 }
 .add_location_form, .add_favorite_form {
     display: flex;
     flex-direction: column;
     gap: 25px;
-    /* width: 300px; */
+    width: 300px;
 }
 .add_location_form label, .add_favorite_form label {
     font-size: 16pt;
@@ -240,13 +241,14 @@
     font-size: 24pt;
     width: 150px;
 }
-.input_and_unit {
-    display: flex;
-    gap: 5px;
+.add_favorite_map {
+    max-width: 500px;
 }
-#min_away {
-    width: 40px;
+.list_all {
+    max-height: 600px;
+    overflow-y: scroll;
 }
+
 
 .choose_location, .select_favorites {
     flex-direction: column;
@@ -288,15 +290,21 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    width: 275px;
+    min-width: 275px;
     white-space: nowrap;
     overflow-x: auto;
 }
 .your_locations h2, .your_favorites h2 {
     font-size: 22pt;
+    color: #e00a05;
 }
 .your_locations ul, .your_favorites ul {
     list-style-type: none;
+}
+.list_all {
+    background-color: #ffffff;
+    border: #e00a05 solid medium;
+    border-radius: 5px;
 }
 .your_locations li {
     font-size: 16pt;
@@ -307,11 +315,27 @@
 .location_names {
     font-size: 16pt;
     font-weight: 600;
-    margin-top: 10px;
+    background-color: #e00a05;
+    color: #ffffff;
+    border-radius: 2px;
 }
 .favorites {
     font-size: 14pt;
-    text-indent: 10%;
+    border-bottom: #e00a05 solid thin;
+    border-radius: 2px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+.favorite_name {
+    max-width: 225px;
+    white-space: normal;
+}
+.remove_favorite {
+    margin-left: 10px;
+    align-self: center;
+    border-radius: 5px;
+    color: #878787;
 }
 
 .result_info {

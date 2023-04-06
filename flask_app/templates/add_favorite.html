@@ -7,6 +7,7 @@
     <title>Hangry: Add Favorite</title>
     <link rel="stylesheet" href="../static/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,0" />
 </head>
 <body>
     <div class="navbar">
@@ -31,7 +32,7 @@
                 {% endwith %}
                 <input type="hidden" name="locations" id="locations" value="{{locations}}">
                 <div class="input_div">
-                    <label for="location_id">Choose a Location to Add a New Favorite:</label>
+                    <label for="location_id">Location for New Favorite:</label>
                     <select name="location_id" id="location_id">
                         {% if (prev_id|int(-1) == -1) %}
                             <option value="-1" selected disabled>Choose a Location</option>
@@ -76,11 +77,11 @@
                 <input class="button box_button add_button" id="add_button" type="button" value="Add" onclick="geocode()" onmouseover="add_react(this)" onmouseout="add_unreact(this)">
             </form>
         </div>
-        <div class="map" id="map"></div>
+        <div class="map add_favorite_map" id="map"></div>
         <div class="your_favorites">
-            <h2>Your Favorites</h2>
+            <h2 class="your_favorites_title">Your Favorites</h2>
             <!-- fill in with jinja code -->
-            <ul>
+            <ul class="list_all">
                 {% for location in locations %}
                     <li class="location_names">{{location.name}}</li>
                     <li>
@@ -93,7 +94,10 @@
                                         lng="{{users_favorite.lng}}" 
                                         location_id="{{users_favorite.location_id}}"
                                     >
-                                        {{users_favorite.name}}
+                                        <div class="favorite_name">{{users_favorite.name}}</div>
+                                        <span class="remove_favorite material-symbols-outlined">
+                                            delete
+                                        </span>
                                     </li>
                                 {% endif %}
                             {% endfor %}
