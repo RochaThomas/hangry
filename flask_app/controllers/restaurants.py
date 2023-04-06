@@ -28,6 +28,7 @@ def disp_add_favorite():
 
     locations = Location.get_all_locations(data)
     users_favorites = Users_favorite.get_all_favorites_for_user(data)
+    print("users_favorites:", users_favorites)
     return render_template('add_favorite.html', locations=locations, users_favorites=users_favorites, prev_id=prev_id)
 
 @app.route('/restaurant/add_favorite/process', methods=['POST'])

@@ -74,6 +74,16 @@ def disp_first_location_favorites_manual_entry():
         return redirect('/dashboard')
     return render_template('first_location_favorites_manual_entry.html', restaurants = session['restaurants'])
 
+@app.route('/favorites/remove', methods=['POST'])
+def remove_favorite():
+    data = {
+        'user_id': session['user_id'],
+        'restaurant_id': request.form['restaurant_id'],
+        'location_id': request.form['location_id'],
+    }
+    Users_favorite.delete(data)
+    return redirect("/restaurant/add_favorite")
+
 @app.route('/favorites/first_location/process_manual_entry', methods=['POST'])
 def first_location_process_manual_entry():
     if not Restaurant.is_valid_one_time_restaurant_entry(request.form):

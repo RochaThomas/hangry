@@ -305,6 +305,7 @@
     background-color: #ffffff;
     border: #e00a05 solid medium;
     border-radius: 5px;
+    min-height: 200px;
 }
 .your_locations li {
     font-size: 16pt;

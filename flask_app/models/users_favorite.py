@@ -31,6 +31,14 @@ class Users_favorite:
                 users_favorites.append(row)
         return users_favorites
 
+    @classmethod
+    def delete(cls, data):
+        query = """DELETE FROM users_favorites
+                    WHERE user_id = %(user_id)s 
+                    AND restaurant_id = %(restaurant_id)s
+                    AND location_id = %(location_id)s;"""
+        return connectToMySQL(cls.db_name).query_db(query, data)
+
     @staticmethod
     def is_valid_selection(users_favorites):
         is_valid = True
