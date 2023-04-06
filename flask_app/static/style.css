@@ -306,6 +306,7 @@
     border: #e00a05 solid medium;
     border-radius: 5px;
     min-height: 200px;
+    overflow: auto;
 }
 .your_locations li {
     font-size: 16pt;
@@ -327,16 +328,24 @@
     padding: 5px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .favorite_name {
     max-width: 225px;
     white-space: normal;
 }
 .remove_favorite {
-    margin-left: 10px;
     align-self: center;
-    border-radius: 5px;
+    vertical-align: middle;
     color: #878787;
+}
+.remove_button {
+    border: none;
+    background-color: transparent;
+    inline-size: min-content;
+}
+.remove_button:hover {
+    cursor: pointer;
 }
 
 .result_info {

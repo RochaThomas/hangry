@@ -98,10 +98,11 @@
                                         <form id="remove_favorite_form" action="/favorites/remove" method="post">
                                             <input type="hidden" name="location_id" value="{{users_favorite.location_id}}">
                                             <input type="hidden" name="restaurant_id" value="{{users_favorite.id}}">
-                                            <span class="remove_favorite material-symbols-outlined"
-                                                onclick="document.forms['remove_favorite_form'].submit()">
-                                                delete
-                                            </span>
+                                            <button type="submit" class="remove_button">
+                                                <span class="remove_favorite material-symbols-outlined">
+                                                    delete
+                                                </span>
+                                            </button>
                                         </form>
                                     </li>
                                 {% endif %}
