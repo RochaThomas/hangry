@@ -44,6 +44,27 @@ def disp_first_location_map():
         lng = -121.8853
     return render_template('first_location_map.html', lat=lat, lng=lng)
 
+@app.route('/location/delete', methods=['POST'])
+def delete_location():
+    # fill this out
+    # if length of locations is only 1
+        # alert user, they cannot delete
+    # set a session variable called delete_location_id
+    # set a session variable called process_delete = False
+    # use a modal that reacts to process_delete
+        # if false, elif true, elif none
+
+    return redirect('/location/add')
+
+@app.route('/location/delete/confirm', methods=['POST'])
+def confirm_deletion():
+    # fill this out
+    # if process_delete == True delete favorites then location
+    # if false then delete session variables delete_location_id
+    # and process_delete
+    # possibly delete both session variables regardless
+    return redirect('/location/add')
+
 @app.route('/location/first_location/process', methods=['POST'])
 def add_first_location():
     if not Location.is_valid_location_entry(request.form):

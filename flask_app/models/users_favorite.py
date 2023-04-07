@@ -34,9 +34,15 @@ class Users_favorite:
     @classmethod
     def delete(cls, data):
         query = """DELETE FROM users_favorites
-                    WHERE user_id = %(user_id)s 
-                    AND restaurant_id = %(restaurant_id)s
-                    AND location_id = %(location_id)s;"""
+                WHERE user_id = %(user_id)s 
+                AND restaurant_id = %(restaurant_id)s
+                AND location_id = %(location_id)s;"""
+        return connectToMySQL(cls.db_name).query_db(query, data)
+
+    @classmethod
+    def delete_all_for_location(cls, data):
+        query = """DELETE FROM users_favorites
+                WHERE location_id = %(delete_location_id)s;"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @staticmethod
