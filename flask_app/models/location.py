@@ -56,7 +56,8 @@ class Location:
     @classmethod
     def delete(cls, data):
         query = """DELETE FROM locations
-                WHERE id = %(delete_location_id)s;"""
+                WHERE user_id = %(user_id)s
+                AND id = %(delete_location_id)s;"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @staticmethod

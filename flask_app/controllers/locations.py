@@ -2,6 +2,7 @@
 from flask_app import app
 from flask import render_template, redirect, request, session, flash
 from flask_app.models.location import Location
+from flask_app.models.users_favorite import Users_favorite
 from flask_app.models.user import User
 
 @app.route('/location/add')
@@ -23,7 +24,9 @@ def disp_add_location():
 
     user = User.get_user_by_id(data)
     locations = Location.get_all_locations(data)
-    return render_template('add_location.html', user=user, locations=locations)
+    session['num_of_locations'] = len(locations)
+    processed = session['process_delete'] if 'process_delete' in session else True
+    return render_template('add_location.html', user=user, locations=locations, processed=processed)
 
 @app.route('/location/first_location')
 def disp_first_location():
@@ -44,26 +47,44 @@ def disp_first_location_map():
         lng = -121.8853
     return render_template('first_location_map.html', lat=lat, lng=lng)
 
+@app.route('/location/delete/confirm')
+def confirm_deletion():
+    if 'user_id' not in session:
+        redirect('/login')
+    data = {
+        'user_id': session['user_id'],
+        'delete_location_id': session['delete_location_id'],
+    }
+    Users_favorite.delete_all_for_location(data)
+    Location.delete(data)
+    session.pop('process_delete')
+    session.pop('delete_location_id')
+    return redirect('/location/add')
+
+@app.route('/location/delete/cancel')
+def cancel_deletion():
+    if 'user_id' not in session:
+        redirect('/login')
+    if 'process_delete' in session: session.pop('process_delete') 
+    if 'delete_location_id' in session: session.pop('delete_location_id')
+    return redirect('/location/add')
+
 @app.route('/location/delete', methods=['POST'])
 def delete_location():
-    # fill this out
     # if length of locations is only 1
         # alert user, they cannot delete
+    if session['num_of_locations'] <= 1:
+        session['process_delete'] = False
+        flash("You cannot delete a location if you only have 1", "remove_location_error")
+        return redirect('/location/add')
     # set a session variable called delete_location_id
+    session['delete_location_id'] = request.form['location_id']
     # set a session variable called process_delete = False
+    session['process_delete'] = False
     # use a modal that reacts to process_delete
         # if false, elif true, elif none
-
     return redirect('/location/add')
 
-@app.route('/location/delete/confirm', methods=['POST'])
-def confirm_deletion():
-    # fill this out
-    # if process_delete == True delete favorites then location
-    # if false then delete session variables delete_location_id
-    # and process_delete
-    # possibly delete both session variables regardless
-    return redirect('/location/add')
 
 @app.route('/location/first_location/process', methods=['POST'])
 def add_first_location():
