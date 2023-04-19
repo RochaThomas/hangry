@@ -13,9 +13,32 @@
     background-color: #ffffff;
     height: 50px;
 }
+.title_and_scroll_to {
+    display: flex;
+    gap: 20px;
+}
 #page_title {
     font-size: 24pt;
     color: #e00a05;
+}
+#page_title_link {
+    color: #e00a05;
+}
+
+.scroll_to_div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 5px;
+}
+.scroll_link {
+    cursor: pointer;
+    color: #e00a05;
+    font-size: 10pt;
+    font-weight: lighter;
+}
+.scroll_link:hover {
+    text-decoration: underline;
 }
 
 .button {

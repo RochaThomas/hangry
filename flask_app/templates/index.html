@@ -9,7 +9,16 @@
 </head>
 <body>
     <div class="navbar">
-        <h2 id="page_title">Hangry</h2>
+        <div class="title_and_scroll_to">
+            <a id="page_title_link" href="/">
+                <h2 id="page_title">Hangry</h2>
+            </a>
+            <div class="scroll_to_div">
+                <h3 class="scroll_link" onclick="scrollToQuery('how_it_works_title')">How It Works</h3>
+                <h3 class="scroll_link" onclick="scrollToQuery('about_us_title')">About Us</h3>
+                <h3 class="scroll_link" onclick="scrollToQuery('contact_us_title')">Contact Us</h3>
+            </div>
+        </div>
         <div class="button_div">
             <a href="/login"><button class="button navbar_login" onmouseover="nav_login_react(this)" onmouseout="nav_login_unreact(this)">Login</button></a>
             <a href="/register"><button class="button navbar_sign_up" onmouseover="nav_sign_up_react(this)" onmouseout="nav_sign_up_unreact(this)">Sign Up</button></a>
@@ -37,7 +46,7 @@
         </div>
     </div>
     <div class="how_it_works">
-        <h2>How It Works</h2>
+        <h2 id="how_it_works_title">How It Works</h2>
         <div class="how_it_works_content">
             <p id="how_it_works_intro">Hangry works to quickly provide you restaurant options to solve your hanger.</p>
             <p class="how_it_works_paragraph_big">
@@ -58,7 +67,7 @@
         </div>
     </div>
     <div class="about_us">
-        <h2>About Us</h2>
+        <h2 id="about_us_title">About Us</h2>
         <div class="story">
             <h3>Our Story</h3>
             <div class="hanger_definition_container">
@@ -83,7 +92,7 @@
             </div>
         </div>
         <div class="creator">
-            <h3>Creator</h3>
+            <h3 id="creator_title">Creator</h3>
             <h4>Tommy Rocha</h4>
             <div class="details_and_pic">
                 <img src="../static/linkedin_pic.JPG" alt="picture of Tommy Rocha">
@@ -130,11 +139,11 @@
         </div>
     </div>
     <div class="contact_hangry">
-        <h2>Contact Us</h2>
+        <h2 id="contact_us_title">Contact Us</h2>
         <h3>Leave Feedback</h3>
         <p>
             To submit any comments, complains, or suggestions, click on the icon below. You can also contact the creator directly using the contact
-            information list above under <span id="creator_link">CREATOR</span>. Any feedback is always welcomed!
+            information list above under <span id="creator_link" onclick="scrollToQuery('creator_title')">CREATOR</span>. Any feedback is always welcomed!
         </p>
         <a id="google_form_logo" href="https://forms.gle/UpsfMhwrSgWm6P5C6" target="_blank" rel="noopener noreferrer">
             <img src="../static/google_form_logo.png" alt="google form icon">

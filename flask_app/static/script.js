@@ -1113,6 +1113,15 @@ const copyEmail = () => {
     }, 1000); // <-- time in milliseconds
 }
 
+const scrollToQuery = (query) => {
+    const pageMarker = document.getElementById(query);
+    pageMarker.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+    });
+}
+
 // getResultInfo();
 window.initMap = initMap;
 window.initFavoritesMap = initFavoritesMap;
