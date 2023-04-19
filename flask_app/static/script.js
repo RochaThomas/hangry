@@ -1102,6 +1102,17 @@ const openLinkNewTab = (link) => {
     window.open(link, '_blank').focus();
 }
 
+const copyEmail = () => {
+    console.log("hit email copy");
+    navigator.clipboard.writeText("tomrocha99@gmail.com");
+    const display = document.getElementById("email_copied");
+    display.classList.remove("email_uncopied");
+    display.classList.add("email_copied");
+    setTimeout(function() {
+        $('#email_copied').fadeOut('slow');
+    }, 1000); // <-- time in milliseconds
+}
+
 // getResultInfo();
 window.initMap = initMap;
 window.initFavoritesMap = initFavoritesMap;

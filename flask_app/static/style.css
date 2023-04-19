@@ -59,8 +59,6 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
 }
 .intro h1{
     font-size: 48pt;
@@ -82,6 +80,218 @@
     padding: 20px 100px;
     background-color: #f5f5f5;
     height: 650px;
+}
+.index_content {
+    flex-direction: column;
+    gap: 20px;
+}
+.index_options {
+    display: flex;
+    height: fit-content;
+}
+
+.how_it_works, .about_us, .contact_hangry {
+    border-top: #e00a05 thick solid;
+    border-radius: 5px;
+    padding-bottom: 30px;
+}
+.how_it_works h2, .about_us h2, .contact_hangry h2 {
+    font-size: 36px;
+    padding: 0px 100px;
+    border-bottom: #e00a05 thick solid;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #e00a05;
+    color: #ffffff;
+    font-style: italic;
+}
+.how_it_works_content, .story, .creator, .future_direction {
+    margin: 0px 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 18px;
+    padding: 0px 75px
+}
+#how_it_works_intro {
+    padding: 20px 0px 0px 0px;
+    color: #e00a05;
+    font-weight: bold;
+}
+.how_it_works_paragraph_big, .how_it_works_paragraph_small {
+    padding: 0px 25px;
+}
+.how_it_works_paragraph_big {
+    text-indent: 20px;
+}
+.inner_text_link {
+    color: #e00a05;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+.story h3, .creator h3, .future_direction h3, .contact_hangry h3 {
+    font-size: 30px;
+    color: #e00a05;
+    border-bottom: #e00a05 thick solid;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 10px 0px 0px 0px;
+}
+.hanger_definition_container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #ffffff;
+    border: medium black solid;
+    border-radius: 10px;
+    width: fit-content;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+    margin: 20px 0px;
+}
+.hanger_definition_container h3 {
+    color: #b70603;
+    font-size: 56px;
+    border-bottom: none;
+    align-self: center;
+    font-style: italic;
+    background-color: white; 
+}
+.def_and_pronunciation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.pronunciation {
+    color: grey;
+    font-style: italic;
+    font-size: 20px;
+}
+.definition {
+    font-weight: bold;
+    font-size: 24px;
+    color: #6c6c6c
+}
+.story_details, .future_direction p {
+    font-size: 18px;
+    text-indent: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px 25px
+}
+.story, .creator {
+    border-bottom: lightgrey solid medium;
+    padding-bottom: 20px;
+}
+.creator {
+    display: flex;
+    flex-direction: column;
+}
+.creator h4 {
+    margin-top: 25px;
+    align-self: center;
+    padding: 0px 10px;
+    border-top: #b70603 solid medium;
+    border-bottom: #b70603 solid medium;
+    border-radius: 5px;
+    width: fit-content;
+    font-size: 24px;
+    font-style: italic;
+    color: #b70603;
+}
+.details_and_pic {
+    display: flex;
+    gap: 100px;
+    padding: 0px 100px;
+}
+.details_and_pic img {
+    height: 50%;
+    width: 30%;
+    border: #b70603 thick solid;
+    border-radius: 40px;
+}
+.creator_details {
+    font-size: 18px;
+    text-indent: 20px;
+}
+.details_and_connect {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    justify-content: center;
+}
+.connect {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+#email_logo, #github_logo, #linkedin_logo {
+    width: fit-content;
+    border: none;
+    border-radius: 0px;
+}
+.connect img {
+    height: auto;
+    border: none;
+    border-radius: 0px;
+}
+#email_logo img {
+    height: 70px;
+    width: 70px;
+    cursor: pointer;
+}
+#github_logo img {
+    height: 80px;
+    width: 80px;
+}
+#linkedin_logo img {
+    height: 60px;
+    width: 60px;
+}
+.email_uncopied {
+    display: none;
+}
+.email_copied {
+    display: block;
+    background-color: #ffffff;
+    border: green medium solid;
+    border-radius: 10px;
+    position: fixed;
+    padding: 5px 10px;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.contact_hangry {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.contact_hangry h3 {
+    margin-left: 125px;
+}
+.contact_hangry p {
+    font-size: 18px;
+    text-indent: 20px;
+    padding: 0px 150px 20px 150px;
+}
+#creator_link {
+    color: #e00a05;
+    cursor: pointer;
+    font-weight: bold;
+}
+#google_form_logo {
+    width: fit-content;
+    align-self: center;
+}
+#google_form_logo img {
+    height: 70px;
+    width: 70px;
 }
 
 .box {
