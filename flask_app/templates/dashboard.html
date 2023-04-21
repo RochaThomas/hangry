@@ -9,58 +9,147 @@
 </head>
 <body>
     <div class="navbar">
-        <h2 id="page_title">Hangry</h2>
+        <div class="title_and_scroll_to">
+            <a id="page_title_link" href="/">
+                <h2 id="page_title">Hangry</h2>
+            </a>
+            <div class="scroll_to_div">
+                <h3 class="scroll_link" onclick="scrollToQuery('how_it_works_title')">How It Works</h3>
+                <h3 class="scroll_link" onclick="scrollToQuery('about_us_title')">About Us</h3>
+                <h3 class="scroll_link" onclick="scrollToQuery('contact_us_title')">Contact Us</h3>
+            </div>
+        </div>
         <div class="button_div">
             <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
             <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
-            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
             <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
         </div>
     </div>
-    <div class="intro">
-        <h1>Let's Solve Some Hanger!</h1>
-        <p id="we_will_help">Click the left option if you want to randomize from some of your favorites<br>Click the right option if you wish to select the options you want to randomize from on a map</p>
-    </div>
-    <div class="content">
+    <div class="content dashboard_content">
+        <div class="intro">
+            <h1>Let's Solve Some Hanger!</h1>
+            <!-- <p id="we_will_help">Click the left option if you want to randomize from some of your favorites<br>Click the right option if you wish to select the options you want to randomize from on a map</p> -->
+            <p id="we_will_help">Click below if you want to randomize from some of your favorites</p>
+
+        </div>
         <a href="/favorites/randomize" class="box a_box" onmouseover="box_react(this)" onmouseout="box_unreact(this)">
             <h3>Randomize From Favorites</h3>
         </a>
-        <a href="" class="box a_box" onmouseover="box_react(this)" onmouseout="box_unreact(this)">
+        <!-- <a href="" class="box a_box" onmouseover="box_react(this)" onmouseout="box_unreact(this)">
             <h3>One Time Randomization</h3>
-        </a>
+        </a> -->
     </div>
     <div class="how_it_works">
         <h2 id="how_it_works_title">How It Works</h2>
         <div class="how_it_works_content">
             <p id="how_it_works_intro">Hangry works to quickly provide you restaurant options to solve your hanger.</p>
             <p class="how_it_works_paragraph_big">
-                One option is to do a one-time use. With this option, Hangry will provide nearby options based on your location or the location
-                you input. You can then select/deselect the options to narrow down your preferences. After, if there are restaurants that you wish
-                to add to your options that were no previously provided, you can enter them manually. Finally, where your preferences are to your
-                liking, you can proceed and Hangry will tell you where you should go! This is a good option for people who aren't familiar with 
-                Hangry's functionality. If this is, what you are searching for click <a class="inner_text_link" href="/one-time-user/location">HERE</a>.
+                Hangry allows you to save your frequent locations such as work and home. You can add a new location by clicking
+                <a class="inner_text_link" href="/location/add">HERE</a>. Then, you can add some of you favorite go-to restaurants by
+                entering the restaurant's address and selecting which location you want to add that favorite to by clicking <a class="inner_text_link" href="/restaurant/add_favorite">HERE</a>.
             </p>
-            <p class="how_it_works_paragraph_small">
-                For those who are familiar with how Hangry works and wish to create an account to get the most out of there experience, click 
-                <a class="inner_text_link" href="/register">HERE</a> to
-                create an account.
-            </p>
-            <p class="how_it_works_paragraph_small">
-                If you already have an account, login <a class="inner_text_link" href="/login">HERE</a>.
+            <p class="how_it_works_paragraph_big">
+                After adding some of your locations and favorites associated with those locations, Hangry can help you decide where to
+                eat. You will first have the option to select which one of your locations you are deciding to eat from. Then you can
+                narrow down your preferences by deselecting favorites you are not interested in. Let Hangry solve your hanger by clicking
+                <a class="inner_text_link" href="/favorites/randomize">HERE</a>.
             </p>
         </div>
     </div>
+    <div class="about_us">
+        <h2 id="about_us_title">About Us</h2>
+        <div class="story">
+            <h3>Our Story</h3>
+            <div class="hanger_definition_container">
+                <h3>"Hanger"</h3>
+                <div class="def_and_pronunciation">
+                    <p class="pronunciation">pronunciation: haNGər</p>
+                    <p class="definition">Noun: a feeling of anger and frustration caused by hunger</p>
+                </div>
+            </div>
+            <div class="story_details">
+                <p>
+                    As someone who often gets lost in work and forgets to eat as a result, I frequently experience hanger. It affects my
+                    ability to think clearly and I begin to get snippy with the people around me. The real problem arises when deciding
+                    where to eat. The longer it takes me to decide the more irritable I become!
+                </p>
+                <p>
+                    This is where the idea for Hangry was born. Here at Hangry, our mission isn't to find you a new amazing spot to eat.
+                    We know that you need food, you need it fast, and you probably already have a few go-to spots nearby where you would
+                    want to eat. This is where we come in to help! Instead of letting your jumbled, hanger-soaked mind attempt to figure out
+                    where to eat as your hanger grows worse and worse by the second, we are here to quickly make that decision for you!
+                </p>
+            </div>
+        </div>
+        <div class="creator">
+            <h3 id="creator_title">Creator</h3>
+            <h4>Tommy Rocha</h4>
+            <div class="details_and_pic">
+                <img src="../static/linkedin_pic.JPG" alt="picture of Tommy Rocha">
+                <div class="details_and_connect">
+                    <p class="creator_details">
+                        After receiving his bachelor's degree in Biochemistry and Molecular Biology from Chapman University, Tommy changed gears and
+                        began his career in software engineering. Now, as a fullstack developer and recent coding bootcamp graduate from Coding Dojo,
+                        Tommy is excited about building solution based web applications such as Hangry. While building out web apps in his sparetime,
+                        he is focused on landing a position as a developer where he can receieve mentorship and learn as much as he can in order to
+                        expand his horizons. 
+                    </p>
+                    <div class="connect">
+                        <div id="email_logo" class="email">
+                            <p id="email_copied" class="email_uncopied">Email: tomrocha99@gmail.com copied</p>
+                            <img src="../static/email_logo.png" alt="email icon" onclick="copyEmail()">
+                        </div>
+                        <a id="github_logo" href="https://github.com/RochaThomas" target="_blank" rel="noopener noreferrer">
+                            <img src="../static/github_logo.png" alt="github icon">
+                        </a>
+                        <a id="linkedin_logo" href="https://www.linkedin.com/in/t-rocha/" target="_blank" rel="noopener noreferrer">
+                            <img src="../static/linkedin_logo.png" alt="linkedin icon">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="future_direction">
+            <h3>Future of Hangry</h3>
+            <p>
+                Hangry's main functionality is built out but there are many other places to improve and develop. One new development to be implemented
+                would be to provide a user with a new restaurant based on their location that many other users frequent. Ideally, in the distant future,
+                Hangry will be able to incorporate minimal forms of machine learning and AI to give users new suggestions and to automatically add frequented
+                restaurants to their favorites without the user having to manually input them.
+            </p>
+            <p>
+                Additionally, in terms of front-end development, the app's look could use a facelift to make it more appealing and engaging to users rather than
+                just focused on providing the bare bones structure to make Hangry function properly.
+            </p>
+            <p>
+                Similarly, in regards to back-end development, much of the code can and should be revised to improve efficiency and decrease repeated work.
+                Reworking the code would make it easier to maintain and update for future changes. The CSS and HTML could also be redesigned in a similar
+                fashion to make it less repetitive and easier to update.
+            </p>
+        </div>
+    </div>
+    <div class="contact_hangry">
+        <h2 id="contact_us_title">Contact Us</h2>
+        <h3>Leave Feedback</h3>
+        <p>
+            To submit any comments, complains, or suggestions, click on the icon below. You can also contact the creator directly using the contact
+            information list above under <span id="creator_link" onclick="scrollToQuery('creator_title')">CREATOR</span>. Any feedback is always welcomed!
+        </p>
+        <a id="google_form_logo" href="https://forms.gle/UpsfMhwrSgWm6P5C6" target="_blank" rel="noopener noreferrer">
+            <img src="../static/google_form_logo.png" alt="google form icon">
+        </a>
+    </div>
     <div class="footer">
-        <div class="section_heading">
+        <div class="section">
             <h4>Home</h4>
             <ul>
                 <li><a href="/">Dashboard</a></li>
                 <li><a href="/#how_it_works_title">How It Works</a></li>
-                <li><a href="/">About Us</a></li>
-                <li><a href="/">Contact Us</a></li>
+                <li><a href="/#about_us_title">About Us</a></li>
+                <li><a href="/#contact_us_title">Contact Us</a></li>
             </ul>
         </div>
-        <div class="section_heading">
+        <div class="section">
             <h4>Users</h4>
             <ul>
                 <li><a href="/login">Login</a></li>
@@ -68,10 +157,10 @@
                 <li><a href="/one-time-user/location">Use Once</a></li>
             </ul>
         </div>
-        <div class="section_heading">
+        <div class="section last_section">
             <h4>User Options</h4>
             <ul>
-                <li><a href="/">User Dashboard</a></li>
+                <li><a href="/dashboard">User Dashboard</a></li>
                 <li><a href="/restaurant/add_favorite">Add a Favorite</a></li>
                 <li><a href="/location/add">Add a Location</a></li>
                 <li><a href="/favorites/randomize">Randomize Favorites</a></li>
