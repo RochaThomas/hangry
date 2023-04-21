@@ -11,11 +11,12 @@
 </head>
 <body>
     <div class="navbar">
-        <h2 id="page_title">Hangry</h2>
+        <a id="page_title_link" href="/">
+            <h2 id="page_title">Hangry</h2>
+        </a>
         <div class="button_div">
-            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">I NEED FOOD NOW!!!</button></a>
+            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Randomize Favorites</button></a>
             <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
-            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
             <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
         </div>
     </div>
