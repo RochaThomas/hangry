@@ -134,7 +134,7 @@
     font-weight: bold;
 }
 
-.content, .user-location-content, .manual-entry-content, .one-time-map-content, .manual-restaurant-add-content, .one-time-result-content, .next-steps-content {
+.content, .manual-entry-content, .next-steps-content {
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -153,6 +153,8 @@
 .dashboard_content {
     flex-direction: column;
     align-items: center;
+    gap: 0px;
+    justify-content: space-evenly;
 }
 
 .how_it_works, .about_us, .contact_hangry {
@@ -391,11 +393,14 @@
     background-color: black;
 }
 
+.sign_up_content {
+    justify-content: space-around;
+}
 .sign_up_form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 40px;
     padding: 25px;
     background-color: #f5f5f5;
 }
@@ -461,6 +466,10 @@
     color: white;
 }
 
+.login_content {
+    padding-top: 80px;
+    height: 600px;
+}
 .login {
     display: flex;
     flex-direction: column;
@@ -482,6 +491,9 @@
 
 .content_add {
     gap: 100px
+}
+.content_add #map {
+    margin-top: 60px;
 }
 .add_div {
     display: flex;
@@ -717,7 +729,7 @@
 }
 
 #map {
-    height: 600px;
+    height: 500px;
     /* The height is 400 pixels */
     width: 100%;
     /* The width is the width of the web page */
@@ -742,7 +754,12 @@
     gap: 25px;
     padding: 10px 100px 50px 100px;
 }
+.user-location-content, .manual-entry-content {
+    justify-content: flex-start;
+    gap: 125px
+}
 .one-time-map-content {
+    height: auto;
     gap: 0px;
 }
 .back-button, .home-button {
@@ -944,24 +961,26 @@ input:checked + .slider:before {
 /* one-time map styling */
 .one-time-map-content {
     gap: 0px;
+    padding-top: 5px;
 }
 .map-title {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    font-size: 28px;
 }
 .directions, .next-steps-message {
     display: flex;
     border: #e00a05 medium solid;
     border-radius: 5px;
     background-color: #ffffff;
-    padding: 5px 10px;
-    margin-bottom: 10px;
+    padding: 2px 10px;
+    margin-bottom: 5px;
 }
 .directions-content, .next-steps-message-content {
     margin-top: 3px;
 }
 .directions-message, .extra-info, .next-steps-message-info {
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 16px;
 }
 .directions-title, .next-steps-message-title, .extra-info {
     color: #e00a05;
@@ -996,6 +1015,8 @@ input:checked + .slider:before {
 }
 .info-window-website-label {
     margin-bottom: 5px;
+    overflow-wrap: break-word;
+    max-width: 400px;
 }
 .first-photo {
     width: 400px;
@@ -1051,7 +1072,7 @@ input:checked + .slider:before {
     justify-content: center;
 }
 .list-of-places {
-    height: 530px;
+    height: 430px;
     overflow-y: scroll;
     border: #e00a05 solid 2px;
     border-bottom-left-radius: 5px;
@@ -1103,7 +1124,10 @@ input:checked + .slider:before {
 }
 
 /* styling manual restaurant add page */
-
+.manual-restaurant-add-content {
+    height: auto;
+    gap: 10px;
+}
 .manual-restaurant-add-container {
     display: flex;
     justify-content: space-around;
@@ -1166,9 +1190,10 @@ input:checked + .slider:before {
     font-size: 30pt;
 }
 .one-time-result-content {
+    height: auto;
     flex-direction: column;
-    padding: 50px 100px;
-    gap: 50px;
+    padding: 10px 100px;
+    gap: 10px;
 }
 .one-time-result-container {
     display: flex;
@@ -1179,6 +1204,9 @@ input:checked + .slider:before {
     background-color: #ffffff;
     padding: 10px;
     margin-right: 25px;
+}
+.result-options-container #map {
+    height: 450px;
 }
 .res-info {
     display: flex;
@@ -1207,8 +1235,8 @@ input:checked + .slider:before {
     display: flex;
 }
 .res-first-photo {
-    width: 460px;
-    height: 460px;
+    width: 480px;
+    height: 480px;
     margin-right: 10px;
 }
 .res-rest-of-photos {
@@ -1221,29 +1249,38 @@ input:checked + .slider:before {
     gap: 10px;
 }
 .res-rest-of-photos img{
-    height: 225px;
-    width: 225px;
+    height: 112px;
+    width: 112px;
 }
 .res-rest-of-photos img, .res-first-photo {
     object-fit: cover;
 }
 .res-link-to-google-page {
-    height: 222px;
-    width: 222px;
+    height: 111px;
+    width: 111px;
     border: #e8e7e7 thin solid;
     background-color: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16pt;
+    font-size: 14pt;
+    text-align: center;
 }
 .res-restaurant-photos img, .res-link-to-google-page {
     border-radius: 3px;
+}
+.res-restaurant-hours {
+    margin-top: 10px;
 }
 .result-options-container {
     display: flex;
     flex-direction: column;
     gap: 25px;
+    justify-content: space-between;
+}
+.try-again_and_head-home {
+    display: flex;
+    justify-content: space-between;
 }
 .result-options-try-again, .result-options-home, .result-options-quick-sign-up {
     background-color: #ffffff;
@@ -1251,13 +1288,15 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    align-items: center;
     padding: 10px;
     border: #e00a05 medium solid;
     border-radius: 5px;
     overflow-y: auto;
 }
-.result-options-home {
-    height: 75px;
+.result-options-home, .result-options-try-again {
+    height: 150px;
+    width: 250px;
 }
 
 .next-steps-message-title {

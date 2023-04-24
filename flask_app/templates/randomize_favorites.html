@@ -33,33 +33,33 @@
             <!-- onclick run function that edits session var hidden -->
             <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Select" onmouseover="rand_favs_btns_react(this)" onmouseout="rand_favs_btns_unreact(this)">
         </form>
+        <!-- if session var hidden == true then keep hidden else display the div -->
+        {% if session['hidden'] == True %}
+            <div class="content select_favorites" style="display: none;">
+        {% else %}
+            <div class="content select_favorites" style="display: flex;"> 
+        {% endif %}
+                <h3>Deselect options that don't sound good right now.<br>Then click "Pick A Favorite" to pick a random restaurant from your selected favorites.</h3>
+                {% with selection_errors = get_flashed_messages(category_filter=['selection_error']) %}
+                    {% if selection_errors %}
+                        {% for selection_error in selection_errors %}
+                            <p class="selection_error">{{selection_error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <form action="/favorites/randomize/selections" method="post">
+                    <div class="fav_options">
+                        {% for one_favorite in favorites %}
+                            <div class="input_div">
+                                <label for="{{one_favorite.name}}">{{one_favorite.name}}</label>
+                                <input type="checkbox" name="{{one_favorite.name}}" id="{{one_favorite.name}}" value={{one_favorite.id}} checked>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Pick A Favorite" onmouseover="rand_favs_btns_react(this)" onmouseout="rand_favs_btns_unreact(this)">
+                </form>
+            </div>
     </div>
-    <!-- if session var hidden == true then keep hidden else display the div -->
-    {% if session['hidden'] == True %}
-        <div class="content select_favorites" style="display: none;">
-    {% else %}
-        <div class="content select_favorites" style="display: flex;"> 
-    {% endif %}
-            <h3>Deselect options that don't sound good right now.<br>Then click "Pick A Favorite" to pick a random restaurant from your selected favorites.</h3>
-            {% with selection_errors = get_flashed_messages(category_filter=['selection_error']) %}
-                {% if selection_errors %}
-                    {% for selection_error in selection_errors %}
-                        <p class="selection_error">{{selection_error}}</p>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <form action="/favorites/randomize/selections" method="post">
-                <div class="fav_options">
-                    {% for one_favorite in favorites %}
-                        <div class="input_div">
-                            <label for="{{one_favorite.name}}">{{one_favorite.name}}</label>
-                            <input type="checkbox" name="{{one_favorite.name}}" id="{{one_favorite.name}}" value={{one_favorite.id}} checked>
-                        </div>
-                    {% endfor %}
-                </div>
-                <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Pick A Favorite" onmouseover="rand_favs_btns_react(this)" onmouseout="rand_favs_btns_unreact(this)">
-            </form>
-        </div>
     <div class="footer">
         <div class="section">
             <h4>Home</h4>

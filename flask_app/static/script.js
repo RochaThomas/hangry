@@ -243,7 +243,7 @@ function initMap(){
                                     operationStatus +
                                     price + 
                                 `</div>` +
-                                `<p class="info-window-website-label"> Website: <a href="` + result.website + `" target="_blank" rel="noopener noreferrer">` + result.website + `</a>` +
+                                `<p class="info-window-website-label"> Website: <a href="` + result.website + `" target="_blank" rel="noopener noreferrer">` + result.website + `</a>` + `</p>` +
                                 `<div class="restaurant-photos">` + 
                                     firstPhoto +
                                     restOfPhotos +
@@ -834,6 +834,9 @@ const geocode = () => {
         if (document.forms["manual_entry_form"]){
             formType = "manual_entry_form"; 
         }
+        if (document.forms["manual-restaurant-add-form"]){
+            formType = "manual-restaurant-add-form"; 
+        }
         // from add_location_form
         if (document.forms["add_location_form"]){
             formType = "add_location_form"; 
@@ -855,7 +858,7 @@ const geocode = () => {
         const geocoder = new google.maps.Geocoder();
         
         
-        if (formType =="add_favorite_form") {
+        if (formType =="add_favorite_form" || formType == "manual-restaurant-add-form") {
             // get name from input
             let name = document.getElementById("name");
 
@@ -928,7 +931,7 @@ const geocode = () => {
                             // compare names
                             if (name != resultName) {
                                 // if not equal alert the difference and what it is now saved as
-                                alert(`According to Google's database, the name of the location corresponding to the address you entered is ${resultName}, not ${name}. Hangry will record your entry as ${resultName}.`);
+                                alert(`According to Google's database, the name of the location corresponding to the address you entered is ${resultName}, not ${name.value}. Hangry will record your entry as ${resultName}.`);
                                 name.value = resultName; 
                             }
                         }
@@ -1032,15 +1035,15 @@ const getResultInfo = () => {
             if (result.photos) {
                 firstPhoto = `<img class="res-first-photo" src="` + result.photos[0].getUrl() + `" alt="` + result.name + `photo 1" onclick="openLinkNewTab('` + result.photos[0].getUrl() + `')">`;
                 restOfPhotos = `<div class="res-rest-of-photos">`;
-                restOfPhotos += `<div class="res-rest-of-photos-top">`;
+                // restOfPhotos += `<div class="res-rest-of-photos-top">`;
                 for (let i = 1; i < 4; i++){
                     if (result.photos[i]){
                         if (i < 3) {
                             restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `" onclick="openLinkNewTab('` + result.photos[i].getUrl() + `')">`;
                         }
                         else {
-                            restOfPhotos += `</div>`;
-                            restOfPhotos += `<div class="res-rest-of-photos-bottom">`;
+                            // restOfPhotos += `</div>`;
+                            // restOfPhotos += `<div class="res-rest-of-photos-bottom">`;
                             restOfPhotos += `<img src="`+ result.photos[i].getUrl() + `" alt="` + result.name + `photo` + (i + 1) + `" onclick="openLinkNewTab('` + result.photos[i].getUrl() + `')">`;
                         }
                     }
@@ -1049,7 +1052,8 @@ const getResultInfo = () => {
                     `<span class="res-link-to-google-page">` + 
                         `<a href="` + result.url + `" target="_blank" rel="noopener noreferrer">Click For More +</a>` +
                     `</span>`;
-                restOfPhotos += linkToGooglePage + `</div>` + `</div>`;
+                // restOfPhotos += linkToGooglePage + `</div>` + `</div>`;
+                restOfPhotos += linkToGooglePage + `</div>`;
             }
 
             // translating content into html for infoWindow
@@ -1068,17 +1072,17 @@ const getResultInfo = () => {
                                 `<p class="res-formatted-address">` + result.formatted_address + `</p>` +
                             `</div>` +
                         `</div>` +
-                        `<div class="res-restaurant-hours">` + 
-                            `<p>Hours: </p>` + 
-                            `<div class="hours-days">` +
-                                restaurantHours +
-                            `</div>` +
-                        `</div>` + 
                     `</div>` + 
                     `<div class="res-restaurant-photos">` + 
                         firstPhoto +
                         restOfPhotos +
                     `</div>` +
+                    `<div class="res-restaurant-hours">` + 
+                        `<p>Hours: </p>` + 
+                        `<div class="hours-days">` +
+                            restaurantHours +
+                        `</div>` +
+                    `</div>` + 
                 `</div>`;
             resultInfo.innerHTML = contentString;
         }
