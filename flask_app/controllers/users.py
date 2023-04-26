@@ -182,6 +182,14 @@ def process_user_location():
     session['lng'] = request.form['lng']
     return redirect("/one-time-user/map")
 
+@app.route('/one-time-user/auto_process_user_location', methods=['POST'])
+def auto_process_user_location():
+    if 'user_id' in session:
+        return redirect("/dashboard")
+    session['lat'] = request.form['lat']
+    session['lng'] = request.form['lng']
+    return redirect("/one-time-user/map")
+
 @app.route('/one-time-user/process_one_time_map', methods=['POST'])
 def process_one_time_map():
     restaurants = []
