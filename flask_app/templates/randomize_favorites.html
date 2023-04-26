@@ -22,16 +22,14 @@
     <div class="content choose_location">
         <h1>Get a Random Favorite!</h1>
         <h3>Choose a list of your favorite options based on your location</h3>
-        <form class="location_form" action="/favorites/randomize/location_list" method="post">
+        <form id="location_form" class="location_form" action="/favorites/randomize/location_list" method="post">
             <label for="location_id">Location List:</label>
-            <select name="location_id" id="location_id">
+            <select name="location_id" id="location_id" onchange="document.forms['location_form'].submit()">
                 <option value="-1" {% if ll_id == -1 %} selected {% endif %} disabled>Choose a Location</option>
                 {% for location in locations %}
                     <option value="{{location.id}}" {% if ll_id == location.id %} selected {% endif %}>{{location.name}}</option>
                 {% endfor %}
             </select>
-            <!-- onclick run function that edits session var hidden -->
-            <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Select" onmouseover="rand_favs_btns_react(this)" onmouseout="rand_favs_btns_unreact(this)">
         </form>
         <!-- if session var hidden == true then keep hidden else display the div -->
         {% if session['hidden'] == True %}
@@ -47,7 +45,7 @@
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
-                <form action="/favorites/randomize/selections" method="post">
+                <form class="select_favorites_form" action="/favorites/randomize/selections" method="post">
                     <div class="fav_options">
                         {% for one_favorite in favorites %}
                             <div class="input_div">
