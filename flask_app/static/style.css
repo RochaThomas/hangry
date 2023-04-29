@@ -98,7 +98,7 @@
     color: #e00a05;
     font-size: 12pt;
 }
-.on_hover_navbar_login, .on_hover_navbar_link {
+.navbar_login:hover, .navbar_link:hover {
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 0px;
     border-bottom: #e00a05 solid;
@@ -109,7 +109,7 @@
     color: #e00a05;
     font-size: 12pt;
 }
-.on_hover_navbar_sign_up, .on_hover_navbar_logout {
+.navbar_sign_up:hover, .navbar_logout:hover {
     color: white;
     background-color: #e00a05;
 }
@@ -384,11 +384,11 @@
     text-decoration: none;
     color: black;
 }
-.on_hover_boxes {
+.box:hover {
     color: white;
     background-color: #e00a05;
 }
-.on_hover_boxes_buttons {
+.box_button:hover {
     color: white;
     background-color: black;
 }
@@ -461,7 +461,7 @@
     color: #e00a05;
     font-size: 36pt;
 }
-.on_hover_sign_up_button, .on_hover_login_button, .on_hover_add_button, .on_hover_red_btn_white_wrd {
+.sign_up_button:hover, .login_button:hover, .add_button:hover, .red_btn_white_wrd:hover {
     background-color: #e00a05;
     color: white;
 }
