@@ -13,10 +13,10 @@
             <h2 id="page_title">Hangry</h2>
         </a>
         <div class="button_div">
-            <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
-            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
+            <a href="/restaurant/add_favorite"><button class="button navbar_link">Add New Favorite</button></a>
+            <a href="/location/add"><button class="button navbar_link">Add New Location</button></a>
             <!-- when you fill out find a new go too make sure to reset hidden and location_id -->
-            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+            <a href="/logout"><button class="button navbar_logout">Logout</button></a>
         </div>
     </div>
     <div class="content choose_location">
@@ -54,7 +54,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Pick A Favorite" onmouseover="rand_favs_btns_react(this)" onmouseout="rand_favs_btns_unreact(this)">
+                    <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Pick A Favorite">
                 </form>
             </div>
     </div>

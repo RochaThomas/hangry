@@ -15,9 +15,9 @@
             <h2 id="page_title">Hangry</h2>
         </a>
         <div class="button_div">
-            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Randomize Favorites</button></a>
-            <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
-            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+            <a href="/dashboard"><button class="button navbar_link">Randomize Favorites</button></a>
+            <a href="/restaurant/add_favorite"><button class="button navbar_link">Add New Favorite</button></a>
+            <a href="/logout"><button class="button navbar_logout">Logout</button></a>
         </div>
     </div>
     <div class="content content_add">
@@ -57,7 +57,7 @@
                 <input type="hidden" id="lat" name="lat">
                 <input type="hidden" id="lng" name="lng">
                 <input type="hidden" name="user_id" value="{{user.id}}">
-                <input class="button box_button add_button" id="add_button" type="button" value="Add" onmouseover="add_react(this)" onmouseout="add_unreact(this)" onclick="geocode()">
+                <input class="button box_button add_button" id="add_button" type="button" value="Add" onclick="geocode()">
             </form>
         </div>
         <div class="map" id="map"></div>
