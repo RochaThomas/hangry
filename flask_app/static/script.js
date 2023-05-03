@@ -195,6 +195,9 @@ function initMap(){
                 });
             }
 
+            let prevMarker = null;
+            let prevMarkerIcon = "";
+            let prevMarkerOpacity = 0;
             for (const place of places) {
                 if (place.geometry && place.geometry.location){
 
@@ -222,7 +225,6 @@ function initMap(){
 
                     const infoWindow = new google.maps.InfoWindow({content: null});
 
-
                     marker.addListener("mouseover", () => {
                         if (!infoWindow.content) {
                             initInfoWindowContent(place.place_id, price, infoWindow, marker);
@@ -230,6 +232,22 @@ function initMap(){
                         else {
                             openCloseInfoWindow(infoWindow, marker);
                         }
+
+                        if (prevMarker) {
+                            prevMarker.setLabel({
+                                ...prevMarker.label,
+                                text: prevMarkerIcon,
+                            })
+                            prevMarker.setOpacity(prevMarkerOpacity)
+                        }
+                        prevMarker = marker;
+                        prevMarkerIcon = marker.label.text;
+                        prevMarkerOpacity = marker.opacity;
+                        marker.setLabel({
+                            ...marker.label,
+                            text: "\ue8b6",
+                        });
+                        marker.setOpacity(1.0);
                     });
 
                     const inputContainer = document.createElement("div");
@@ -284,16 +302,35 @@ function initMap(){
                      * window only appears by interacting with markers
                      */
 
-                    let timer = null;
-                    inputContainer.addEventListener("mouseenter", () => {
-                        timer = window.setTimeout(() => {
-                            if (!infoWindow.content) {
-                                initInfoWindowContent(place.place_id, price, infoWindow, marker);
-                            }
-                            else {
-                                openCloseInfoWindow(infoWindow, marker);
-                            }
-                        }, "1000");
+                    /**
+                     * try mouseover
+                     * look for way to group the eventlistener to a div and its child elements so that
+                     * the event doesnt keep happening over and over again
+                     * check by using a console log statement
+                     * use a var prevMarker similar to prevWindow
+                     * user only an event listener for mouseover and remove mouse out
+                     * move mouseout icon resetting logic to mouseover
+                     * might have to find the restaurantIcon again
+                     * close prev window on mouseover
+                     */
+                    inputContainer.onmouseover = (e) => {
+                        if ((e.target !== e.currentTarget) || (prevMarker && prevMarker == marker)) {
+                            return
+                        }
+                        console.log("hit mouseover");
+                        if (prevWindow) {
+                            prevWindow.close();
+                        }
+                        if (prevMarker) {
+                            prevMarker.setLabel({
+                                ...prevMarker.label,
+                                text: prevMarkerIcon,
+                            })
+                            prevMarker.setOpacity(prevMarkerOpacity)
+                        }
+                        prevMarker = marker;
+                        prevMarkerIcon = marker.label.text;
+                        prevMarkerOpacity = marker.opacity;
                         marker.setLabel({
                             ...marker.label,
                             text: "\ue8b6",
@@ -302,28 +339,7 @@ function initMap(){
                         if (document.getElementById("toggle-pan-to").checked) {
                             map.panTo(place.geometry.location);
                         }
-                    });
-
-                    inputContainer.addEventListener("mouseout", () => {
-                        window.clearTimeout(timer);
-                        if (prevWindow) {
-                            prevWindow.close();
-                        }
-                        if (placeInput.classList.contains("selected")) {
-                            marker.setLabel({
-                                ...marker.label,
-                                text: restaurantIcon,
-                            });
-                            marker.setOpacity(0.7);
-                        }
-                        else if (placeInput.classList.contains("unselected")) {
-                            marker.setLabel({
-                                ...marker.label,
-                                text: "\ue5cd",
-                            });
-                            marker.setOpacity(0.3);
-                        }
-                    });
+                    };
 
                     inputContainer.addEventListener("click", () => {
                         if (placeInput.classList.contains("selected")) {
@@ -346,6 +362,8 @@ function initMap(){
                             placeInput.classList.remove("unselected");
                             placeInput.checked = true;
                         }
+                        prevMarkerIcon = marker.label.text;
+                        prevMarkerOpacity = marker.opacity;
                     });
                 }
             }
