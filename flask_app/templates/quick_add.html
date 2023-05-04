@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry: Quick Sign Up</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <a id="page_title_link" href="/">
+            <h2 id="page_title">Hangry</h2>
+        </a>
+        <div class="button_div">
+            <a href="/restaurant/add_favorite"><button class="button navbar_link">Add New Favorite</button></a>
+            <a href="/location/add"><button class="button navbar_link">Add New Location</button></a>
+            <a href="/logout"><button class="button navbar_logout">Logout</button></a>
+        </div>
+    </div>
+    <div class="quick_add_form">
+        <h1>Fill Out the Form Below</h1>
+        <h3 class="quick_add_text">If you have just used the One Time Randomization functionality of Hangry and are looking to "Quick Add" the new location and favorites, fill out the form below!</h3>
+        <h3 class="quick_add_text">If you aren't looking to "Quick Add", click <a href="/dashboard">HERE</a>.</h3>
+        <form class="quick_add" action="/one-time-randomization/process-quick-add" method="post">
+            {% with location_errors = get_flashed_messages(category_filter=['location_entry_quick_sign_up_error']) %}
+                {% if location_errors %}
+                    {% for location_error in location_errors %}
+                        <p class="reg_error">{{location_error}}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="quick_add_info">
+                <div class="quick_add_location_info">
+                    <div class="quick_add_location_label">
+                        <label for="location_name">Location Name: </label>
+                        <p>Give a name to the location you used for your previous search.</p>
+                    </div>
+                    <input type="text" name="location_name" id="location_name">
+                </div>
+            </div>
+            <input type="submit" value="Add" class="button box_button quick_add_button">
+        </form>
+    </div>
+    <div class="footer">
+        <div class="section">
+            <h4>Home</h4>
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/#how_it_works_title">How It Works</a></li>
+                <li><a href="/#about_us_title">About Us</a></li>
+                <li><a href="/#contact_us_title">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <h4>Users</h4>
+            <ul>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+                <li><a href="/one-time-user/location">Use Once</a></li>
+            </ul>
+        </div>
+        <div class="section last_section">
+            <h4>User Options</h4>
+            <ul>
+                <li><a href="/dashboard">User Dashboard</a></li>
+                <li><a href="/restaurant/add_favorite">Add a Favorite</a></li>
+                <li><a href="/location/add">Add a Location</a></li>
+                <li><a href="/favorites/randomize">Randomize Favorites</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    <script src="../static/script.js"></script>
+</body>
+</html>

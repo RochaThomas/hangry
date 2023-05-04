@@ -294,26 +294,8 @@ function initMap(){
                     inputContainer.appendChild(placeInput);
                     inputContainer.appendChild(labelPlaceInput);
 
-                    /**
-                     * fix the input containers to no longer show window information
-                     * keep it so that the image changes on the marker
-                     * change to magnifine glass
-                     * make the glass persist until the next glass should appear
-                     * window only appears by interacting with markers
-                     */
-
-                    /**
-                     * try mouseover
-                     * look for way to group the eventlistener to a div and its child elements so that
-                     * the event doesnt keep happening over and over again
-                     * check by using a console log statement
-                     * use a var prevMarker similar to prevWindow
-                     * user only an event listener for mouseover and remove mouse out
-                     * move mouseout icon resetting logic to mouseover
-                     * might have to find the restaurantIcon again
-                     * close prev window on mouseover
-                     */
                     inputContainer.onmouseover = (e) => {
+                        // not sure why this works but i know that it does... look into why
                         if ((e.target !== e.currentTarget) || (prevMarker && prevMarker == marker)) {
                             return
                         }

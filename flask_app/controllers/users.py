@@ -32,6 +32,18 @@ def disp_sign_up():
         return redirect('/dashboard')
     return render_template('sign_up.html')
 
+@app.route('/one-time-randomization')
+def disp_one_time_randomization_location():
+    if 'user_id' not in session:
+        return redirect('/')
+    return render_template('use_one_time_location.html')
+
+@app.route('/one-time-randomization/manual_location_entry')
+def disp_manual_entry_form_one_time_randomization():
+    if 'user_id' not in session:
+        return redirect('/')
+    return render_template('one_time_randomization_location_manual_entry.html')
+
 @app.route('/one-time-user/location')
 def disp_use_location_one_time_user():
     if 'user_id' in session:
@@ -43,6 +55,19 @@ def disp_manual_entry_form_one_time_user():
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('user_manual_entry.html')
+
+@app.route('/one-time-randomization/map')
+def disp_one_time_randomization_map():
+    if 'user_id' not in session:
+        return redirect('/')
+    if 'lat' in session and 'lng' in session:
+        lat = float(session['lat'])
+        lng = float(session['lng'])
+    else:
+        # change this location later
+        lat = 37.3387
+        lng = -121.8853
+    return render_template("one_randomization_map.html", lat=lat, lng=lng)
 
 @app.route('/one-time-user/map')
 def disp_one_time_user_map():
@@ -57,11 +82,36 @@ def disp_one_time_user_map():
         lng = -121.8853
     return render_template("one_use_map.html", lat=lat, lng=lng)
 
+@app.route('/one-time-randomization/manual_restaurant_add')
+def disp_manual_restaurant_add_one_time_randomization():
+    if 'user_id' not in session:
+        return redirect('/')
+    return render_template('one_time_randomization_manual_restaurant_add.html', restaurants = session['restaurants'])
+
 @app.route('/one-time-user/manual_restaurant_add')
 def disp_manual_restaurant_add():
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('manual_restaurant_add.html', restaurants = session['restaurants'])
+
+@app.route('/one-time-randomization/result')
+def disp_one_time_randomization_result():
+    if 'user_id' not in session:
+        return redirect('/')
+    
+    def randomize(restaurants):
+        idx = random.randint(0, (len(restaurants) - 1))
+        print("num restaurants:", len(restaurants) - 1)
+        print("idx:", idx)
+        return restaurants[idx]
+
+    newResult = randomize(session['restaurants'])
+    if 'result' in session and len(session['restaurants']) > 1:
+        while newResult['placeId'] == session['result']['placeId']:
+            newResult = randomize(session['restaurants'])
+    
+    session['result'] = newResult
+    return render_template('one_time_randomization_result.html', result=session['result']['name'], resultId = session['result']['placeId'], lat=session['lat'], lng=session['lng'])
 
 @app.route('/one-time-user/result')
 def disp_one_time_result():
@@ -81,6 +131,12 @@ def disp_one_time_result():
     
     session['result'] = newResult
     return render_template('one_time_result.html', result=session['result']['name'], resultId = session['result']['placeId'], lat=session['lat'], lng=session['lng'])
+
+@app.route('/one-time-randomization/quick-add')
+def disp_quick_add():
+    if 'user_id' not in session:
+        return redirect('/')
+    return render_template('quick_add.html')
 
 @app.route('/one-time-user/quick-sign-up')
 def disp_quick_sign_up():
@@ -118,6 +174,33 @@ def register_new_user():
     user_id = User.save(data)
     session['user_id'] = user_id
     return redirect('/location/first_location')
+
+@app.route('/one-time-randomization/process-quick-add', methods=['POST'])
+def process_quick_add():
+    location_data = {
+        'name': request.form['location_name'],
+        'lat': session['lat'],
+        'lng': session['lng'],
+        'user_id': session['user_id'],
+    }
+    valid_location = Location.is_valid_location_entry_quick_add(location_data)
+    if not valid_location:
+        return redirect('/one-time-randomization/quick-add')
+    location_id = Location.add_location(location_data)
+
+    for restaurant in session['restaurants']:
+        restaurant_id = Restaurant.add_restaurant({
+            'name': restaurant['name'],
+            'lat': restaurant['lat'],
+            'lng': restaurant['lng'],
+            'place_id': restaurant['placeId'],
+        })
+        Users_favorite.add_users_favorite({
+            'user_id': session['user_id'],
+            'restaurant_id': restaurant_id,
+            'location_id': location_id,
+        })
+    return redirect('/restaurant/add_favorite')
 
 @app.route('/register/user/quick-sign-up', methods=['POST'])
 def register_new_user_quick_sign_up():
@@ -174,6 +257,14 @@ def logout():
     session.clear()
     return redirect('/')
 
+@app.route('/one-time-randomization/process_user_location', methods=['POST'])
+def process_user_location_one_time_randomization():
+    if not Location.is_valid_one_time_location_entry(request.form):
+        return redirect("/one-time-randomization/manual_location_entry")
+    session['lat'] = request.form['lat']
+    session['lng'] = request.form['lng']
+    return redirect("/one-time-randomization/map")
+
 @app.route('/one-time-user/process_user_location', methods=['POST'])
 def process_user_location():
     if not Location.is_valid_one_time_location_entry(request.form):
@@ -182,6 +273,14 @@ def process_user_location():
     session['lng'] = request.form['lng']
     return redirect("/one-time-user/map")
 
+@app.route('/one-time-randomization/auto_process_user_location', methods=['POST'])
+def auto_process_user_location_one_time_randomization():
+    if 'user_id' not in session:
+        return redirect('/')
+    session['lat'] = request.form['lat']
+    session['lng'] = request.form['lng']
+    return redirect("/one-time-randomization/map")
+
 @app.route('/one-time-user/auto_process_user_location', methods=['POST'])
 def auto_process_user_location():
     if 'user_id' in session:
@@ -189,6 +288,22 @@ def auto_process_user_location():
     session['lat'] = request.form['lat']
     session['lng'] = request.form['lng']
     return redirect("/one-time-user/map")
+
+@app.route('/one-time-randomization/process_one_time_map', methods=['POST'])
+def process_one_randomization_map():
+    restaurants = []
+
+    for key in request.form:
+        info = request.form[key].split(',;;,')
+        restaurants.append({
+            'name': info[0],
+            'lat': info[1],
+            'lng': info[2],
+            'placeId': key,
+        })
+    
+    session['restaurants'] = restaurants
+    return redirect("/one-time-randomization/manual_restaurant_add")
 
 @app.route('/one-time-user/process_one_time_map', methods=['POST'])
 def process_one_time_map():
@@ -205,6 +320,29 @@ def process_one_time_map():
     
     session['restaurants'] = restaurants
     return redirect("/one-time-user/manual_restaurant_add")
+
+@app.route('/one-time-randomization/process_manual_restaurant_add', methods=['POST'])
+def process_manual_restaurant_add_one_time_randomization():
+    if not Restaurant.is_valid_one_time_restaurant_entry(request.form):
+        return redirect("/one-time-user/manual_restaurant_add")
+    restaurants = session['restaurants']
+    # make sure the restaurant they are trying to add isn't already on the list
+    dup = False
+    print(restaurants)
+    for restaurant in restaurants:
+        if restaurant['placeId'] == request.form['place_id']:
+            dup = True
+            break
+    if dup == False:
+        restaurants.append({
+            'name': request.form['name'],
+            'placeId': request.form['place_id'],
+            'lat': request.form['lat'],
+            'lng': request.form['lng'],
+        })
+    session['restaurants'] = restaurants
+
+    return redirect("/one-time-randomization/manual_restaurant_add")
 
 @app.route('/one-time-user/process_manual_restaurant_add', methods=['POST'])
 def process_manual_restaurant_add():

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangry</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <a id="page_title_link" href="/">
+            <h2 id="page_title">Hangry</h2>
+        </a>
+        <div class="button_div">
+            <a href="/restaurant/add_favorite"><button class="button navbar_link">Add New Favorite</button></a>
+            <a href="/location/add"><button class="button navbar_link">Add New Location</button></a>
+            <a href="/logout"><button class="button navbar_logout">Logout</button></a>
+        </div>
+    </div>
+    <div class="content manual-restaurant-add-content">
+        <a class="back-button" href="/"> ← Back</a>
+        <h1>One Last Step!</h1>
+        <div class="directions">
+            <h3 class="directions-title">Directions: </h3>
+            <div class="directions-content">
+                <p class="directions-message">
+                    The restaurants you selected are displayed on the right. If there is a restaurant you know you 
+                    might want to eat at but it wasn't on the map on the previous page, enter the information of that
+                    restaurant in the form on the left and click "Add Restaurant". When your list looks complete,
+                    click "Solve My Hanger!"
+                </p>
+            </div>
+        </div>
+        <div id="connectToNearby" class="manual-restaurant-add-container">
+            <form id="manual-restaurant-add-form" class="manual-restaurant-add-form" action="/one-time-randomization/process_manual_restaurant_add" method="post">
+                <legend class="manual-restaurant-add-title">Manually Add a Restaurant to Your List</legend>
+                <div class="form-body">
+                    <!-- jinja error handling messages -->
+                    {% with one_time_restaurant_entry_errors = get_flashed_messages(category_filter=['one_time_restaurant_entry_error']) %}
+                        {% if one_time_restaurant_entry_errors %}
+                            {% for one_time_restaurant_entry_error in one_time_restaurant_entry_errors %}
+                                <p class="error">{{one_time_restaurant_entry_error}}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <div class="input-container">
+                        <label for="name">Restaurant Name: </label>
+                        <input type="text" name="name" id="name" placeholder="Enter a Restaurant" onchange="resetPlaceId()">
+                    </div>
+                    <div class="input-container">
+                        <label for="street_address">Address: </label>
+                        <input type="text" name="street_address" id="street_address" onchange="resetPlaceId()">
+                    </div>
+                    <div class="input-container">
+                        <label for="city">City: </label>
+                        <input type="text" name="city" id="city" onchange="resetPlaceId()">
+                    </div>
+                    <div class="input-container">
+                        <label for="state">State: </label>
+                        <input type="text" name="state" id="state" onchange="resetPlaceId()">
+                    </div>
+                    <div class="input-container">
+                        <label for="zip_code">Zip Code: </label>
+                        <input type="text" name="zip_code" id="zip_code" onchange="resetPlaceId()">
+                    </div>
+                    <input type="hidden" id="lat" name="lat">
+                    <input type="hidden" id="lng" name="lng">
+                    <input type="hidden" id="place_id" name="place_id">
+                    <input class="manual-restaurant-add-submit" type="button" value="Add Restaurant" onclick="geocode()">
+                </div>
+            </form>
+            <div class="list-of-selected-container">
+                <h3 class="list-of-selected-title">List of Your Selected Restaurants</h3>
+                <div id="list-of-selected" class="list-of-selected">
+                    {% for restaurant in restaurants %}
+                        <p>{{restaurant.name}}</p>
+                    {% endfor %}
+                </div>
+                <!-- add onclick function and styling -->
+                <button class="solve-my-hanger" type="button"><a class="solve-my-hanger-link" href="/one-time-randomization/result">Solve My Hanger!</a></button>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="section">
+            <h4>Home</h4>
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/#how_it_works_title">How It Works</a></li>
+                <li><a href="/#about_us_title">About Us</a></li>
+                <li><a href="/#contact_us_title">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <h4>Users</h4>
+            <ul>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+                <li><a href="/one-time-user/location">Use Once</a></li>
+            </ul>
+        </div>
+        <div class="section last_section">
+            <h4>User Options</h4>
+            <ul>
+                <li><a href="/dashboard">User Dashboard</a></li>
+                <li><a href="/restaurant/add_favorite">Add a Favorite</a></li>
+                <li><a href="/location/add">Add a Location</a></li>
+                <li><a href="/favorites/randomize">Randomize Favorites</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script src="/static/script.js"></script>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initAutocomplete&libraries=places&v=weekly"
+    defer
+></script>
+</html>

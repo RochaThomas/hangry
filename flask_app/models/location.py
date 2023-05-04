@@ -107,3 +107,15 @@ class Location:
             flash('Location Invalid: Are you a user coming from a one-time use? If not use the regular sign up above.', 'location_entry_quick_sign_up_error')
             is_valid = False
         return is_valid
+
+    @staticmethod
+    def is_valid_location_entry_quick_add(location):
+        is_valid = True
+        if len(location['name']) < 1:
+            flash('A location name is required.', 'location_entry_quick_sign_up_error')
+            is_valid = False
+        if (location['lat'] == "" or
+            location['lng'] == ""):
+            flash('Location Invalid: Are you a user coming from a one-time use? If not use the regular sign up above.', 'location_entry_quick_sign_up_error')
+            is_valid = False
+        return is_valid

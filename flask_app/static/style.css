@@ -146,7 +146,7 @@
     flex-direction: column;
     gap: 20px;
 }
-.index_options {
+.index_options, .dashboard_options {
     display: flex;
     height: fit-content;
 }
@@ -396,7 +396,7 @@
 .sign_up_content {
     justify-content: space-around;
 }
-.sign_up_form {
+.sign_up_form, .quick_add_form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -404,7 +404,7 @@
     padding: 25px;
     background-color: #f5f5f5;
 }
-.register, .quick_sign_up_register {
+.register, .quick_sign_up_register, .quick_add {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -416,38 +416,47 @@
     border: black thick solid;
     border-radius: 5px;
 }
-.quick_sign_up_register {
+.quick_sign_up_register, .quick_add {
     width: fit-content;
 }
-.register label, .quick_sign_up_register label, .login_form label {
+.register label, .quick_sign_up_register label, .login_form label, .quick_add label {
     font-size: 16pt;
 }
-.register input, .quick_sign_up_register input, .login_form input {
+.register input, .quick_sign_up_register input, .login_form input, .quick_add label {
     width: 200px;
 }
 
-.quick_sign_up_info {
+.quick_sign_up_info, .quick_add_info {
     display: flex;
 }
-.quick_sign_up_text {
+.quick_sign_up_text, .quick_add_text {
     color: #e00a05;
 }
-.quick_sign_up_user_info, .quick_sign_up_location_info {
+.quick_sign_up_user_info, .quick_sign_up_location_info, .quick_add_user_info, .quick_add_location_info {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     width: 300px;
 }
-.quick_sign_up_location_info{
+.quick_sign_up_location_info, .quick_add_location_info{
     justify-content: center;
     gap: 15px;
 }
-.quick_sign_up_location_label {
+.quick_sign_up_location_label, .quick_add_location_label {
     display: flex;
     flex-direction: column;
     gap: 5px;
     width: 200px;
+    text-align: center;
+}
+
+.quick_add_form {
+    gap: 25px;
+    padding-bottom: 50px;
+}
+.quick_add_text {
+    padding: 0px 250px;
     text-align: center;
 }
 
@@ -456,12 +465,12 @@
     color: #e00a05;
     font-size: 12pt;
 }
-.sign_up_button, .login_button, .add_button, .red_btn_white_wrd {
+.sign_up_button, .login_button, .add_button, .red_btn_white_wrd, .quick_add_button {
     border-color: #e00a05;
     color: #e00a05;
     font-size: 36pt;
 }
-.sign_up_button:hover, .login_button:hover, .add_button:hover, .red_btn_white_wrd:hover {
+.sign_up_button:hover, .login_button:hover, .add_button:hover, .red_btn_white_wrd:hover, .quick_add_button:hover {
     background-color: #e00a05;
     color: white;
 }
