@@ -1106,8 +1106,8 @@ input:checked + .slider:before {
     padding-right: 25px;
 }
 .list-input-container input {
-    width: 20px;
-    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
 }
 .restaurant-input-name {
     font-size: larger;
@@ -1123,8 +1123,8 @@ input:checked + .slider:before {
     font-size: 24px;
     color: #ffffff;
     background-color: #e00a05;
-    width: 40px;
-    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
