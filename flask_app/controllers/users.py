@@ -16,18 +16,22 @@ def disp_default():
     # index.html should have an option for one-time uses
     # index.html should have links for how it works and about us
     # show login, sign up, and use 1 time
+    session.clear()
+    print("session: ", session)
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('index.html')
 
 @app.route('/login')
 def disp_login():
+    print("session: ", session)
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('login.html')
 
 @app.route('/register')
 def disp_sign_up():
+    print("session: ", session)
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('sign_up.html')
@@ -46,18 +50,21 @@ def disp_manual_entry_form_one_time_randomization():
 
 @app.route('/one-time-user/location')
 def disp_use_location_one_time_user():
+    print("session: ", session)
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('use_location.html')
 
 @app.route('/one-time-user/manual_location_entry')
 def disp_manual_entry_form_one_time_user():
+    print("session: ", session)
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('user_manual_entry.html')
 
 @app.route('/one-time-randomization/map')
 def disp_one_time_randomization_map():
+    print("session: ", session)
     if 'user_id' not in session:
         return redirect('/')
     if 'lat' in session and 'lng' in session:
@@ -71,6 +78,7 @@ def disp_one_time_randomization_map():
 
 @app.route('/one-time-user/map')
 def disp_one_time_user_map():
+    print("session: ", session)
     if 'user_id' in session:
         return redirect('/dashboard')
     if 'lat' in session and 'lng' in session:
@@ -90,6 +98,7 @@ def disp_manual_restaurant_add_one_time_randomization():
 
 @app.route('/one-time-user/manual_restaurant_add')
 def disp_manual_restaurant_add():
+    print("session: ", session)
     if 'user_id' in session:
         return redirect('/dashboard')
     return render_template('manual_restaurant_add.html', restaurants = session['restaurants'])
@@ -130,6 +139,7 @@ def disp_one_time_result():
             newResult = randomize(session['restaurants'])
     
     session['result'] = newResult
+    print("session: ", session)
     return render_template('one_time_result.html', result=session['result']['name'], resultId = session['result']['placeId'], lat=session['lat'], lng=session['lng'])
 
 @app.route('/one-time-randomization/quick-add')
@@ -142,6 +152,11 @@ def disp_quick_add():
 def disp_quick_sign_up():
     if 'user_id' in session:
         return redirect('/dashboard')
+    if 'restaurants' not in session or 'lat' not in session or 'lng' not in session:
+        session.clear()
+        return redirect('/register')
+    session.pop('result', False)
+    print("session: ", session)
     
     return render_template('quick_sign_up.html')
 
@@ -236,8 +251,12 @@ def register_new_user_quick_sign_up():
             'restaurant_id': restaurant_id,
             'location_id': location_id,
         })
+    
+    print("session before clear: ", session)
+    session.clear()
 
     session['user_id'] = user_id
+    print("session after clear: ", session)
     return redirect('/dashboard')
 
 @app.route('/login/user', methods=['POST'])
