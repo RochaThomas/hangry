@@ -40,6 +40,13 @@ def disp_sign_up():
 def disp_one_time_randomization_location():
     if 'user_id' not in session:
         return redirect('/')
+    
+    # resetting session on external link click
+    temp = session['user_id']
+    session.clear()
+    session['user_id'] = temp
+    print('session: ', session)
+
     return render_template('use_one_time_location.html')
 
 @app.route('/one-time-randomization/manual_location_entry')
@@ -92,6 +99,7 @@ def disp_one_time_user_map():
 
 @app.route('/one-time-randomization/manual_restaurant_add')
 def disp_manual_restaurant_add_one_time_randomization():
+    print('session: ', session)
     if 'user_id' not in session:
         return redirect('/')
     return render_template('one_time_randomization_manual_restaurant_add.html', restaurants = session['restaurants'])
@@ -107,6 +115,8 @@ def disp_manual_restaurant_add():
 def disp_one_time_randomization_result():
     if 'user_id' not in session:
         return redirect('/')
+    
+    print('session: ', session)
     
     def randomize(restaurants):
         idx = random.randint(0, (len(restaurants) - 1))
@@ -146,6 +156,8 @@ def disp_one_time_result():
 def disp_quick_add():
     if 'user_id' not in session:
         return redirect('/')
+    session.pop('result', False)
+    print('session: ', session)
     return render_template('quick_add.html')
 
 @app.route('/one-time-user/quick-sign-up')
@@ -163,14 +175,17 @@ def disp_quick_sign_up():
 @app.route('/dashboard')
 def disp_dashboard():
     if 'user_id' not in session:
-        return redirect('/login')
+        return redirect('/')
+    
+    # resetting session on external link click
+    temp = session['user_id']
+    session.clear()
+    session['user_id'] = temp
+    print('session: ', session)
+
     data = {
         'id': session['user_id']
     }
-
-    # reset prev id for adding favorites if this external link is clicked
-    if session.get('prev_id'):
-        session.pop('prev_id')
     
     user = User.get_user_by_id(data)
     return render_template('dashboard.html', user=user)

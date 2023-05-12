@@ -13,19 +13,22 @@ def disp_add_location():
         'id': session['user_id']
     }
 
-    # reset randomization selection when external link is clicked
-    # resets 'hidden' and 'location_id' in session
-    if session.get('location_id') or session.get('hidden'):
-        session.pop('location_id')
-        session.pop('hidden')
-    # reset prev id for adding favorites if this external link is clicked
-    if session.get('prev_id'):
-        session.pop('prev_id')
+    # saving id of location to be deleted to temp variable if its in session
+    temp_delete_id = session['delete_location_id'] if 'delete_location_id' in session else False
+
+    # resetting session on external link click
+    temp = session['user_id']
+    processed = session['process_delete'] if 'process_delete' in session else True
+    session.clear()
+    session['user_id'] = temp
+    # readd the delete location id into session
+    if temp_delete_id:
+        session['delete_location_id'] = temp_delete_id
+    print('session: ', session)
 
     user = User.get_user_by_id(data)
     locations = Location.get_all_locations(data)
     session['num_of_locations'] = len(locations)
-    processed = session['process_delete'] if 'process_delete' in session else True
     return render_template('add_location.html', user=user, locations=locations, processed=processed)
 
 @app.route('/location/first_location')
@@ -57,8 +60,8 @@ def confirm_deletion():
     }
     Users_favorite.delete_all_for_location(data)
     Location.delete(data)
-    session.pop('process_delete')
-    session.pop('delete_location_id')
+    session.pop('process_delete', False)
+    session.pop('delete_location_id', False)
     return redirect('/location/add')
 
 @app.route('/location/delete/cancel')

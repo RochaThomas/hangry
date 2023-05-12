@@ -15,20 +15,18 @@ def disp_add_favorite():
         'id': session['user_id']
     }
     
-    # reset randomization selection when external link is clicked
-    # resets 'hidden' and 'location_id' in session
-    if session.get('location_id'):
-        session.pop('location_id')
-    if session.get('hidden'):
-        session.pop('hidden')
+    # resetting session on external link click
+    temp = session['user_id']
     if session.get('prev_id'):
         prev_id = session['prev_id']
     else:
         prev_id = -1
+    session.clear()
+    session['user_id'] = temp
+    print('session: ', session)
 
     locations = Location.get_all_locations(data)
     users_favorites = Users_favorite.get_all_favorites_for_user(data)
-    print("users_favorites:", users_favorites)
     return render_template('add_favorite.html', locations=locations, users_favorites=users_favorites, prev_id=prev_id)
 
 @app.route('/restaurant/add_favorite/process', methods=['POST'])

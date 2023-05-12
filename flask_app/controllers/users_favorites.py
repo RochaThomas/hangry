@@ -7,8 +7,9 @@ from flask_app.models.restaurant import Restaurant
 
 @app.route('/favorites/randomize')
 def disp_randomize_form():
+    print('session: ', session)
     if 'user_id' not in session:
-        return redirect('/login')
+        return redirect('/')
     data = {
         'id': session['user_id']
     }
@@ -34,6 +35,7 @@ def disp_randomize_form():
 
 @app.route('/favorites/randomize/result')
 def disp_result():
+    print('session: ', session)
     if 'user_id' not in session:
         return redirect('/login')
     data = {
