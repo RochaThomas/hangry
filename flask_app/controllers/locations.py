@@ -33,8 +33,9 @@ def disp_add_location():
 
 @app.route('/location/first_location')
 def disp_first_location():
+    print("session: ", session)
     if 'user_id' not in session:
-        return redirect('/login')
+        return redirect('/')
     return render_template('first_location.html', user_id=session['user_id'])
 
 @app.route('/location/first_location/map')
@@ -48,6 +49,7 @@ def disp_first_location_map():
         # change this location later
         lat = 37.3387
         lng = -121.8853
+    print('session: ', session)
     return render_template('first_location_map.html', lat=lat, lng=lng)
 
 @app.route('/location/delete/confirm')

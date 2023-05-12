@@ -68,10 +68,18 @@ def process_restaurants_disp_next_steps():
             'restaurant_id': restaurant_id,
             'location_id': session['location_id'],
         })
+    
+    # resetting session on external link click
+    temp = session['user_id']
+    session.clear()
+    session['user_id'] = temp
+    print('session: ', session)
+
     return render_template('next_steps.html')
 
 @app.route('/favorites/first_location/manual_entry')
 def disp_first_location_favorites_manual_entry():
+    print('session: ', session)
     if 'user_id' not in session:
         return redirect('/dashboard')
     return render_template('first_location_favorites_manual_entry.html', restaurants = session['restaurants'])
