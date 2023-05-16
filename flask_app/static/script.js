@@ -671,6 +671,8 @@ const initLocationsMap = () => {
         lng = parseFloat(locations[i].getAttribute("lng"));
         locationCoords = {lat: lat, lng: lng};
         name = locations[i].textContent;
+        name = name.trimEnd()
+        name = name.substring(0, name.length - 7)
         location = parseInt(locations[i].value);
 
         let marker = new google.maps.Marker({
