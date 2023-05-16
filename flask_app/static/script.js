@@ -556,6 +556,9 @@ const initFavoritesMap = () => {
             favsBounds = new google.maps.LatLngBounds();
         }
         favName = favorites[i].textContent;
+        favName = favName.trimEnd()
+        favName = favName.substring(0, favName.length - 7)
+
         coords = {lat: favLat, lng: favLng};
 
         // map set to null to hide markers
