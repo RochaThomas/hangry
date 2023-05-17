@@ -728,6 +728,7 @@ const initResultsRouteMap = (destinationLat, destinationLng) => {
 
 // fix error handling of user location
 const getUserLocation = () => {
+    loadingScreen();
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -1067,6 +1068,12 @@ const scrollToQuery = (query) => {
         block: 'start',
         inline: 'nearest',
     });
+}
+
+const loadingScreen = () => {
+    modal = document.getElementById('loading-modal');
+    modal.classList.remove('loading-modal-hidden');
+    modal.classList.add('loading-modal-show');
 }
 
 // getResultInfo();
