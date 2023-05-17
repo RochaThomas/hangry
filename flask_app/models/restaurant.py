@@ -17,7 +17,10 @@ class Restaurant:
 
     @classmethod
     def add_restaurant(cls, data):
-        print(data)
+        query  = """SELECT * FROM restaurants WHERE google_id = %(place_id)s;"""
+        res = connectToMySQL(cls.db_name).query_db(query, data)
+        print('add find result: ', res)
+        if res: return res[0]['id']
         query = """INSERT INTO restaurants (name, lat, lng, google_id, created_at, updated_at)
                 VALUES (%(name)s, %(lat)s, %(lng)s, %(place_id)s, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
