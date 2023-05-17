@@ -134,7 +134,7 @@
     font-weight: bold;
 }
 
-.content, .manual-entry-content, .next-steps-content {
+.content, .manual-entry-content {
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -770,6 +770,11 @@
     gap: 25px;
     padding: 10px 100px 50px 100px;
 }
+.next-steps-content {
+    justify-content: flex-start;
+    height: 450px;
+    gap: 40px;
+}
 .user-location-content, .manual-entry-content {
     justify-content: flex-start;
     gap: 125px
@@ -1339,6 +1344,8 @@ input:checked + .slider:before {
     flex-direction: column;
     align-items: center;
     border-radius: 5px;
+    gap: 30px;
+    padding: 10px;
 }
 .options-title, .options-title-inverted {
     text-align: center;
@@ -1362,9 +1369,9 @@ input:checked + .slider:before {
     border-radius: 5px;
     background-color: #e00a05;
     color: #ffffff;
-    width: 200px;
+    width: 225px;
     height: 35px;
-    font-size: 18px;
+    font-size: 20px;
     margin: 10px;
 }
 .next-steps-options-button {

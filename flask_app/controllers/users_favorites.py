@@ -56,18 +56,19 @@ def process_restaurants_disp_next_steps():
     if 'user_id' not in session:
         return redirect('/login')
 
-    for restaurant in session['restaurants']:
-        restaurant_id = Restaurant.add_restaurant({
-            'name': restaurant['name'],
-            'lat': restaurant['lat'],
-            'lng': restaurant['lng'],
-            'place_id': restaurant['placeId'],
-        })
-        Users_favorite.add_users_favorite({
-            'user_id': session['user_id'],
-            'restaurant_id': restaurant_id,
-            'location_id': session['location_id'],
-        })
+    if 'restaurants' in session:
+        for restaurant in session['restaurants']:
+            restaurant_id = Restaurant.add_restaurant({
+                'name': restaurant['name'],
+                'lat': restaurant['lat'],
+                'lng': restaurant['lng'],
+                'place_id': restaurant['placeId'],
+            })
+            Users_favorite.add_users_favorite({
+                'user_id': session['user_id'],
+                'restaurant_id': restaurant_id,
+                'location_id': session['location_id'],
+            })
     
     # resetting session on external link click
     temp = session['user_id']
