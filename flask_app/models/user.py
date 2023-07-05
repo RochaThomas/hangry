@@ -1,4 +1,3 @@
-
 from flask_app import app
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
@@ -11,23 +10,23 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 class User:
     db_name = 'hangry_schema'
     def __init__(self, data):
-        self.id = data['id']
-        self.first_name = data['first_name']
-        self.last_name = data['last_name']
-        self.email = data['email']
-        self.password = data['password']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        self.id = data[0]
+        self.first_name = data[1]
+        self.last_name = data[2]
+        self.email = data[3]
+        self.password = data[4]
+        self.created_at = data[5]
+        self.updated_at = data[6]
 
     @classmethod
     def save(cls, data):
         query = """INSERT INTO users (first_name, last_name, email, password, created_at, updated_at)
-                VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s, NOW(), NOW());"""
+                VALUES (:first_name, :last_name, :email, :password, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
     def get_user_by_email(cls, data):
-        query = "SELECT * FROM users WHERE email = %(email)s;"
+        query = "SELECT * FROM users WHERE email = :email;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
         if not results:
             return False
@@ -35,7 +34,7 @@ class User:
 
     @classmethod
     def get_user_by_id(cls, data):
-        query = "SELECT * FROM users WHERE id = %(id)s;"
+        query = "SELECT * FROM users WHERE id = :id;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
         if not results:
             return False
