@@ -14,18 +14,24 @@ from google.cloud.sql.connector import Connector, IPTypes
 
 class MySQLConnection:
     def __init__(self, db):
-        instance_connection_name = "hangry-343110:us-west1:hangry-backend"
+        # IF YOU ARE RUNNING LOCALLY OR DEPLOYING CHANGE THE VALUES BELOW
+        # CHANGE INSTANCE_CONNECTION_NAME
+        instance_connection_name = ""
         ip_type = IPTypes.PRIVATE if os.environ.get("PRIVATE_IP") else IPTypes.PUBLIC
 
         connector = Connector(ip_type)
 
         def getconn() -> pymysql.connections.Connection:
+            # IF YOU ARE RUNNING LOCALLY OR DEPLOYING CHANGE THE VALUES BELOW
+            # CHANGE USER
+            # CHANGE PASSWORD
+            # CHANGE DB
             conn: pymysql.connections.Connection = connector.connect(
                 instance_connection_name,
                 "pymysql",
-                user="root",
-                password="PCK21RslvzG,6B@Z",
-                db="hangry_schema"
+                user="",
+                password="",
+                db=""
             )
             return conn
         
