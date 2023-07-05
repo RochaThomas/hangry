@@ -5,25 +5,25 @@ from flask import flash
 class Location:
     db_name = "hangry_schema"
     def __init__(self, data):
-        self.id = data['id']
-        self.name = data['name']
-        self.lat = data['lat']
-        self.lng = data['lng']
-        self.user_id = data['user_id']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        self.id = data[0]
+        self.name = data[1]
+        self.lat = data[2]
+        self.lng = data[3]
+        self.user_id = data[4]
+        self.created_at = data[5]
+        self.updated_at = data[6]
 
     @classmethod
     def add_location(cls, data):
         query = """INSERT INTO locations (name, lat, lng, user_id, created_at, updated_at)
-                VALUES (%(name)s, %(lat)s, %(lng)s, %(user_id)s, NOW(), NOW());"""
+                VALUES (:name, :lat, :lng, :user_id, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
     def get_all_locations(cls, data):
         query = """SELECT * FROM locations
                 LEFT JOIN users ON locations.user_id = users.id
-                WHERE user_id = %(id)s;"""
+                WHERE user_id = :id;"""
         results = connectToMySQL(cls.db_name).query_db(query, data)
         locations = []
         if results:
@@ -34,7 +34,7 @@ class Location:
     @classmethod
     def get_location_by_name(cls, data):
         query = """SELECT * FROM locations
-                WHERE user_id = %(id)s AND name = %(name)s;"""
+                WHERE user_id = :id AND name = :name;"""
         result = connectToMySQL(cls.db_name).query_db(query, data)
         print(result)
         location = None
@@ -45,7 +45,7 @@ class Location:
     @classmethod
     def get_location_by_id(cls, data):
         query = """SELECT * FROM locations
-                WHERE user_id = %(id)s AND locations.id = %(location_id)s;"""
+                WHERE user_id = :id AND locations.id = :location_id;"""
         result = connectToMySQL(cls.db_name).query_db(query, data)
         print(result)
         location = None
@@ -56,8 +56,8 @@ class Location:
     @classmethod
     def delete(cls, data):
         query = """DELETE FROM locations
-                WHERE user_id = %(user_id)s
-                AND id = %(delete_location_id)s;"""
+                WHERE user_id = :user_id
+                AND id = :delete_location_id;"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @staticmethod

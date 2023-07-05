@@ -71,7 +71,7 @@ class MySQLConnection:
             else:
                 res = conn.execute(sqlalchemy.text(query), data)
                 conn.commit()
-            self.connection.close() 
+            conn.close() 
 
 
         # with self.connection.cursor() as cursor:

@@ -7,27 +7,27 @@ import random
 class Restaurant:
     db_name = "hangry_schema"
     def __init__(self, data):
-        self.id = data['id']
-        self.name = data['name']
-        self.lat = data['lat']
-        self.lng = data['lng']
-        self.google_id = data['google_id']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        self.id = data[0]
+        self.name = data[1]
+        self.lat = data[2]
+        self.lng = data[3]
+        self.google_id = data[4]
+        self.created_at = None
+        self.updated_at = None
 
     @classmethod
     def add_restaurant(cls, data):
-        query  = """SELECT * FROM restaurants WHERE google_id = %(place_id)s;"""
+        query  = """SELECT * FROM restaurants WHERE google_id = :place_id;"""
         res = connectToMySQL(cls.db_name).query_db(query, data)
         print('add find result: ', res)
         if res: return res[0]['id']
         query = """INSERT INTO restaurants (name, lat, lng, google_id, created_at, updated_at)
-                VALUES (%(name)s, %(lat)s, %(lng)s, %(place_id)s, NOW(), NOW());"""
+                VALUES (:name, :lat, :lng, :place_id, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
     def get_one_restaurant(cls, data):
-        query = "SELECT * FROM restaurants WHERE id = %(id)s;"
+        query = "SELECT * FROM restaurants WHERE id = :id;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
         if results:
             restaurant = cls( results[0] )
@@ -38,7 +38,7 @@ class Restaurant:
         query = """SELECT restaurants.* FROM locations
                 LEFT JOIN users_favorites ON locations.id = users_favorites.location_id
                 LEFT JOIN restaurants ON users_favorites.restaurant_id = restaurants.id
-                WHERE locations.id = %(id)s;"""
+                WHERE locations.id = :id;"""
         results = connectToMySQL(cls.db_name).query_db(query, data)
         favorites_for_location = []
         if results:
