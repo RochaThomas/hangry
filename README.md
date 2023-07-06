@@ -17,8 +17,13 @@
 ![One Time Randomization for Logged In User](/flask_app/static/demo_images/one_time_rando.png)
 ![Adding a Favorite](/flask_app/static/demo_images/add_favorite.png)
 ![Adding a Location](/flask_app/static/demo_images/add_location.png)
-![Allow Location](/flask_app/static/demo_images/allow_location.png)
-![Manual Location](/flask_app/static/demo_images/manual_location.png)
-![One Time User Map](/flask_app/static/demo_images/one_time_use.png)
-![Last Step](/flask_app/static/demo_images/last_step.png)
-![Quick Sign Up](/flask_app/static/demo_images/quick_register.png)
+
+not pictured
+allow location
+manual location
+auto complete for addresses and restaurants
+one time use randomization for non logged in users
+quick add after one time randomization for logged in users
+
+quick sign up after one time use randomization
+
