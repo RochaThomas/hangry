@@ -16,7 +16,7 @@ class MySQLConnection:
     def __init__(self, db):
         # IF YOU ARE RUNNING LOCALLY OR DEPLOYING CHANGE THE VALUES BELOW
         # CHANGE INSTANCE_CONNECTION_NAME
-        instance_connection_name = ""
+        instance_connection_name = "hangry-343110:us-west1:hangry-backend"
         ip_type = IPTypes.PRIVATE if os.environ.get("PRIVATE_IP") else IPTypes.PUBLIC
 
         connector = Connector(ip_type)
@@ -29,9 +29,9 @@ class MySQLConnection:
             conn: pymysql.connections.Connection = connector.connect(
                 instance_connection_name,
                 "pymysql",
-                user="",
-                password="",
-                db=""
+                user="root",
+                password="PCK21RslvzG,6B@Z",
+                db="hangry_schema"
             )
             return conn
         
