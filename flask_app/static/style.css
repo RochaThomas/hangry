@@ -395,6 +395,7 @@
 
 .sign_up_content {
     justify-content: space-around;
+    height: fit-content;
 }
 .sign_up_form, .quick_add_form {
     display: flex;
