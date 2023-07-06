@@ -396,6 +396,7 @@
 .sign_up_content {
     justify-content: space-around;
     height: fit-content;
+    min-height: 650px;
 }
 .sign_up_form, .quick_add_form {
     display: flex;
