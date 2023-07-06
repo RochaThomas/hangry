@@ -21,6 +21,7 @@ sign up
 allow location
 manual location
 auto complete for addresses and restaurants
+on hover previews
 one time use randomization for non logged in users
 quick add after one time randomization for logged in users
 
