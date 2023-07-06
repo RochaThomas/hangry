@@ -7,31 +7,29 @@ import pymysql.cursors
 
 from google.cloud.sql.connector import Connector, IPTypes
 
-# db_user = os.environ.get('CLOUD_SQL_USERNAME')
-# db_password = os.environ.get('CLOUD_SQL_PASSWORD')
-# db_name = os.environ.get('CLOUD_SQL_DB_NAME')
-# db_connection_name = os.environ.get('CLOUD_SQL_CONNECTION_NAME')
+db_user = os.environ.get('CLOUD_SQL_USERNAME')
+db_password = os.environ.get('CLOUD_SQL_PASSWORD')
+db_name = os.environ.get('CLOUD_SQL_DB_NAME')
+db_connection_name = os.environ.get('CLOUD_SQL_CONNECTION_NAME')
 
 class MySQLConnection:
     def __init__(self, db):
-        # IF YOU ARE RUNNING LOCALLY OR DEPLOYING CHANGE THE VALUES BELOW
-        # CHANGE INSTANCE_CONNECTION_NAME
-        instance_connection_name = ""
         ip_type = IPTypes.PRIVATE if os.environ.get("PRIVATE_IP") else IPTypes.PUBLIC
 
         connector = Connector(ip_type)
 
         def getconn() -> pymysql.connections.Connection:
             # IF YOU ARE RUNNING LOCALLY OR DEPLOYING CHANGE THE VALUES BELOW
+            # CHANGE DB CONNECTION NAME
             # CHANGE USER
             # CHANGE PASSWORD
             # CHANGE DB
             conn: pymysql.connections.Connection = connector.connect(
-                instance_connection_name,
+                db_connection_name,
                 "pymysql",
-                user="",
-                password="",
-                db=""
+                user=db_user,
+                password=db_password,
+                db=db_name,
             )
             return conn
         

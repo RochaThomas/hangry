@@ -17,7 +17,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV CLOUD_SQL_USERNAME=root
 ENV CLOUD_SQL_PASSWORD=PCK21RslvzG,6B@Z
 ENV CLOUD_SQL_DB_NAME=hangry_schema
-# didn't add db name because its passed from models to mysqlconnection
 ENV CLOUD_SQL_CONNECTION_NAME=hangry-343110:us-west1:hangry-backend
 
 # Run the web service on container startup. Here we use the gunicorn
