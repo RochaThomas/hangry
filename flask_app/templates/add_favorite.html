@@ -6,21 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangry: Add Favorite</title>
     <link rel="stylesheet" href="../static/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,0" />
 </head>
 <body>
     <div class="navbar">
-        <h2 id="page_title">Hangry</h2>
+        <a id="page_title_link" href="/">
+            <h2 id="page_title">Hangry</h2>
+        </a>
         <div class="button_div">
-            <a href="/dashboard"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">I NEED FOOD NOW!!!</button></a>
-            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
-            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
-            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+            <a href="/dashboard"><button class="button navbar_link">Dashboard</button></a>
+            <a href="/favorites/randomize"><button class="button navbar_link">Randomize Favorites</button></a>
+            <a href="/location/add"><button class="button navbar_link">Add New Location</button></a>
+            <a href="/one-time-randomization"><button class="button navbar_link">One Time Randomization</button></a>
+            <a href="/logout"><button class="button navbar_logout">Logout</button></a>
         </div>
     </div>
     <div class="content content_add">
-        <div class="add_div">
+        <div id="connectToNearby" class="add_div">
             <h1>Add a Favorite</h1>
-            <form class="add_form" action="/restaurant/add_favorite/process" method="post">
+            <form id="add_favorite_form" class="add_favorite_form" action="/restaurant/add_favorite/process" method="post">
                 {% with restaurant_entry_errors = get_flashed_messages(category_filter=['restaurant_entry_error']) %}
                     {% if restaurant_entry_errors %}
                         {% for restaurant_entry_error in restaurant_entry_errors %}
@@ -28,55 +33,81 @@
                         {% endfor %}
                     {% endif %}
                 {% endwith %}
+                <input type="hidden" name="locations" id="locations" value="{{locations}}">
                 <div class="input_div">
-                    <label for="name">Name: </label>
-                    <input type="text" name="name" id="name">
-                </div>
-                <div class="address">
-                    <label for="address">Address: </label>
-                    <div class="input_div">
-                        <label for="street">Street </label>
-                        <input type="text" name="street" id="street">
-                    </div>
-                    <div class="input_div">
-                        <label for="city">City </label>
-                        <input type="text" name="city" id="city">
-                    </div>
-                    <div class="input_div">
-                        <label for="zipcode">Zipcode </label>
-                        <input type="text" name="zipcode" id="zipcode">
-                    </div>
-                </div>
-                <div class="input_div">
-                    <label for="location_id">Location List:</label>
+                    <label for="location_id">Location for New Favorite:</label>
                     <select name="location_id" id="location_id">
-                        <option value="" selected>Choose a Location</option>
+                        {% if (prev_id|int(-1) == -1) %}
+                            <option value="-1" selected disabled>Choose a Location</option>
+                        {% else %}
+                            <option value="-1" disabled>Choose a Location</option>
+                        {% endif %}
                         {% for location in locations %}
-                            <option value="{{location.id}}">{{location.name}}</option>
+                            {% if (prev_id|int(-1) == location.id|int) %}
+                                <option selected lat="{{location.lat}}" lng="{{location.lng}}" value="{{location.id}}">{{location.name}}</option>
+                            {% else %}
+                                <option lat="{{location.lat}}" lng="{{location.lng}}" value="{{location.id}}">{{location.name}}</option>
+                            {% endif %}
                         {% endfor %}
                     </select>
                 </div>
                 <div class="input_div">
-                    <label for="min_away">How Far Away It Is: </label>
-                    <div class="input_and_unit">
-                        <input type="number" name="min_away" id="min_away" min="1">
-                        <p>minutes</p>
-                    </div>
+                    <label for="name">Name: </label>
+                    <input type="text" name="name" id="name" onchange="resetPlaceId()">
                 </div>
-                <input class="button box_button add_button" id="add_button" type="submit" value="Add" onmouseover="add_react(this)" onmouseout="add_unreact(this)">
+                <div class="address">
+                    <label for="address">Address: </label>
+                    <div class="input_div">
+                        <label for="street_address">Street </label>
+                        <input type="text" name="street_address" id="street_address" onchange="resetPlaceId()">
+                    </div>
+                    <div class="input_div">
+                        <label for="city">City </label>
+                        <input type="text" name="city" id="city" onchange="resetPlaceId()">
+                    </div>
+                    <div class="input_div">
+                        <label for="state">State </label>
+                        <input type="text" name="state" id="state" onchange="resetPlaceId()">
+                    </div>
+                    <div class="input_div">
+                        <label for="zip_code">Zip Code </label>
+                        <input type="text" name="zip_code" id="zip_code" onchange="resetPlaceId()">
+                    </div>
+                    <input type="hidden" id="lat" name="lat">
+                    <input type="hidden" id="lng" name="lng">
+                    <input type="hidden" id="place_id" name="place_id">
+                </div>
+                <input class="button box_button add_button" id="add_button" type="button" value="Add" onclick="geocode()">
             </form>
         </div>
+        <div class="map add_favorite_map" id="map"></div>
         <div class="your_favorites">
-            <h2>Your Favorites</h2>
+            <h2 class="your_favorites_title">Your Favorites</h2>
             <!-- fill in with jinja code -->
-            <ul>
+            <ul class="list_all">
                 {% for location in locations %}
                     <li class="location_names">{{location.name}}</li>
                     <li>
                         <ul>
                             {% for users_favorite in users_favorites %}
                                 {% if users_favorite.location_id == location.id %}
-                                    <li class="favorite_names">{{users_favorite.name}}</li>
+                                    <li 
+                                        class="favorites" 
+                                        lat="{{users_favorite.lat}}" 
+                                        lng="{{users_favorite.lng}}" 
+                                        location_id="{{users_favorite.location_id}}"
+                                    >
+                                        <div class="favorite_name">{{users_favorite.name}}</div>
+                                        <form id="remove_favorite_form" action="/favorites/remove" method="post">
+                                            <input type="hidden" name="location_id" value="{{users_favorite.location_id}}">
+                                            <input type="hidden" name="restaurant_id" value="{{users_favorite.id}}">
+                                            <button type="submit" class="remove_button">
+                                                <span class="remove_favorite material-symbols-outlined">
+                                                    delete
+                                                </span>
+                                            </button>
+                                        </form>
+                                    </li>
                                 {% endif %}
                             {% endfor %}
                         </ul>
@@ -85,6 +116,39 @@
             </ul>
         </div>
     </div>
-    <script src="../static/script.js"></script>
+    <div class="footer">
+        <div class="section">
+            <h4>Home</h4>
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/#how_it_works_title">How It Works</a></li>
+                <li><a href="/#about_us_title">About Us</a></li>
+                <li><a href="/#contact_us_title">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <h4>Users</h4>
+            <ul>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+                <li><a href="/one-time-user/location">Use Once</a></li>
+            </ul>
+        </div>
+        <div class="section last_section">
+            <h4>User Options</h4>
+            <ul>
+                <li><a href="/dashboard">User Dashboard</a></li>
+                <li><a href="/restaurant/add_favorite">Add a Favorite</a></li>
+                <li><a href="/location/add">Add a Location</a></li>
+                <li><a href="/favorites/randomize">Randomize Favorites</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
 </body>
+<script src="../static/script.js"></script>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&callback=initFavoritesMap&libraries=places&v=weekly"
+    defer
+></script>
 </html>

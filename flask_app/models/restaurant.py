@@ -7,24 +7,27 @@ import random
 class Restaurant:
     db_name = "hangry_schema"
     def __init__(self, data):
-        self.id = data['id']
-        self.name = data['name']
-        self.street = data['street']
-        self.city = data['city']
-        self.zipcode = data['zipcode']
-        self.min_away = data['min_away']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        self.id = data[0]
+        self.name = data[1]
+        self.lat = data[2]
+        self.lng = data[3]
+        self.google_id = data[4]
+        self.created_at = None
+        self.updated_at = None
 
     @classmethod
     def add_restaurant(cls, data):
-        query = """INSERT INTO restaurants (name, street, city, zipcode, min_away, created_at, updated_at)
-                VALUES (%(name)s, %(street)s, %(city)s, %(zipcode)s, %(min_away)s, NOW(), NOW());"""
+        query  = """SELECT * FROM restaurants WHERE google_id = :place_id;"""
+        res = connectToMySQL(cls.db_name).query_db(query, data)
+        print('add find result: ', res)
+        if res: return res[0]['id']
+        query = """INSERT INTO restaurants (name, lat, lng, google_id, created_at, updated_at)
+                VALUES (:name, :lat, :lng, :place_id, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
     def get_one_restaurant(cls, data):
-        query = "SELECT * FROM restaurants WHERE id = %(id)s;"
+        query = "SELECT * FROM restaurants WHERE id = :id;"
         results = connectToMySQL(cls.db_name).query_db(query, data)
         if results:
             restaurant = cls( results[0] )
@@ -35,7 +38,7 @@ class Restaurant:
         query = """SELECT restaurants.* FROM locations
                 LEFT JOIN users_favorites ON locations.id = users_favorites.location_id
                 LEFT JOIN restaurants ON users_favorites.restaurant_id = restaurants.id
-                WHERE locations.id = %(id)s;"""
+                WHERE locations.id = :id;"""
         results = connectToMySQL(cls.db_name).query_db(query, data)
         favorites_for_location = []
         if results:
@@ -54,23 +57,40 @@ class Restaurant:
     @staticmethod
     def is_valid_restaurant_entry(restaurant):
         is_valid = True
-        if len(restaurant['name']) < 2:
-            flash('Name must be at least two characters.', 'restaurant_entry_error')
-            is_valid = False
-        data = {
-            'id': restaurant['location_id']
-        }
         if restaurant['location_id'] == '':
-            flash('Field "Location List" is required.', 'restaurant_entry_error')
+            flash('Choosing a Location is required.', 'restaurant_entry_error')
             is_valid = False
-        else:
-            all_favorites_for_location = Restaurant.get_all_favorites_for_location(data)
+        if (restaurant['name'] == "" or
+            restaurant['street_address'] == "" or
+            restaurant['city'] == "" or
+            restaurant['state'] == "" or
+            restaurant['zip_code'] == ""):
+            flash('All fields must be filled in.', 'restaurant_entry_error')
+            is_valid = False
+        elif restaurant['place_id'] == '' or restaurant['lat'] == '' or restaurant['lng'] == '':
+            flash('Enter a valid address.', 'restaurant_entry_error')
+            is_valid = False
+        if (is_valid == True):
+            all_favorites_for_location = Restaurant.get_all_favorites_for_location({
+                'id': restaurant['location_id']
+            })
             if all_favorites_for_location:
+                print("hit")
                 for one_favorite in all_favorites_for_location:
-                    if one_favorite.name == restaurant['name']:
-                        flash('You already have a favorite with that name for this location. Restaurant names must be unique.', 'location_entry_error')
+                    if one_favorite.google_id == restaurant['place_id']:
+                        print("made it")
+                        flash('This restaurant is already a favorite for this location. Enter a new restaurant.', 'restaurant_entry_error')
                         is_valid = False
-        if restaurant['min_away'] == '':
-            flash('Field "How Far Away It Is" is required.', 'restaurant_entry_error')
+        return is_valid
+
+    @staticmethod
+    def is_valid_one_time_restaurant_entry(restaurant):
+        is_valid = True
+        if (restaurant["name"] == "" or 
+            restaurant["street_address"] == "" or 
+            restaurant["city"] == "" or
+            restaurant["state"] == "" or
+            restaurant["zip_code"] == ""):
+            flash('All fields must be filled in.', 'one_time_restaurant_entry_error')
             is_valid = False
         return is_valid

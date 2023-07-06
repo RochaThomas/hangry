@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangry: Result</title>
+    <title>Hangry</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -21,26 +21,30 @@
             <a href="/logout"><button class="button navbar_logout">Logout</button></a>
         </div>
     </div>
-    <div class="content one-time-result-content">
-        <h1 class="result-page-title">Cure Your Hanger!</h1>
-        <div class="one-time-result-container">
-            <div class="result-container">
-                <h2>Go to {{restaurant.name}}!</h2>
-                <input type="hidden" id="result_id" name="result_id" value={{restaurant.google_id}}>
-                <input type="hidden" id="user_loc" name="user_loc" lat="{{lat}}" lng="{{lng}}">
-                <div id="result-info" class="result-info"></div>
+    <div class="content next-steps-content">
+        <h1>You're All Set!</h1>
+        <div class="next-steps-message">
+            <h3 class="next-steps-message-title">Next Steps: </h3>
+            <div class="next-steps-message-content">
+                <p class="next-steps-message-info">
+                    Congratulations! You've successfully set up your first location and your favorites for that location.
+                    Now you can get to solving you Hanger! You can also set up more locations and add more favorites! Choose
+                    from the following options listed below.
+                </p>
             </div>
-            <div class="result-options-container">
-                <div id="map" class="result-options-map-route"></div>
-                <div class="result-options-try-again">
-                    <h3>Not What You Were Looking For?</h3>
-                    <p>If this option doesn't sound good, click "Try Again" to get another restaurant.</p>
-                    <button class="try-again-button"><a class="try-again-link" href="/one-time-user/result">Try Again</a></button>
-                </div>
-                <div class="result-options-home">
-                    <h3>Hanger Solved? Head Home!</h3>
-                    <button class="result-options-home-button"><a class="result-options-home-link" href="/">Home</a></button>
-                </div>
+        </div>
+        <div class="next-steps-options-container">
+            <div class="next-steps-option-inverted">
+                <h3 class="options-title-inverted">Hungry now? Click below to pick somewhere to eat!</h3>
+                <a href="/dashboard"><button class="next-steps-options-button-inverted">Solve Some Hanger!</button></a>
+            </div>
+            <div class="next-steps-option">
+                <h3 class="options-title">One location not enough? Set up another below!</h3>
+                <a href="/location/add"><button class="next-steps-options-button">Add Another Location</button></a>
+            </div>
+            <div class="next-steps-option">
+                <h3 class="options-title">Forgot to add a favorite? Add more here!</h3>
+                <a href="/restaurant/add_favorite"><button class="next-steps-options-button">Add More Favorites</button></a>
             </div>
         </div>
     </div>
@@ -73,9 +77,6 @@
             </ul>
         </div>
     </div>
-<script 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&libraries=places&callback=getResultInfo&v=weekly"
-    defer
-></script>
-<script src="/static/script.js"></script></body>
+</body>
+<script src="/static/script.js"></script>
 </html>

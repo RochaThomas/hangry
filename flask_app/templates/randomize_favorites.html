@@ -9,49 +9,85 @@
 </head>
 <body>
     <div class="navbar">
-        <h2 id="page_title">Hangry</h2>
-        <div class="button_div">
-            <a href="/restaurant/add_favorite"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Favorite</button></a>
-            <a href="/location/add"><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Add New Location</button></a>
-            <a href=""><button class="button navbar_link" onmouseover="nav_link_react(this)" onmouseout="nav_link_unreact(this)">Find A New Go-To</button></a>
-            <a href="/logout"><button class="button navbar_logout" onmouseover="nav_logout_react(this)" onmouseout="nav_logout_unreact(this)">Logout</button></a>
+        <a id="page_title_link" href="/">
+            <h2 id="page_title">Hangry</h2>
+        </a>
+        <div class="button_div">            
+            <a href="/dashboard"><button class="button navbar_link">Dashboard</button></a>
+            <a href="/location/add"><button class="button navbar_link">Add New Location</button></a>
+            <a href="/restaurant/add_favorite"><button class="button navbar_link">Add New Favorite</button></a>
+            <a href="/one-time-randomization"><button class="button navbar_link">One Time Randomization</button></a>
+            <a href="/logout"><button class="button navbar_logout">Logout</button></a>
         </div>
     </div>
     <div class="content choose_location">
         <h1>Get a Random Favorite!</h1>
         <h3>Choose a list of your favorite options based on your location</h3>
-        <form class="location_form" action="/favorites/randomize/location_list" method="post">
+        <form id="location_form" class="location_form" action="/favorites/randomize/location_list" method="post">
             <label for="location_id">Location List:</label>
-            <select name="location_id" id="location_id">
+            <select name="location_id" id="location_id" onchange="document.forms['location_form'].submit()">
                 <option value="-1" {% if ll_id == -1 %} selected {% endif %} disabled>Choose a Location</option>
                 {% for location in locations %}
                     <option value="{{location.id}}" {% if ll_id == location.id %} selected {% endif %}>{{location.name}}</option>
                 {% endfor %}
             </select>
-            <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Select" onmouseover="rand_favs_btns_react(this)" onmouseout="rand_favs_btns_unreact(this)">
         </form>
-    </div>
-    <div class="content select_favorites">
-        <h3>Deselect options that don't sound good right now.<br>Then click "Pick A Favorite" to pick a random restaurant from your selected favorites.</h3>
-        {% with selection_errors = get_flashed_messages(category_filter=['selection_error']) %}
-            {% if selection_errors %}
-                {% for selection_error in selection_errors %}
-                    <p class="selection_error">{{selection_error}}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        <form action="/favorites/randomize/selections" method="post">
-            <div class="fav_options">
-                {% for one_favorite in favorites %}
-                    <div class="input_div">
-                        <label for="{{one_favorite.name}}">{{one_favorite.name}}</label>
-                        <input type="checkbox" name="{{one_favorite.name}}" id="{{one_favorite.name}}" value={{one_favorite.id}} checked>
+        <!-- if session var hidden == true then keep hidden else display the div -->
+        {% if session['hidden'] == True %}
+            <div class="content select_favorites" style="display: none;">
+        {% else %}
+            <div class="content select_favorites" style="display: flex;"> 
+        {% endif %}
+                <h3>Deselect options that don't sound good right now.<br>Then click "Pick A Favorite" to pick a random restaurant from your selected favorites.</h3>
+                {% with selection_errors = get_flashed_messages(category_filter=['selection_error']) %}
+                    {% if selection_errors %}
+                        {% for selection_error in selection_errors %}
+                            <p class="selection_error">{{selection_error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <form class="select_favorites_form" action="/favorites/randomize/selections" method="post">
+                    <div class="fav_options">
+                        {% for one_favorite in favorites %}
+                            <div class="input_div">
+                                <label for="{{one_favorite.name}}">{{one_favorite.name}}</label>
+                                <input type="checkbox" name="{{one_favorite.name}}" id="{{one_favorite.name}}" value={{one_favorite.id}} checked>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                    <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Pick A Favorite">
+                </form>
             </div>
-            <input class="button box_button red_btn_white_wrd rand_favs_btns" type="submit" value="Pick A Favorite" onmouseover="rand_favs_btns_react(this)" onmouseout="rand_favs_btns_unreact(this)">
-        </form>
     </div>
-    <script src="../static/script.js"></script>
+    <div class="footer">
+        <div class="section">
+            <h4>Home</h4>
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/#how_it_works_title">How It Works</a></li>
+                <li><a href="/#about_us_title">About Us</a></li>
+                <li><a href="/#contact_us_title">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <h4>Users</h4>
+            <ul>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+                <li><a href="/one-time-user/location">Use Once</a></li>
+            </ul>
+        </div>
+        <div class="section last_section">
+            <h4>User Options</h4>
+            <ul>
+                <li><a href="/dashboard">User Dashboard</a></li>
+                <li><a href="/restaurant/add_favorite">Add a Favorite</a></li>
+                <li><a href="/location/add">Add a Location</a></li>
+                <li><a href="/favorites/randomize">Randomize Favorites</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </div>
 </body>
+<script src="../static/script.js"></script>
 </html>

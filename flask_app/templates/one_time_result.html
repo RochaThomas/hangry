@@ -4,42 +4,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangry: Result</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Hangry</title>
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
     <div class="navbar">
         <a id="page_title_link" href="/">
             <h2 id="page_title">Hangry</h2>
         </a>
-        <div class="button_div">            
-            <a href="/dashboard"><button class="button navbar_link">Dashboard</button></a>
-            <a href="/favorites/randomize"><button class="button navbar_link">Randomize Favorites</button></a>
-            <a href="/location/add"><button class="button navbar_link">Add New Location</button></a>
-            <a href="/restaurant/add_favorite"><button class="button navbar_link">Add New Favorite</button></a>
-            <a href="/one-time-randomization"><button class="button navbar_link">One Time Randomization</button></a>
-            <a href="/logout"><button class="button navbar_logout">Logout</button></a>
+        <div class="button_div">
+            <a href="/login"><button class="button navbar_login">Login</button></a>
+            <a href="/register"><button class="button navbar_sign_up">Sign Up</button></a>
         </div>
     </div>
     <div class="content one-time-result-content">
         <h1 class="result-page-title">Cure Your Hanger!</h1>
         <div class="one-time-result-container">
             <div class="result-container">
-                <h2>Go to {{restaurant.name}}!</h2>
-                <input type="hidden" id="result_id" name="result_id" value={{restaurant.google_id}}>
+                <h2>Go to {{result}}!</h2>
+                <input type="hidden" id="result_id" name="result_id" value={{resultId}}>
                 <input type="hidden" id="user_loc" name="user_loc" lat="{{lat}}" lng="{{lng}}">
                 <div id="result-info" class="result-info"></div>
             </div>
             <div class="result-options-container">
                 <div id="map" class="result-options-map-route"></div>
-                <div class="result-options-try-again">
-                    <h3>Not What You Were Looking For?</h3>
-                    <p>If this option doesn't sound good, click "Try Again" to get another restaurant.</p>
-                    <button class="try-again-button"><a class="try-again-link" href="/one-time-user/result">Try Again</a></button>
+                <div class="try-again_and_head-home">
+                    <div class="one-time-result-options-try-again">
+                        <h3>Not What You Were Looking For?</h3>
+                        <p>If this option doesn't sound good, click "Try Again" to get another restaurant.</p>
+                        <button class="try-again-button"><a class="try-again-link" href="/one-time-user/result">Try Again</a></button>
+                    </div>
+                    <div class="one-time-result-options-home">
+                        <h3>Hanger Solved? Head Home!</h3>
+                        <button class="result-options-home-button"><a class="result-options-home-link" href="/">Home</a></button>
+                    </div>
                 </div>
-                <div class="result-options-home">
-                    <h3>Hanger Solved? Head Home!</h3>
-                    <button class="result-options-home-button"><a class="result-options-home-link" href="/">Home</a></button>
+                <div class="one-time-result-options-quick-sign-up">
+                    <h3>Was This Helpful? Sign Up!</h3>
+                    <p>If you liked this app, go through our quick sign up process and solve some Hanger!</p>
+                    <button class="result-options-quick-sign-up-button"><a class="result-options-quick-sign-up-link" href="/one-time-user/quick-sign-up">Quick Sign Up</a></button>
                 </div>
             </div>
         </div>
@@ -73,9 +76,10 @@
             </ul>
         </div>
     </div>
+</body>
 <script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&libraries=places&callback=getResultInfo&v=weekly"
     defer
 ></script>
-<script src="/static/script.js"></script></body>
+<script src="/static/script.js"></script>
 </html>

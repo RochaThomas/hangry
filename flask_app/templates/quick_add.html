@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangry: Result</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Hangry: Quick Sign Up</title>
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
     <div class="navbar">
@@ -21,28 +21,29 @@
             <a href="/logout"><button class="button navbar_logout">Logout</button></a>
         </div>
     </div>
-    <div class="content one-time-result-content">
-        <h1 class="result-page-title">Cure Your Hanger!</h1>
-        <div class="one-time-result-container">
-            <div class="result-container">
-                <h2>Go to {{restaurant.name}}!</h2>
-                <input type="hidden" id="result_id" name="result_id" value={{restaurant.google_id}}>
-                <input type="hidden" id="user_loc" name="user_loc" lat="{{lat}}" lng="{{lng}}">
-                <div id="result-info" class="result-info"></div>
-            </div>
-            <div class="result-options-container">
-                <div id="map" class="result-options-map-route"></div>
-                <div class="result-options-try-again">
-                    <h3>Not What You Were Looking For?</h3>
-                    <p>If this option doesn't sound good, click "Try Again" to get another restaurant.</p>
-                    <button class="try-again-button"><a class="try-again-link" href="/one-time-user/result">Try Again</a></button>
+    <div class="quick_add_form">
+        <h1>Fill Out the Form Below</h1>
+        <h3 class="quick_add_text">If you have just used the One Time Randomization functionality of Hangry and are looking to "Quick Add" the new location and favorites, fill out the form below!</h3>
+        <h3 class="quick_add_text">If you aren't looking to "Quick Add", click <a href="/dashboard">HERE</a>.</h3>
+        <form class="quick_add" action="/one-time-randomization/process-quick-add" method="post">
+            {% with location_errors = get_flashed_messages(category_filter=['location_entry_quick_sign_up_error']) %}
+                {% if location_errors %}
+                    {% for location_error in location_errors %}
+                        <p class="reg_error">{{location_error}}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <div class="quick_add_info">
+                <div class="quick_add_location_info">
+                    <div class="quick_add_location_label">
+                        <label for="location_name">Location Name: </label>
+                        <p>Give a name to the location you used for your previous search.</p>
+                    </div>
+                    <input type="text" name="location_name" id="location_name">
                 </div>
-                <div class="result-options-home">
-                    <h3>Hanger Solved? Head Home!</h3>
-                    <button class="result-options-home-button"><a class="result-options-home-link" href="/">Home</a></button>
-                </div>
             </div>
-        </div>
+            <input type="submit" value="Add" class="button box_button quick_add_button">
+        </form>
     </div>
     <div class="footer">
         <div class="section">
@@ -73,9 +74,6 @@
             </ul>
         </div>
     </div>
-<script 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyApYkTOlVGaCHsdFi6DFG3JwH4y272RH1M&libraries=places&callback=getResultInfo&v=weekly"
-    defer
-></script>
-<script src="/static/script.js"></script></body>
+    <script src="../static/script.js"></script>
+</body>
 </html>

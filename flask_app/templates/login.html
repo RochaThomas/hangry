@@ -9,24 +9,57 @@
 </head>
 <body>
     <div class="navbar">
-        <h2 id="page_title">Hangry</h2>
-        <a href="/register"><button class="button navbar_login" onmouseover="nav_sign_up_react(this)" onmouseout="nav_sign_up_unreact(this)">Sign Up</button></a>
+        <a id="page_title_link" href="/">
+            <h2 id="page_title">Hangry</h2>
+        </a>
+        <a href="/register"><button class="button navbar_login">Sign Up</button></a>
     </div>
-    <div class="login">
-        <form class="login_form" action="/login/user" method="post">
-            {% with login_errors = get_flashed_messages(category_filter=['login_error']) %}
-                {% if login_errors %}
-                    {% for login_error in login_errors %}
-                        <p class="login_error">{{login_error}}</p>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-            <label for="email">Email: </label>
-            <input type="email" name="email" id="email">
-            <label for="password">Password: </label>
-            <input type="password" name="password" id="password">
-            <input type="submit" value="Login" class="button box_button login_button" onmouseover="login_react(this)" onmouseout="login_unreact(this)">
-        </form>
+    <div class="content login_content">
+        <div class="login">
+            <form class="login_form" action="/login/user" method="post">
+                {% with login_errors = get_flashed_messages(category_filter=['login_error']) %}
+                    {% if login_errors %}
+                        {% for login_error in login_errors %}
+                            <p class="login_error">{{login_error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <label for="email">Email: </label>
+                <input type="email" name="email" id="email">
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password">
+                <input type="submit" value="Login" class="button box_button login_button">
+            </form>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="section">
+            <h4>Home</h4>
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/#how_it_works_title">How It Works</a></li>
+                <li><a href="/#about_us_title">About Us</a></li>
+                <li><a href="/#contact_us_title">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <h4>Users</h4>
+            <ul>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Sign Up</a></li>
+                <li><a href="/one-time-user/location">Use Once</a></li>
+            </ul>
+        </div>
+        <div class="section last_section">
+            <h4>User Options</h4>
+            <ul>
+                <li><a href="/dashboard">User Dashboard</a></li>
+                <li><a href="/restaurant/add_favorite">Add a Favorite</a></li>
+                <li><a href="/location/add">Add a Location</a></li>
+                <li><a href="/favorites/randomize">Randomize Favorites</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
     </div>
     <script src="../static/script.js"></script>
 </body>
