@@ -1,6 +1,8 @@
 # Hangry
+This project was created using a Python Flask backend framework and frontend utilizing raw HTML, CSS, and Javascript. Many of Google's APIs were used to create the features of this project such as Autocomplete, Directions, Geocode, Geolocation, Maps, and Places. I created Hangry as a fun way to solve my frequent "hanger" while focusing mainly on the ability to make a functional backend. This app also allowed me to explore some of the interesting APIs that Google has to offer. Deployment was done using Google Cloud Run and Google Cloud Platform's MySql. 
 
 ## Demo Pages
+The images below picture much of the look and many of the functions of the app.
 ![Landing Page](/flask_app/static/demo_images/index.png)
 ![How It Works](/flask_app/static/demo_images/how_it_works.png)
 ![About Us](/flask_app/static/demo_images/about_us.png)
@@ -12,18 +14,16 @@
 ![Adding a Favorite](/flask_app/static/demo_images/add_favorite.png)
 ![Randomize Favorites](/flask_app/static/demo_images/rando_favorites.png)
 ![Select Favorites for Randomization](/flask_app/static/demo_images/select_favorites.png)
-![One Time Randomization for Logged In User](/flask_app/static/demo_images/one_time_rando.png)
+![One Time Randomization for Logged-In User](/flask_app/static/demo_images/one_time_rando.png)
 ![Results](/flask_app/static/demo_images/results.png)
 
-not pictured
-login
-sign up
-allow location
-manual location
-auto complete for addresses and restaurants
-on hover previews
-one time use randomization for non logged in users
-quick add after one time randomization for logged in users
-
-quick sign up after one time use randomization
+Only a few of the features of the app are pictured above. Other aspects of the app that are not included are as follows:
+* Login Module
+* Sign Up Module
+* Functions for Allowing the App to Access the User's Location or Manually Input Their Location
+* Autocomplete for addresses and restaurants
+* On-hover Restaurant Previews for the maps
+* Single-Use Randomization for One-Time Users
+* Quick Sign-Up Process for Single-Use Randomization One-Time Users
+* Quick Add Restaurants After Single-Use Randomization for Logged-In Users
 
