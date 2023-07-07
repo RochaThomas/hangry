@@ -16,10 +16,11 @@ def disp_default():
     # index.html should have an option for one-time uses
     # index.html should have links for how it works and about us
     # show login, sign up, and use 1 time
-    session.clear()
     print("session: ", session)
     if 'user_id' in session:
         return redirect('/dashboard')
+    else:
+        session.clear()
     return render_template('index.html')
 
 @app.route('/login')

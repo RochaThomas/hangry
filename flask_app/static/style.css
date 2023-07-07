@@ -1415,3 +1415,7 @@ input:checked + .slider:before {
     color: #e00a05;
     font-weight: bold;
 }
+
+.button-cursor {
+    cursor: pointer;
+}

@@ -146,5 +146,16 @@ def randomize_selections():
     if not Users_favorite.is_valid_selection(request.form):
         return redirect('/favorites/randomize')
     random_favorite = Restaurant.get_one_random(request.form)
+    session['selections'] = request.form
+    session['result'] = random_favorite
+    return redirect('/favorites/randomize/result')
+
+@app.route('/favorites/randomize/try-again')
+def randomize_selections_try_again():
+    if 'user_id' not in session:
+        return redirect('/')
+    random_favorite = Restaurant.get_one_random(session['selections'])
+    while random_favorite == session['result']:
+        random_favorite = Restaurant.get_one_random(session['selections'])
     session['result'] = random_favorite
     return redirect('/favorites/randomize/result')

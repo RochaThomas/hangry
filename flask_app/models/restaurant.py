@@ -20,7 +20,7 @@ class Restaurant:
         query  = """SELECT * FROM restaurants WHERE google_id = :place_id;"""
         res = connectToMySQL(cls.db_name).query_db(query, data)
         print('add find result: ', res)
-        if res: return res[0]['id']
+        if res: return res[0][0]
         query = """INSERT INTO restaurants (name, lat, lng, google_id, created_at, updated_at)
                 VALUES (:name, :lat, :lng, :place_id, NOW(), NOW());"""
         return connectToMySQL(cls.db_name).query_db(query, data)
