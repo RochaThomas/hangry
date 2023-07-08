@@ -29,3 +29,7 @@ Only a few of the features of the app are pictured above. Other aspects of the a
 * Quick Sign-Up Process for Single-Use Randomization One-Time Users
 * Quick Add Restaurants After Single-Use Randomization for Logged-In Users
 
+## Development Team
+>  Tommy Rocha *(Frontend/Backend)* <br>
+<a href="https://github.com/RochaThomas"><img src="https://img.shields.io/badge/-GitHub-282A36?style=for-the-badge&logo=github"/></a>  <a href="https://www.linkedin.com/in/t-rocha/"><img src="https://img.shields.io/badge/-LinkedIn-1572B6?style=for-the-badge&logo=Linkedin"/></a>
+
