@@ -1,9 +1,13 @@
 # Hangry
 This project was created using a Python Flask backend framework and frontend utilizing raw HTML, CSS, and Javascript. Many of Google's APIs were used to create the features of this project such as Autocomplete, Directions, Geocode, Geolocation, Maps, and Places. I created Hangry as a fun way to solve my frequent "hanger" while focusing mainly on the ability to make a functional backend. This app also allowed me to explore some of the interesting APIs that Google has to offer. Deployment was done using Google Cloud Run and Google Cloud Platform's MySql.<br/><br/>
 
-## Demo Video
+##Demo
 
-## Demo Pages
+### Demo Video
+*Click image below to watch a demo video*
+
+
+### Demo Pages
 The images below picture much of the look and many of the functions of the app.
 ![Landing Page](/flask_app/static/demo_images/index.png)
 ![How It Works](/flask_app/static/demo_images/how_it_works.png)
